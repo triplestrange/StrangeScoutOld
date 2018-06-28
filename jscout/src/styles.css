@@ -1,0 +1,115 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
+/*@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');*/
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import url('https://use.fontawesome.com/releases/v5.0.8/css/all.css');
+
+
+/* CSS Document */
+
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+}
+
+fieldset {
+	margin: 10px 20px 10px 20px;
+	border-color: rgb(26, 24, 167);
+	border-style: solid;
+}
+
+fieldset * {
+	margin: 5px 0px 5px 0px;
+}
+
+input[type="radio"] {
+	display: inline;
+	position: relative;
+	top: 2px;
+	width: auto;
+}
+
+input[type="checkbox"] {
+	display: inline;
+	position: relative;
+	top: 2px;
+	width: auto;
+}
+
+input[type="hidden"] {
+	display: none;
+}
+
+.spacer {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.scouting {
+	padding: 0px 0px 15px 0px;
+}
+
+form.scouting button[type="submit"] {
+	margin-left: 20px;
+	margin-right: 20px;
+	width: calc( 100% - 40px );
+}
+
+@media screen and (max-width: 450px) {
+	.mobileHidden {
+		text-align: right;
+		width: 50%;
+		padding: 0;
+		margin: 0;
+		visibility: hidden;
+		display:none;
+	}
+}
+
+.center-content {
+	height: 100%;
+	padding: 5px;
+	margin: 10px;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+/*	align-items: center; */
+	justify-content: center;
+}
+
+.center-content * {
+	margin: 10px;
+}
+
+.form-inline * {
+	margin: 10px;
+}
+
+/* Bootstrap 3 CSS for legends */
+legend{
+	display:block;
+	width:100%;
+	padding:0;
+	margin-bottom:20px;
+	font-size:21px;
+	line-height:inherit;
+	color:#333;
+	border:0;
+	border-bottom:1px solid #e5e5e5
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}
+
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
