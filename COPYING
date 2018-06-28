@@ -1,0 +1,25 @@
+StrangeScout--a data collection server intended for robotics event scouting.
+Copyright (C) 2018 Aidan Hunt, Noah Piraino, and other contributors.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+A copy of the GNU AGPL v3 is located in ./LICENSE. The source code for
+current and historical versions of StrangeScout can be found online
+at <https://github.com/triplestrange/StrangeScout/>.
+
+Before contributing to upstream at the above URL (thanks in advance!)
+please read the .CONTRIBUTING.md file, which states that by making any
+contribution to our GitHub repository you affirm the Developer
+Certificate of Origin, a legal document affirming that you have
+the rights to license your contributions under the GNU AGPL v3.
