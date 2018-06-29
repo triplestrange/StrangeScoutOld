@@ -1,0 +1,41 @@
+# MAIN HOST CONFIG
+strangescout.me	{
+	# ensure that ports 40 and 443 are exposed to the above domain for ACME to automagically get certificates
+	# automatically obtains Let's Encrypt using ACME HTTP verification, and redirect HTTP->HTTPS
+	
+	ext .html .htm .php
+	# allow "clean" URLs without pesky extensions that might scare Windows users...
+	# a URL without extension will be autocompleted to the first-working extension specified above
+	
+	gzip {
+		level 5
+	}
+	# enable automatic gzip compression if client-supported
+
+	tls {$JSCOUT_LETS_ENCRYPT_EMAIL}
+	# specify admin email for Let's Encrypt Automatic HTTPS to avoid startup prompt
+
+	root /srv
+
+	# for Docker logs
+	log stdout
+	errors stdout
+}
+
+## REVERSE PROXY CONFIG
+# NB: Caddy matches the LONGEST matching prefix
+
+# API SUBDOMAIN
+api.strangescout.me {
+		
+	proxy / localhost:9005
+	# A GoScout API server must be exposed to this container on port 9005.
+
+	tls {$JSCOUT_LETS_ENCRYPT_EMAIL}
+
+	# for Docker logs
+	log stdout
+	errors stdout
+}
+
+

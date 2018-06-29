@@ -1,8 +1,16 @@
-FROM joshix/caddy
-COPY Caddyfile /var/www/html
-COPY ./dist /var/www/html
-EXPOSE 443
-EXPOSE 80
-EXPOSE 9005
-EXPOSE 8080
+FROM alpine AS builder
+WORKDIR /strangescout
+RUN apk add --update nodejs nodejs-npm
+COPY ./ ./
+RUN npm install -g @angular/cli
+RUN npm update --save
+RUN ls -la ./node_modules
+RUN ng build -prod
 
+FROM abiosoft/caddy:latest
+ENV CADDYPATH=/etc/caddypath
+COPY config/Caddyfile /etc/Caddyfile
+COPY --from=builder /strangescout /srv
+EXPOSE 80 443
+VOLUME /etc/caddypath
+ENTRYPOINT caddy -agree
