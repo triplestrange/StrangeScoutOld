@@ -7,10 +7,9 @@ RUN npm update --save
 RUN ls -la ./node_modules
 RUN ng build -prod
 
-FROM abiosoft/caddy:latest
-ENV CADDYPATH=/etc/caddypath
-COPY config/Caddyfile /etc/Caddyfile
-COPY --from=builder /strangescout /srv
+FROM joshix/caddy:latest
+COPY Caddyfile /var/www/html
+COPY --from=builder /strangescout/dist /srv
 EXPOSE 80 443
 VOLUME /etc/caddypath
-ENTRYPOINT caddy -agree
+ENTRYPOINT ["caddy", "-agree"]
