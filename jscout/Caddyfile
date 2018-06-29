@@ -1,0 +1,44 @@
+# MAIN HOST CONFIG
+strangescout.me	{
+# ensure that process can bind to 80 and 443 for automatic HTTPS, otherwise server will bind to 2015
+# automatically obtains Let's Encrypt using ACME HTTP verification, and redirect HTTP->HTTPS
+
+ext .html .htm .php
+# allow "clean" URLs without pesky extensions that might scare Windows users...
+# a URL without extension will be autocompleted to the first-working extension specified above
+
+header / X-How-Strange "triplestrange"
+# why not???
+
+gzip {
+	level 1
+}
+# enable automatic gzip compression if client-supported
+
+tls admin@strangescout.me
+# specify admin email for Let's Encrypt Automatic HTTPS to avoid startup prompt
+
+root /var/www/html/
+
+}
+
+
+## REVERSE PROXY CONFIG
+
+# NB: Caddy matches the LONGEST matching prefix
+
+# API SUBDOMAIN
+strangescout.me/api/, api.strangescout.me {
+		
+	proxy / localhost:9005
+	# Go API backend (CRITICAL, do not remove)
+
+	tls admin@strangescout.me
+}
+
+# JENKINS SUBDOMAIN
+jenkins.strangescout.me {
+	proxy  / localhost:8080
+	
+	tls admin@strangescout.me
+}
