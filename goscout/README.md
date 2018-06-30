@@ -1,0 +1,2 @@
+# GoScout
+StrangeScout API backend.
