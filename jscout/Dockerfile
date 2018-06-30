@@ -11,5 +11,5 @@ FROM joshix/caddy:latest
 COPY Caddyfile /var/www/html
 COPY --from=builder /strangescout/dist /srv
 EXPOSE 80 443
-VOLUME /etc/caddypath
+VOLUME /.caddy/
 ENTRYPOINT ["caddy", "-agree"]

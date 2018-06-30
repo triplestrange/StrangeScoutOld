@@ -1,5 +1,5 @@
 # MAIN HOST CONFIG
-{$JSCOUT_DOMAIN} {
+{$JSCOUT_DOMAIN}, www.{$JSCOUT_DOMAIN} {
 	# ensure that ports 40 and 443 are exposed to the above domain for ACME to automagically get certificates
 	# automatically obtains Let's Encrypt using ACME HTTP verification, and redirect HTTP->HTTPS
 	
@@ -26,7 +26,7 @@
 # NB: Caddy matches the LONGEST matching prefix
 
 # API DOMAIN
-{$JSCOUT_API_DOMAIN} {
+api.{$JSCOUT_DOMAIN} {
 		
 	proxy / localhost:9005
 	# A GoScout API server must be exposed to this container on port 9005.
