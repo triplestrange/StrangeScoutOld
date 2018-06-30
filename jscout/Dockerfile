@@ -4,7 +4,6 @@ RUN apk add --update nodejs nodejs-npm
 COPY ./ ./
 RUN npm install -g @angular/cli
 RUN npm update --save
-RUN ls -la ./node_modules
 RUN ng build -prod
 
 FROM joshix/caddy:latest
