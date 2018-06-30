@@ -11,10 +11,9 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//var rds *sql.DB
+var server string
 
 func main() {
-	var server string
 	startAPI()
 }
 
