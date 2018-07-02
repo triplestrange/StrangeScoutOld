@@ -70,6 +70,9 @@ type pitScoutData struct {
 
 // this allows us to start with a blank database
 func initDB() {
+
+	fmt.Println("Preparing to initialize database...")
+
 	db, err := sql.Open("mysql", server)
 	if err != nil {
 		log.Fatal(err)
@@ -80,9 +83,15 @@ func initDB() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	_, err = db.Exec("ALTER DATABASE `strangescout`" + `
+		DEFAULT CHARACTER SET utf8
+		DEFAULT COLLATE utf8_general_ci;`)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS MatchData (
-			Event VARCHAR(100) NOT NULL,
-			TeamNumber SMALLINT NOT NULL,
+			Event VARCHAR(100) NOT NULL, TeamNumber SMALLINT NOT NULL,
 			MatchNumber SMALLINT NOT NULL,
 			StartPosition VARCHAR(100),
 			AutoMovementLine BOOLEAN,
@@ -99,10 +108,14 @@ func initDB() {
 			EndPosition VARCHAR(100),
 			YellowCards TINYINT,
 			RedCards TINYINT,
-			Notes VARCHAR(65535),
+			Notes TEXT(65535),
 			Timestamp DATETIME NOT NULL,
-			PRIMARY KEY (Event, TeamNumber, MatchNumber));
-		CREATE TABLE IF NOT EXISTS PitData (
+			PRIMARY KEY (Event, TeamNumber, MatchNumber));`)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS PitData (
 			Event VARCHAR(100) NOT NULL,
 			TeamNumber SMALLINT NOT NULL,
 			TeamName VARCHAR(1000),
@@ -123,16 +136,15 @@ func initDB() {
 			TeleopSwitch BOOLEAN,
 			TeleopScale BOOLEAN,
 			TeleopExchange BOOLEAN,
-			Notes VARCHAR (65535),
+			Notes TEXT(65535),
 			Timestamp DATETIME NOT NULL,
-			PRIMARY KEY (Event, TeamNumber))`)
+			PRIMARY KEY (Event, TeamNumber));`)
 
 	if err == nil {
 		return
 	} else {
 		log.Fatal(err)
 	}
-
 }
 
 // our main function
@@ -141,7 +153,7 @@ func startAPI() {
 	router := mux.NewRouter()
 	router.HandleFunc("/submitmatch", writeMatch).Methods("POST")
 	router.HandleFunc("/submitpit", writePit).Methods("POST")
-	http.ListenAndServe("127.0.0.1:15338", router)
+	http.ListenAndServe(":15338", router)
 }
 
 // API Handlers
@@ -150,6 +162,8 @@ func writeMatch(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(405), 405)
 		return
 	}
+
+	fmt.Println("Handling POST /submitmatch")
 
 	var data matchScoutData
 	_ = json.NewDecoder(r.Body).Decode(&data)
@@ -186,6 +200,8 @@ func writePit(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(405), 405)
 		return
 	}
+
+	fmt.Println("Handling POST /submitpit")
 
 	var data pitScoutData
 	_ = json.NewDecoder(r.Body).Decode(&data)

@@ -20,16 +20,14 @@
 	# for Docker logs
 	log stdout
 	errors stdout
-}
+	
+	## REVERSE PROXY CONFIG
+	proxy /api/ {$GOSCOUT_HOST}:15338 {
+		without /api
+	}
 
-## REVERSE PROXY CONFIG
-# NB: Caddy matches the LONGEST matching prefix
 
-# API DOMAIN
-api.{$JSCOUT_DOMAIN} {
-		
-	proxy / {$GOSCOUT_HOST}:15338
-	# A GoScout API server must be exposed to this container on port 9005.
+	# A GoScout API server must be exposed to this container on port 15338.
 
 	tls {$JSCOUT_LETS_ENCRYPT_EMAIL}
 
