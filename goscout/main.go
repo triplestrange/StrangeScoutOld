@@ -16,6 +16,7 @@ var server string
 
 func main() {
 	server = os.Getenv("GOSCOUT_SQL_USER") + ":" + os.Getenv("GOSCOUT_SQL_PASSWD") + "@tcp(" + os.Getenv("GOSCOUT_SQL_HOST") + ")/strangescout"
+	initDB()
 	startAPI()
 }
 
@@ -67,6 +68,73 @@ type pitScoutData struct {
 	Timestamp          string
 }
 
+// this allows us to start with a blank database
+func initDB() {
+	db, err := sql.Open("mysql", server)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		defer db.Close()
+	}
+	err = db.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS MatchData (
+			Event VARCHAR(100) NOT NULL,
+			TeamNumber SMALLINT NOT NULL,
+			MatchNumber SMALLINT NOT NULL,
+			StartPosition VARCHAR(100),
+			AutoMovementLine BOOLEAN,
+			AutoSwitchCubes TINYINT,
+			AutoScaleCubes TINYINT,
+			FailedAutoSwitchCubes TINYINT,
+			FailedAutoScaleCubes TINYINT,
+			AutoExchange TINYINT,
+			TeleSwitchCubes TINYINT,
+			TeleScaleCubes TINYINT,
+			FailedTeleSwitchCubes TINYINT,
+			FailedTeleScaleCubes TINYINT,
+			TeleExchange TINYINT,
+			EndPosition VARCHAR(100),
+			YellowCards TINYINT,
+			RedCards TINYINT,
+			Notes VARCHAR(65535),
+			Timestamp DATETIME NOT NULL,
+			PRIMARY KEY (Event, TeamNumber, MatchNumber));
+		CREATE TABLE IF NOT EXISTS PitData (
+			Event VARCHAR(100) NOT NULL,
+			TeamNumber SMALLINT NOT NULL,
+			TeamName VARCHAR(1000),
+			TeamLocation VARCHAR(1000),
+			GroundClearance DOUBLE UNSIGNED,
+			DriveTrain VARCHAR(1000),
+			RobotWeight DOUBLE UNSIGNED,
+			LeftStart BOOLEAN,
+			CenterStart BOOLEAN,
+			RightStart BOOLEAN,
+			CubeMech BOOLEAN,
+			GroundIntake BOOLEAN,
+			Climber BOOLEAN,
+			Baseline BOOLEAN,
+			AutonomousSwitch BOOLEAN,
+			AutonomousScale BOOLEAN,
+			AutonomousExchange BOOLEAN,
+			TeleopSwitch BOOLEAN,
+			TeleopScale BOOLEAN,
+			TeleopExchange BOOLEAN,
+			Notes VARCHAR (65535),
+			Timestamp DATETIME NOT NULL,
+			PRIMARY KEY (Event, TeamNumber))`)
+
+	if err == nil {
+		return
+	} else {
+		log.Fatal(err)
+	}
+
+}
+
 // our main function
 func startAPI() {
 	//initialize API server and setup endpoints
@@ -87,25 +155,25 @@ func writeMatch(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&data)
 
 	// now hardcoding is optional and set by environment variable
-        if os.LookupEnv("GOSCOUT_EVENT_HARDCODE") {
-		data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE");
-        }
+	if _, b := os.LookupEnv("GOSCOUT_EVENT_HARDCODE"); b == true {
+		data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE")
+	}
 	fmt.Printf("%+v\n", data)
 	// initialize SQL and test connection
-	rds, err := sql.Open("mysql", server)
+	db, err := sql.Open("mysql", server)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	} else {
-		defer rds.Close()
+		defer db.Close()
 	}
-	err = rds.Ping()
+	err = db.Ping()
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 
 	fmt.Println(data.MatchNumber)
 
-	_, err = rds.Exec("INSERT INTO MatchData (Event, TeamNumber, MatchNumber, StartPosition, AutoMovementLine, AutoSwitchCubes, AutoScaleCubes, FailedAutoSwitchCubes, FailedAutoScaleCubes, AutoExchange, TeleSwitchCubes, TeleScaleCubes, FailedTeleSwitchCubes, FailedTeleScaleCubes, TeleExchange, EndPosition, YellowCards, RedCards, Notes, Timestamp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data.Event, data.TeamNumber, data.MatchNumber, data.StartPosition, data.AutoMovementLine, data.AutoSwitchCubes, data.AutoScaleCubes, data.FailedAutoSwitchCubes, data.FailedAutoScaleCubes, data.AutoExchange, data.TeleSwitchCubes, data.TeleScaleCubes, data.FailedTeleSwitchCubes, data.FailedTeleScaleCubes, data.TeleExchange, data.EndPosition, data.YellowCards, data.RedCards, data.Notes, data.Timestamp)
+	_, err = db.Exec("INSERT INTO MatchData (Event, TeamNumber, MatchNumber, StartPosition, AutoMovementLine, AutoSwitchCubes, AutoScaleCubes, FailedAutoSwitchCubes, FailedAutoScaleCubes, AutoExchange, TeleSwitchCubes, TeleScaleCubes, FailedTeleSwitchCubes, FailedTeleScaleCubes, TeleExchange, EndPosition, YellowCards, RedCards, Notes, Timestamp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data.Event, data.TeamNumber, data.MatchNumber, data.StartPosition, data.AutoMovementLine, data.AutoSwitchCubes, data.AutoScaleCubes, data.FailedAutoSwitchCubes, data.FailedAutoScaleCubes, data.AutoExchange, data.TeleSwitchCubes, data.TeleScaleCubes, data.FailedTeleSwitchCubes, data.FailedTeleScaleCubes, data.TeleExchange, data.EndPosition, data.YellowCards, data.RedCards, data.Notes, data.Timestamp)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		fmt.Println(err)
@@ -122,24 +190,24 @@ func writePit(w http.ResponseWriter, r *http.Request) {
 	var data pitScoutData
 	_ = json.NewDecoder(r.Body).Decode(&data)
 	// now hardcoding is optional and set by environment variable
-        if os.LookupEnv("GOSCOUT_EVENT_HARDCODE") {
-		data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE");
-        }
+	if _, b := os.LookupEnv("GOSCOUT_EVENT_HARDCODE"); b == true {
+		data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE")
+	}
 	fmt.Printf("%+v\n", data)
 
 	// initialize SQL and test connection
-	rds, err := sql.Open("mysql", server)
+	db, err := sql.Open("mysql", server)
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		defer rds.Close()
+		defer db.Close()
 	}
-	err = rds.Ping()
+	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = rds.Exec("INSERT INTO PitData (Event, TeamNumber, TeamName, TeamLocation, GroundClearance, DriveTrain, RobotWeight, LeftStart, CenterStart, RightStart, CubeMech, GroundIntake, Climber, Baseline, AutonomousSwitch, AutonomousScale, AutonomousExchange, TeleopSwitch, TeleopScale, TeleopExchange, Notes, Timestamp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data.Event, data.TeamNumber, data.TeamName, data.TeamLocation, data.GroundClearance, data.DriveTrain, data.RobotWeight, data.LeftStart, data.CenterStart, data.RightStart, data.CubeMech, data.GroundIntake, data.Climber, data.Baseline, data.AutonomousSwitch, data.AutonomousScale, data.AutonomousExchange, data.TeleopSwitch, data.TeleopScale, data.TeleopExchange, data.Notes, data.Timestamp)
+	_, err = db.Exec("INSERT INTO PitData (Event, TeamNumber, TeamName, TeamLocation, GroundClearance, DriveTrain, RobotWeight, LeftStart, CenterStart, RightStart, CubeMech, GroundIntake, Climber, Baseline, AutonomousSwitch, AutonomousScale, AutonomousExchange, TeleopSwitch, TeleopScale, TeleopExchange, Notes, Timestamp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data.Event, data.TeamNumber, data.TeamName, data.TeamLocation, data.GroundClearance, data.DriveTrain, data.RobotWeight, data.LeftStart, data.CenterStart, data.RightStart, data.CubeMech, data.GroundIntake, data.Climber, data.Baseline, data.AutonomousSwitch, data.AutonomousScale, data.AutonomousExchange, data.TeleopSwitch, data.TeleopScale, data.TeleopExchange, data.Notes, data.Timestamp)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		fmt.Println(err)
