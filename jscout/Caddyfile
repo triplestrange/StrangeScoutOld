@@ -28,7 +28,7 @@
 # API DOMAIN
 api.{$JSCOUT_DOMAIN} {
 		
-	proxy / localhost:9005
+	proxy / {$GOSCOUT_HOST}:15338
 	# A GoScout API server must be exposed to this container on port 9005.
 
 	tls {$JSCOUT_LETS_ENCRYPT_EMAIL}
