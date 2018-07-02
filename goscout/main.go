@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -14,6 +15,7 @@ import (
 var server string
 
 func main() {
+	server = os.Getenv("GOSCOUT_SQL_USER") + ":" + os.Getenv("GOSCOUT_SQL_PASSWD") + "@tcp(" + os.Getenv("GOSCOUT_SQL_HOST") + ")/strangescout"
 	startAPI()
 }
 
@@ -83,9 +85,12 @@ func writeMatch(w http.ResponseWriter, r *http.Request) {
 
 	var data matchScoutData
 	_ = json.NewDecoder(r.Body).Decode(&data)
-	data.Event = "2018turing"
-	fmt.Printf("%+v\n", data)
 
+	// now hardcoding is optional and set by environment variable
+        if os.LookupEnv("GOSCOUT_EVENT_HARDCODE") {
+		data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE");
+        }
+	fmt.Printf("%+v\n", data)
 	// initialize SQL and test connection
 	rds, err := sql.Open("mysql", server)
 	if err != nil {
@@ -116,12 +121,14 @@ func writePit(w http.ResponseWriter, r *http.Request) {
 
 	var data pitScoutData
 	_ = json.NewDecoder(r.Body).Decode(&data)
-	data.Event = "2018turning"
+	// now hardcoding is optional and set by environment variable
+        if os.LookupEnv("GOSCOUT_EVENT_HARDCODE") {
+		data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE");
+        }
 	fmt.Printf("%+v\n", data)
 
 	// initialize SQL and test connection
-	rds, err := sql.Open("mysql",
-		"awsuser:$tran6e$c%ut@tcp(strangescout.cd1niyuzf8s7.us-east-1.rds.amazonaws.com)/strangescout")
+	rds, err := sql.Open("mysql", server)
 	if err != nil {
 		log.Fatal(err)
 	} else {
