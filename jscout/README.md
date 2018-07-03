@@ -5,15 +5,16 @@ The modern web frontend to [StrangeScout](https://github.com/strangescout).
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.7.
 
 ## Docker Building
-Clone the repository to your server. Change to the `jscout` directory (this one). Run `docker build -t jscout .` to build this directory into an image called `jscout` on the local image store. To avoid hitting Let's Encrypt rate limits (not fun), make sure to create a Docker volume to store the `.caddy` folder that holds your certificates safe across containers: run `docker volume create jscout-caddy` Then use the following `docker run` command to start up the JScout container:
+Clone the repository to your server. Change to the `jscout` directory (this one). Run `docker build -t strangescout_jscout .` to build this directory into an image called `strangescout_jscout` on the local image store. To avoid hitting Let's Encrypt rate limits (not fun), make sure to create a Docker volume to store the `.caddy` folder that holds your certificates safe across containers: run `docker volume create strangescout_jscout_caddydir` Then use the following `docker run` command to start up the JScout container:
 
 ```bash
 sudo docker run -d -e "JSCOUT_DOMAIN=<yourdomain.tld>" \
   -e "JSCOUT_LETS_ENCRYPT_EMAIL=<user@yourdomain.tld>" \
-  -v jscout-caddy:/.caddy  -p 80:80 -p 443:443 jscout
+  -e "GOSCOUT_HOST=<goscout_server_hostname>
+  -v strangescout_jscout_caddydir:/.caddy  -p 80:80 -p 443:443 strangescout_jscout
 ```
 
-**Make sure that ports 80 and 443 are open to the public on the host machine and that `<yourdomain.tld>`, `<www.yourdomain.tld>`, and `<api.yourdomain.tld>` all point to the IP of your host.** If you prefer to terminate SSL elsewhere, simple edit the [Caddyfile](https://caddyserver.com/docs/tls) and rebuild the container.
+**Make sure that ports 80 and 443 are open to the public on the host machine and that `<yourdomain.tld>`, all point to the IP of your host. Be it `localhost`, a container on a docker network, or otherwise, ensure that a GoScout server is running on port 15338 at `GOSCOUT_HOST` and that port forwarding/firewall settings allow access.** If you prefer to terminate SSL elsewhere, simple edit the [Caddyfile](https://caddyserver.com/docs/tls) and rebuild the container. You can also be fancy and add additional domains (such as a www. subdomain), comma-delimited, in the `JSCOUT_DOMAIN` variable.
 
 ## Manual Building
 ### Toolchain
