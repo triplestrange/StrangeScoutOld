@@ -16,7 +16,7 @@ JSCOUT_DOMAIN=<yourdomain.tld>
 STRANGESCOUT_SQL_PASSWD=<$ecure|)assw0rd>
 ```
 
-**Run `sudo docker compose up -d` and sit back.** You're ready to scout... no, you're totally needed for maintenance and support and there's no way you'd have time to scout yourself right ;) HTTPS certs from Let's Encrypt and your SQL database are safely stored in Docker volumes, so you're free to start and stop containers at will, or even delete them!
+**Run `sudo docker-compose up -d` and sit back.** You're ready to scout... no, you're totally needed for maintenance and support and there's no way you'd have time to scout yourself right ;) HTTPS certs from Let's Encrypt and your SQL database are safely stored in Docker volumes, so you're free to start and stop containers at will, or even delete them!
 
 **Needless to say, point DNS for `<yourdomain.tld>` to the IP of your server. Ensure that firewalls, AWS security groups, etc. have ports 80, 443, and 3306 (if you want remote SQL access) open. Enjoy!**
 

@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
@@ -188,10 +188,23 @@ func writeMatch(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(data.MatchNumber)
 
 	_, err = db.Exec("INSERT INTO MatchData (Event, TeamNumber, MatchNumber, StartPosition, AutoMovementLine, AutoSwitchCubes, AutoScaleCubes, FailedAutoSwitchCubes, FailedAutoScaleCubes, AutoExchange, TeleSwitchCubes, TeleScaleCubes, FailedTeleSwitchCubes, FailedTeleScaleCubes, TeleExchange, EndPosition, YellowCards, RedCards, Notes, Timestamp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data.Event, data.TeamNumber, data.MatchNumber, data.StartPosition, data.AutoMovementLine, data.AutoSwitchCubes, data.AutoScaleCubes, data.FailedAutoSwitchCubes, data.FailedAutoScaleCubes, data.AutoExchange, data.TeleSwitchCubes, data.TeleScaleCubes, data.FailedTeleSwitchCubes, data.FailedTeleScaleCubes, data.TeleExchange, data.EndPosition, data.YellowCards, data.RedCards, data.Notes, data.Timestamp)
-	if err != nil {
+	// provide a soft "error" message for duplicates
+	// MariaDB/MySQL returnErro 1062 for duplicate primary keys
+	if mysqlerr, ok := err.(*mysql.MySQLError); ok {
+		if mysqlerr.Number == 1062 {
+			http.Error(w, "This data duplicated an existing record. If you are trying to submit this data for the first time, your client has generateted multiple requests and your data has been safely recored. If you need to correct or delete previously entered data, please inform your system administrator.", 409)
+			fmt.Println("Duplicate REJECTED: " + mysqlerr.Error())
+		} else {
+			http.Error(w, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+mysqlerr.Error(), 500)
+			fmt.Println("Unhandled MariaDB Error: " + mysqlerr.Error())
+			return
+		}
+	} else if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		fmt.Println(err)
 		return
+	} else {
+		w.WriteHeader(201)
 	}
 }
 
@@ -224,9 +237,23 @@ func writePit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = db.Exec("INSERT INTO PitData (Event, TeamNumber, TeamName, TeamLocation, GroundClearance, DriveTrain, RobotWeight, LeftStart, CenterStart, RightStart, CubeMech, GroundIntake, Climber, Baseline, AutonomousSwitch, AutonomousScale, AutonomousExchange, TeleopSwitch, TeleopScale, TeleopExchange, Notes, Timestamp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data.Event, data.TeamNumber, data.TeamName, data.TeamLocation, data.GroundClearance, data.DriveTrain, data.RobotWeight, data.LeftStart, data.CenterStart, data.RightStart, data.CubeMech, data.GroundIntake, data.Climber, data.Baseline, data.AutonomousSwitch, data.AutonomousScale, data.AutonomousExchange, data.TeleopSwitch, data.TeleopScale, data.TeleopExchange, data.Notes, data.Timestamp)
-	if err != nil {
+	// provide a soft "error" message for duplicates
+	// MariaDB/MySQL returnErro 1062 for duplicate primary keys
+	if mysqlerr, ok := err.(*mysql.MySQLError); ok {
+		if mysqlerr.Number == 1062 {
+			http.Error(w, "This data duplicated an existing record. If you are trying to submit this data for the first time, your client has generateted multiple requests and your data has been safely recored. If you need to correct or delete previously entered data, please inform your system administrator.", 409)
+			fmt.Println("Duplicate REJECTED: " + mysqlerr.Error())
+		} else {
+			http.Error(w, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+mysqlerr.Error(), 500)
+			fmt.Println("Unhandled MariaDB Error: " + mysqlerr.Error())
+			return
+		}
+	} else if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		fmt.Println(err)
 		return
+	} else {
+		w.WriteHeader(201)
+		w.Write([]byte("Data successfully recorded! Thank you for using the StrangeScout system."))
 	}
 }

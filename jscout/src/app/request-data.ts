@@ -1,5 +1,5 @@
 export class RequestData {
-	constructor(
-		public value: number
-	) { }
+  constructor(
+    public value: number
+  ) { }
 }

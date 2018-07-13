@@ -7,10 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	title = 'StrangeScout';
-	year = '2018';
-	game = 'Power Up';
-	
-	visiblePage = 'splash';
-	
+  title = 'StrangeScout';
+  year = '2018';
+  game = 'Power Up';
+
+  visiblePage = 'splash';
+
 }

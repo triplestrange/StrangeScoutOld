@@ -26,6 +26,7 @@ services:
                         GOSCOUT_SQL_USER: "strangescout"
                         GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD}"
                         GOSCOUT_SQL_HOST: "strangedb"
+                        GOSCOUT_EVENT_HARDCODE:
                 expose:
                         - "15338"
                 ports:
