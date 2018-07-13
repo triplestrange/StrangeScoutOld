@@ -254,5 +254,6 @@ func writePit(w http.ResponseWriter, r *http.Request) {
 		return
 	} else {
 		w.WriteHeader(201)
+		w.Write([]byte("Data successfully recorded! Thank you for using the StrangeScout system."))
 	}
 }
