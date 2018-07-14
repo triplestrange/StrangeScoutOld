@@ -50,7 +50,7 @@ export class PitFormComponent implements OnInit {
       //Call a function when the state changes.
       if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
         // Clear form. Data is either recorded or duplicate.
-        (<HTMLFormElement>document.getElementById("matchForm")).reset();
+        (<HTMLFormElement>document.getElementById("pitForm")).reset();
         alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
       } else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status >= 300) {
         // Don't clear form. 
