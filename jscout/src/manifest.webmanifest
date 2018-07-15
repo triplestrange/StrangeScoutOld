@@ -1,8 +1,9 @@
 {
     "short_name": "StrangeScout",
-    "name": "StrangeScout",
+    "name": "StrangeScout by Triple Strange",
     "display": "fullscreen",
-    "description": "StrangeScout FRC Scouting Application",
+    "language": "en-US",
+    "description": "The free software FRC scouting system.",
     "icons": [
       {
         "src": "assets/icon/icon-48px.png",
