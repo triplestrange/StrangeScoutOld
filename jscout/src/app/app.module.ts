@@ -1,16 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule }                from '@angular/platform-browser';
+import { ReactiveFormsModule }          from '@angular/forms';
+import { NgModule }                     from '@angular/core';
 
-import { AppComponent } from './app.component';
+import { AppComponent }                 from './app.component';
+import { MatchFormComponent }         from './match-form/match-form.component';
+import { FormQuestionComponent } from './form-question/form-question.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  imports: [ BrowserModule, ReactiveFormsModule ],
+  declarations: [ AppComponent, MatchFormComponent, FormQuestionComponent ],
+  bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+  }
+}
