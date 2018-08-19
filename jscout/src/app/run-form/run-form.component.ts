@@ -5,11 +5,11 @@ import { QuestionBase }              from '../questions/question-base';
 import { QuestionControlService }    from '../question-control.service';
 
 @Component({
-  selector: 'app-match-form',
-  templateUrl: './match-form.component.html',
+  selector: 'app-run-form',
+  templateUrl: './run-form.component.html',
   providers: [ QuestionControlService ]
 })
-export class MatchFormComponent implements OnInit {
+export class RunFormComponent implements OnInit {
 
   @Input() questions: QuestionBase<any>[] = [];
   form: FormGroup;
