@@ -1,7 +1,14 @@
 <div [formGroup]="form">
-  <label [attr.for]="question.key">{{question.label}}</label>
 
-  <div [ngSwitch]="question.controlType">
+  <div *ngIf="question.controlType == 'checkbox'">
+    <input [formControlName]="question.key" [id]="question.key" type="checkbox">
+    <label [attr.for]="question.key">{{question.label}}</label>
+  </div>
+
+  
+
+  <div *ngIf="question.controlType != 'checkbox'" [ngSwitch]="question.controlType">
+    <label [attr.for]="question.key">{{question.label}}</label>
 
     <input *ngSwitchCase="'textbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type">
 

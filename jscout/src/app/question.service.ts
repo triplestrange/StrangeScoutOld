@@ -4,6 +4,7 @@ import { DropdownQuestion } from './questions/question-dropdown';
 import { QuestionBase }     from './questions/question-base';
 import { TextboxQuestion }  from './questions/question-textbox';
 import { NumberQuestion }  from './questions/question-number';
+import { CheckboxQuestion }  from './questions/question-checkbox';
 
 @Injectable()
 export class QuestionService {
@@ -43,6 +44,12 @@ export class QuestionService {
         ],
         required: true,
         order: 3
+      }),
+
+      new CheckboxQuestion({
+        key: 'AutoMovementLine',
+        label: 'Autonomous Movement Line',
+        order: 4
       })
     ];
 
