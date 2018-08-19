@@ -1,0 +1,27 @@
+{
+    "short_name": "StrangeScout",
+    "name": "StrangeScout by Triple Strange",
+    "display": "fullscreen",
+    "language": "en-US",
+    "description": "The free software FRC scouting system.",
+    "icons": [
+      {
+        "src": "assets/icon/icon-48px.png",
+        "type": "image/png",
+        "sizes": "48x48"
+      },
+      {
+        "src": "assets/icon/icon-96px.png",
+        "type": "image/png",
+        "sizes": "96x96"
+      },
+      {
+        "src": "assets/icon/icon-192px.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      }
+    ],
+    "start_url": "index.html",
+    "background_color": "#FFFFFF"
+  }
+  
