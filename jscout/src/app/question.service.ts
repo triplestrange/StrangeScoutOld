@@ -11,8 +11,7 @@ export class QuestionService {
 
   // TODO: get from a remote source of question metadata
   // TODO: make asynchronous
-  getQuestions() {
-
+  getSetupQuestions() {
     let questions: QuestionBase<any>[] = [
 
       new NumberQuestion({
@@ -44,15 +43,22 @@ export class QuestionService {
         ],
         required: true,
         order: 3
-      }),
+      })
+
+    ];
+    return questions.sort((a, b) => a.order - b.order);
+  }
+
+  getAutoQuestions() {
+    let questions: QuestionBase<any>[] = [
 
       new CheckboxQuestion({
         key: 'AutoMovementLine',
         label: 'Autonomous Movement Line',
         order: 4
       })
-    ];
 
+    ];
     return questions.sort((a, b) => a.order - b.order);
   }
 }

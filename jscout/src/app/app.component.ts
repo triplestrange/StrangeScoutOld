@@ -9,13 +9,15 @@ import { QuestionService } from './question.service';
   providers:  [QuestionService]
 })
 export class AppComponent {
-  questions: any[];
+  setupQuestions: any[];
+  autoQuestions: any[];
 
   title = 'StrangeScout';
   year = '2018';
   game = 'Power Up';
 
   constructor(service: QuestionService) {
-    this.questions = service.getQuestions();
+    this.setupQuestions = service.getSetupQuestions();
+    this.autoQuestions = service.getAutoQuestions();
   }
 }

@@ -1,12 +1,22 @@
 <div>
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="setupForm">
 
-    <div *ngFor="let question of questions" class="form-row">
-      <app-question [question]="question" [form]="form"></app-question>
-    </div>
+    <fieldset>
+      <legend>Setup</legend>
+      <div *ngFor="let question of setupQuestions" class="form-row">
+        <app-question [question]="question" [form]="setupForm"></app-question>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Autonomous Period</legend>
+      <div *ngFor="let question of autoQuestions" class="form-row">
+        <app-question [question]="question" [form]="autoForm"></app-question>
+      </div>
+    </fieldset>
 
     <div class="form-row">
-      <button type="submit" [disabled]="!form.valid">Save</button>
+      <button type="submit" [disabled]="!setupForm.valid">Save</button>
     </div>
   </form>
 
