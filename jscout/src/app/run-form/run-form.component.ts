@@ -33,6 +33,6 @@ export class RunFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.payload = JSON.stringify(this.setupForm.value).concat(JSON.stringify(this.autoForm.value)).concat(JSON.stringify(this.teleopForm.value)).concat(JSON.stringify(this.endgameForm.value));
+    this.payload = JSON.stringify(Object.assign({}, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value));
   }
 }

@@ -161,7 +161,7 @@ export class QuestionService {
           {key: 'park',  value: 'Parked'},
           {key: 'climb',   value: 'Climbed'}
         ],
-        required: true,
+        value: 'neither',
         order: 1
       }),
 
