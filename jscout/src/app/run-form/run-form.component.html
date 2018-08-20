@@ -1,5 +1,5 @@
 <div>
-  <form (ngSubmit)="onSubmit()" [formGroup]="setupForm">
+  <form class="form-horizontal scouting" (ngSubmit)="onSubmit()" [formGroup]="setupForm">
 
     <fieldset>
       <legend>Setup</legend>
@@ -30,11 +30,7 @@
     </fieldset>
 
     <div class="form-group">
-      <button type="submit" [disabled]="!setupForm.valid || !autoForm.valid || !teleopForm.valid">Save</button>
+      <button type="submit" class="btn btn-success form-control" [disabled]="!setupForm.valid || !autoForm.valid || !teleopForm.valid">Submit</button>
     </div>
   </form>
-
-  <div *ngIf="payload" class="form-row">
-    <strong>Saved the following values</strong><br>{{payload}}
-  </div>
 </div>

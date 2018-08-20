@@ -18,6 +18,8 @@ export class AppComponent {
   year = '2018';
   game = 'Power Up';
 
+  visiblePage = 'splash';
+
   constructor(service: QuestionService) {
     this.setupQuestions = service.getSetupQuestions();
     this.autoQuestions = service.getAutoQuestions();
