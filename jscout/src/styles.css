@@ -46,11 +46,7 @@ input[type="hidden"] {
   flex: 1 1 auto;
 }
 
-.scouting {
-	padding: 0px 0px 15px 0px;
-}
-
-form.scouting button[type="submit"] {
+button[type="submit"] {
 	margin-left: 20px;
 	margin-right: 20px;
 	width: calc( 100% - 40px );
@@ -94,24 +90,26 @@ legend{
 	width:100%;
 	padding:0;
 	margin-bottom:20px;
-	font-size:21px;
 	line-height:inherit;
 	color:#333;
 	border:0;
 	border-bottom:1px solid #e5e5e5
 }
 
-/*
-.ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid #42A948;
-}
-
-.ng-invalid:not(form)  {
-  border-left: 5px solid #a94442;
-}
-*/
-
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg th{font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
 .tg .tg-yw4l{vertical-align:top}
+
+@media screen and (max-width:825px) {
+	.twocolumn { flex-direction: column; }
+	.twocolumn > fieldset { margin-left: 20px; margin-right: 20px; width: calc( 100% - 40px ); }
+}
+.twocolumn {
+    display: flex;
+	justify-content: space-between;
+}
+.twocolumn > * {
+	align-self: flex-start;
+	flex: 1;
+}

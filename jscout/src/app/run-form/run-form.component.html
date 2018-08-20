@@ -8,19 +8,23 @@
       </div>
     </fieldset>
 
-    <fieldset>
+  <div class="twocolumn">
+
+    <fieldset class="left">
       <legend>Autonomous Period</legend>
       <div *ngFor="let question of autoQuestions" class="form-group">
         <app-question [question]="question" [form]="autoForm"></app-question>
       </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset class="right">
       <legend>Teleop Period</legend>
       <div *ngFor="let question of teleopQuestions" class="form-group">
         <app-question [question]="question" [form]="teleopForm"></app-question>
       </div>
     </fieldset>
+
+  </div>  
 
     <fieldset>
       <legend>Endgame</legend>
