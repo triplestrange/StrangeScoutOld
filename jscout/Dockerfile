@@ -4,7 +4,7 @@ RUN apk add --update nodejs nodejs-npm
 COPY ./ ./
 RUN npm install -g @angular/cli
 RUN npm update --save
-RUN ng build -prod
+RUN ng build --prod
 
 FROM joshix/caddy:latest
 COPY Caddyfile /var/www/html
