@@ -15,8 +15,22 @@
       </div>
     </fieldset>
 
+    <fieldset>
+      <legend>Teleop Period</legend>
+      <div *ngFor="let question of teleopQuestions" class="form-row">
+        <app-question [question]="question" [form]="teleopForm"></app-question>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Endgame</legend>
+      <div *ngFor="let question of endgameQuestions" class="form-row">
+        <app-question [question]="question" [form]="endgameForm"></app-question>
+      </div>
+    </fieldset>
+
     <div class="form-row">
-      <button type="submit" [disabled]="!setupForm.valid">Save</button>
+      <button type="submit" [disabled]="!setupForm.valid || !autoForm.valid || !teleopForm.valid">Save</button>
     </div>
   </form>
 

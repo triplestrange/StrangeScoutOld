@@ -13,9 +13,13 @@ export class RunFormComponent implements OnInit {
 
   @Input() setupQuestions: QuestionBase<any>[] = [];
   @Input() autoQuestions: QuestionBase<any>[] = [];
+  @Input() teleopQuestions: QuestionBase<any>[] = [];
+  @Input() endgameQuestions: QuestionBase<any>[] = [];
   form: FormGroup;
   setupForm: FormGroup;
   autoForm: FormGroup;
+  teleopForm: FormGroup;
+  endgameForm: FormGroup;
   payload = '';
 
   constructor(private qcs: QuestionControlService) {  }
@@ -24,9 +28,11 @@ export class RunFormComponent implements OnInit {
     this.form = new FormGroup({});
     this.setupForm = this.qcs.toFormGroup(this.setupQuestions);
     this.autoForm = this.qcs.toFormGroup(this.autoQuestions);
+    this.teleopForm = this.qcs.toFormGroup(this.teleopQuestions);
+    this.endgameForm = this.qcs.toFormGroup(this.endgameQuestions);
   }
 
   onSubmit() {
-    this.payload = JSON.stringify(this.setupForm.value).concat(JSON.stringify(this.autoForm.value));
+    this.payload = JSON.stringify(this.setupForm.value).concat(JSON.stringify(this.autoForm.value)).concat(JSON.stringify(this.teleopForm.value)).concat(JSON.stringify(this.endgameForm.value));
   }
 }

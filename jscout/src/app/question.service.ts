@@ -55,8 +55,22 @@ export class QuestionService {
       new CheckboxQuestion({
         key: 'AutoMovementLine',
         label: 'Autonomous Movement Line',
-        order: 4
+        order: 1
       })
+
+    ];
+    return questions.sort((a, b) => a.order - b.order);
+  }
+
+  getTeleopQuestions() {
+    let questions: QuestionBase<any>[] = [
+
+    ];
+    return questions.sort((a, b) => a.order - b.order);
+  }
+
+  getEndgameQuestions() {
+    let questions: QuestionBase<any>[] = [
 
     ];
     return questions.sort((a, b) => a.order - b.order);

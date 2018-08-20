@@ -11,6 +11,8 @@ import { QuestionService } from './question.service';
 export class AppComponent {
   setupQuestions: any[];
   autoQuestions: any[];
+  teleopQuestions: any[];
+  endgameQuestions: any[];
 
   title = 'StrangeScout';
   year = '2018';
@@ -19,5 +21,7 @@ export class AppComponent {
   constructor(service: QuestionService) {
     this.setupQuestions = service.getSetupQuestions();
     this.autoQuestions = service.getAutoQuestions();
+    this.teleopQuestions = service.getTeleopQuestions();
+    this.endgameQuestions = service.getEndgameQuestions();
   }
 }
