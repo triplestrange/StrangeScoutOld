@@ -10,5 +10,6 @@ export class NumberQuestion extends QuestionBase<number> {
     super(options);
     this.min = options['min'];
     this.max = options['max'];
+    this.tickers = options['tickers'];
   }
 }

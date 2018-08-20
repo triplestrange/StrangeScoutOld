@@ -62,6 +62,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'AutoSwitchCubes',
         label: 'Autonomous Power Cubes on Switch',
+        tickers: true,
         min: 0,
         value: 0,
         order: 2
@@ -70,6 +71,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'FailedAutoSwitchCubes',
         label: 'Missed Autonomous Power Cubes on Switch',
+        tickers: true,
         min: 0,
         value: 0,
         order: 3
@@ -78,6 +80,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'AutoScaleCubes',
         label: 'Autonomous Power Cubes on Scale',
+        tickers: true,
         min: 0,
         value: 0,
         order: 4
@@ -86,6 +89,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'FailedAutoScaleCubes',
         label: 'Missed Autonomous Power Cubes on Scale',
+        tickers: true,
         min: 0,
         value: 0,
         order: 5
@@ -94,6 +98,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'AutoExchange',
         label: 'Autonomous Power Cubes in Exchange',
+        tickers: true,
         min: 0,
         value: 0,
         order: 6
@@ -109,6 +114,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'TeleSwitchCubes',
         label: 'Teleop Power Cubes on Switch',
+        tickers: true,
         min: 0,
         value: 0,
         order: 1
@@ -117,6 +123,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'FailedTeleSwitchCubes',
         label: 'Missed Teleop Power Cubes on Switch',
+        tickers: true,
         min: 0,
         value: 0,
         order: 2
@@ -125,6 +132,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'TeleScaleCubes',
         label: 'Teleop Power Cubes on Scale',
+        tickers: true,
         min: 0,
         value: 0,
         order: 3
@@ -133,6 +141,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'FailedTeleScaleCubes',
         label: 'Missed Teleop Power Cubes on Scale',
+        tickers: true,
         min: 0,
         value: 0,
         order: 4
@@ -141,6 +150,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'TeleExchange',
         label: 'Teleop Power Cubes in Exchange',
+        tickers: true,
         min: 0,
         value: 0,
         order: 5
@@ -168,6 +178,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'YellowCards',
         label: 'Yellow Cards',
+        tickers: true,
         min: 0,
         value: 0,
         order: 2
@@ -176,6 +187,7 @@ export class QuestionService {
       new NumberQuestion({
         key: 'RedCards',
         label: 'Red Cards',
+        tickers: true,
         min: 0,
         value: 0,
         order: 3
