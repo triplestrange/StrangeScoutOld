@@ -1,3 +1,20 @@
+<div style="text-align:center">
+	<!-- Header -->
+	<mat-toolbar color="primary" role="header">
+			{{ title }}
+		<span class="spacer"></span>
+		<!-- hidden if on a mobile screen -->
+		<div class="mobileHidden">
+			<!-- Display a specified year and game name -->
+			{{ year }} FIRST {{ game }}
+		</div>
+		<!-- menu button -->
+		<button mat-icon-button [matMenuTriggerFor]="appMenu">
+			<mat-icon>more_vert</mat-icon>
+		</button>
+		
+	</mat-toolbar>
+</div>
 
 <div>
   <app-run-form [setupQuestions]="setupQuestions" [autoQuestions]="autoQuestions" [teleopQuestions]="teleopQuestions" [endgameQuestions]="endgameQuestions"></app-run-form>
