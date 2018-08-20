@@ -1,21 +1,16 @@
 <!-- dropdown menu content -->
 <mat-menu #appMenu="matMenu">
-	<button class="btn btn-default" (click)="visiblePage='splash'" mat-menu-item>Home</button>
-<!--
-	<a class="btn" href="/" mat-menu-item>Home</a>
-	<a class="btn" href="/analyze" mat-menu-item>Analyze</a>
-	<a class="btn" href="/match" mat-menu-item>Match Scouting</a>
-	<a class="btn" href="/pit" mat-menu-item>Pit Scouting</a>
--->
-	<button class="btn btn-default" (click)="visiblePage='match'" mat-menu-item>Match Scouting</button>
-	<button class="btn btn-default" (click)="visiblePage='pit'" mat-menu-item>Pit Scouting</button>
-	<button class="btn btn-default" (click)="visiblePage='analyze'" mat-menu-item>Analyze</button>
+	<button *ngIf="visiblePage != 'splash'" class="btn btn-default" (click)="visiblePage='splash'" mat-menu-item>Home</button>
+	<button *ngIf="visiblePage != 'run'" class="btn btn-default" (click)="visiblePage='run'" mat-menu-item>Scout</button>
+	<button *ngIf="visiblePage != 'view'" class="btn btn-default" (click)="visiblePage='view'" mat-menu-item>View</button>
 </mat-menu>
 
 <div style="text-align:center">
 	<!-- Header -->
 	<mat-toolbar color="primary" role="header">
+		<span (click)="visiblePage='splash'">
 			{{ title }}
+		</span>
 		<span class="spacer"></span>
 		<!-- hidden if on a mobile screen -->
 		<div class="mobileHidden">
@@ -29,29 +24,15 @@
 		
 	</mat-toolbar>
 </div>
-<!--
-<router-outlet></router-outlet>
--->
 
 <div *ngIf="visiblePage == 'splash'" class="container-fluid form-container">
 	<!-- Home page content goes here -->
 	<div class="center-content">
-		<button class="btn btn-default btn-primary item" (click)="visiblePage='match'">Scout a Match</button>
-		<button class="btn btn-default btn-primary item" (click)="visiblePage='pit'">Scout a Pit</button>
+		<button class="btn btn-default btn-primary item" (click)="visiblePage='run'">Scout!</button>
 	</div>
 </div>
 
-<!-- Match scouting form -->
-<div *ngIf="visiblePage == 'match'" class="container-fluid form-container">
-	<app-match-form></app-match-form>
-</div>
-
-<!-- Pit scouting form -->
-<div *ngIf="visiblePage == 'pit'" class="container-fluid form-container">
-	<app-pit-form></app-pit-form>
-</div>
-
-<!-- Pit scouting form -->
-<div *ngIf="visiblePage == 'analyze'" class="container-fluid form-container">
-	<app-analyze></app-analyze>
+<!-- Run scouting form -->
+<div *ngIf="visiblePage == 'run'" class="container-fluid form-container">
+  <app-run-form [setupQuestions]="setupQuestions" [autoQuestions]="autoQuestions" [teleopQuestions]="teleopQuestions" [endgameQuestions]="endgameQuestions"></app-run-form>
 </div>
