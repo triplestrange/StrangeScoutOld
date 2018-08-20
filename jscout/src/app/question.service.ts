@@ -1,10 +1,11 @@
 import { Injectable }       from '@angular/core';
 
-import { DropdownQuestion } from './questions/question-dropdown';
 import { QuestionBase }     from './questions/question-base';
-import { TextboxQuestion }  from './questions/question-textbox';
-import { NumberQuestion }  from './questions/question-number';
 import { CheckboxQuestion }  from './questions/question-checkbox';
+import { DropdownQuestion } from './questions/question-dropdown';
+import { NumberQuestion }  from './questions/question-number';
+import { TextareaQuestion } from './questions/question-textarea';
+import { TextboxQuestion }  from './questions/question-textbox';
 
 @Injectable()
 export class QuestionService {
@@ -19,7 +20,7 @@ export class QuestionService {
         label: 'Team Number',
         required: true,
         order: 1,
-        min: 0
+        min: 1
       }),
 
       new NumberQuestion({
@@ -27,7 +28,7 @@ export class QuestionService {
         label: 'Match Number',
         required: true,
         order: 2,
-        min: 0
+        min: 1
       }),
 
       new DropdownQuestion({
@@ -56,6 +57,46 @@ export class QuestionService {
         key: 'AutoMovementLine',
         label: 'Autonomous Movement Line',
         order: 1
+      }),
+
+      new NumberQuestion({
+        key: 'AutoSwitchCubes',
+        label: 'Autonomous Power Cubes on Switch',
+        min: 0,
+        value: 0,
+        order: 2
+      }),
+
+      new NumberQuestion({
+        key: 'FailedAutoSwitchCubes',
+        label: 'Missed Autonomous Power Cubes on Switch',
+        min: 0,
+        value: 0,
+        order: 3
+      }),
+
+      new NumberQuestion({
+        key: 'AutoScaleCubes',
+        label: 'Autonomous Power Cubes on Scale',
+        min: 0,
+        value: 0,
+        order: 4
+      }),
+
+      new NumberQuestion({
+        key: 'FailedAutoScaleCubes',
+        label: 'Missed Autonomous Power Cubes on Scale',
+        min: 0,
+        value: 0,
+        order: 5
+      }),
+
+      new NumberQuestion({
+        key: 'AutoExchange',
+        label: 'Autonomous Power Cubes in Exchange',
+        min: 0,
+        value: 0,
+        order: 6
       })
 
     ];
@@ -65,12 +106,88 @@ export class QuestionService {
   getTeleopQuestions() {
     let questions: QuestionBase<any>[] = [
 
+      new NumberQuestion({
+        key: 'TeleSwitchCubes',
+        label: 'Teleop Power Cubes on Switch',
+        min: 0,
+        value: 0,
+        order: 1
+      }),
+
+      new NumberQuestion({
+        key: 'FailedTeleSwitchCubes',
+        label: 'Missed Teleop Power Cubes on Switch',
+        min: 0,
+        value: 0,
+        order: 2
+      }),
+
+      new NumberQuestion({
+        key: 'TeleScaleCubes',
+        label: 'Teleop Power Cubes on Scale',
+        min: 0,
+        value: 0,
+        order: 3
+      }),
+
+      new NumberQuestion({
+        key: 'FailedTeleScaleCubes',
+        label: 'Missed Teleop Power Cubes on Scale',
+        min: 0,
+        value: 0,
+        order: 4
+      }),
+
+      new NumberQuestion({
+        key: 'TeleExchange',
+        label: 'Teleop Power Cubes in Exchange',
+        min: 0,
+        value: 0,
+        order: 5
+      })
+
     ];
     return questions.sort((a, b) => a.order - b.order);
   }
 
   getEndgameQuestions() {
     let questions: QuestionBase<any>[] = [
+
+      new DropdownQuestion({
+        key: 'EndPosition',
+        label: 'Robot End Position',
+        options: [
+          {key: 'neither',  value: 'Neither'},
+          {key: 'park',  value: 'Parked'},
+          {key: 'climb',   value: 'Climbed'}
+        ],
+        required: true,
+        order: 1
+      }),
+
+      new NumberQuestion({
+        key: 'YellowCards',
+        label: 'Yellow Cards',
+        min: 0,
+        value: 0,
+        order: 2
+      }),
+
+      new NumberQuestion({
+        key: 'RedCards',
+        label: 'Red Cards',
+        min: 0,
+        value: 0,
+        order: 3
+      }),
+
+      new TextareaQuestion({
+        key: 'Notes',
+        label: 'Additional Notes',
+        cols: 40,
+        rows: 5,
+        order: 4
+      })
 
     ];
     return questions.sort((a, b) => a.order - b.order);

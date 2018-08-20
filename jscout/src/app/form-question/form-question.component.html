@@ -1,24 +1,20 @@
 <div [formGroup]="form">
+  <div [ngSwitch]="question.controlType">
 
-  <div *ngIf="question.controlType == 'checkbox'">
-    <input [formControlName]="question.key" [id]="question.key" type="checkbox">
-    <label [attr.for]="question.key">{{question.label}}</label>
-  </div>
+    <input *ngSwitchCase="'checkbox'" [formControlName]="question.key" [id]="question.key" type="checkbox">
 
-  
-
-  <div *ngIf="question.controlType != 'checkbox'" [ngSwitch]="question.controlType">
     <label [attr.for]="question.key">{{question.label}}</label>
 
     <input *ngSwitchCase="'textbox'" [formControlName]="question.key" [id]="question.key" [type]="question.type">
 
-    <input *ngSwitchCase="'number'" [formControlName]="question.key" [id]="question.key" type="number" [min]="question.min" [max]="question.max">
+    <input *ngSwitchCase="'number'" [formControlName]="question.key" [id]="question.key" type="number" [min]="question.min" [max]="question.max" [value]="question.value">
 
-    <select [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
+    <select *ngSwitchCase="'dropdown'" [formControlName]="question.key" [id]="question.key">
       <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
     </select>
 
-  </div> 
+    <textarea *ngSwitchCase="'textarea'" [formControlName]="question.key" [id]="question.key" [cols]="question.cols" [rows]="question.rows"></textarea>
 
+  </div> 
   <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
 </div>

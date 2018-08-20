@@ -4,6 +4,7 @@ export class NumberQuestion extends QuestionBase<number> {
   controlType = 'number';
   min: number;
   max: number;
+  tickers: boolean;
 
   constructor(options: {} = {}) {
     super(options);
