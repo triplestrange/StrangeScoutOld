@@ -5,6 +5,7 @@
 	"language": "en-US",
 	"description": "The free software FRC scouting system.",
 	"theme_color": "#3D6DB5",
+	"scope": "/",
 	"icons": [
 		{
 			"src": "assets/icon/icon-48px.png",
