@@ -2,6 +2,8 @@ import { Component }       from '@angular/core';
 
 import { QuestionService } from './question.service';
 
+import { SwUpdate } from '@angular/service-worker';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,10 +22,27 @@ export class AppComponent {
 
   visiblePage = 'splash';
 
+  swUpdate: SwUpdate;
+
   constructor(service: QuestionService) {
     this.setupQuestions = service.getSetupQuestions();
     this.autoQuestions = service.getAutoQuestions();
     this.teleopQuestions = service.getTeleopQuestions();
     this.endgameQuestions = service.getEndgameQuestions();
+  }
+
+
+  
+  ngOnInit () {
+    if (this.swUpdate.isEnabled) {
+
+      this.swUpdate.available.subscribe(() => {
+
+          if(confirm("New version available. Load New Version?")) {
+
+              window.location.reload();
+          }
+      });
+    }
   }
 }
