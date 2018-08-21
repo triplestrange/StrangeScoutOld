@@ -5,24 +5,26 @@ import { SwUpdate } from '@angular/service-worker';
 @Injectable()
 
 export class PromptUpdateService {
-
-  constructor(updates: SwUpdate) {
-    updates.available.subscribe(event => {
+  updates: SwUpdate
+  constructor() {
+    if (this.updates.isEnabled) {
+      this.updates.available.subscribe(() => {
         if(confirm("New version available. Load New Version?")) {
-            window.location.reload();
+          window.location.reload();
         }
-    });
+      });
+    }
   }
 }
 
 export class LogUpdateService {
-
-  constructor(updates: SwUpdate) {
-    updates.available.subscribe(event => {
+  updates: SwUpdate
+  constructor() {
+    this.updates.available.subscribe(event => {
       console.log('current version is', event.current);
       console.log('available version is', event.available);
     });
-    updates.activated.subscribe(event => {
+    this.updates.activated.subscribe(event => {
       console.log('old version was', event.previous);
       console.log('new version is', event.current);
     });
@@ -30,8 +32,8 @@ export class LogUpdateService {
 }
 
 export class CheckForUpdateService {
-
-  constructor(updates: SwUpdate) {
-    interval(6 * 60 * 60).subscribe(() => updates.checkForUpdate());
+  updates: SwUpdate
+  constructor() {
+    interval(6 * 60 * 60).subscribe(() => this.updates.checkForUpdate());
   }
 }

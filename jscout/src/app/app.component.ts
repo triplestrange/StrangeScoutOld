@@ -32,9 +32,7 @@ export class AppComponent {
   }
 
   ngOnInit () {
-    CheckForUpdateService;
-    LogUpdateService;
-    PromptUpdateService;
+    new PromptUpdateService();
   }
 
 }
