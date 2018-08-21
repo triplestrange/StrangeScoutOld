@@ -1,8 +1,7 @@
-import { Component }       from '@angular/core';
-
-import { QuestionService } from './question.service';
-
+import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { interval } from 'rxjs';
+import { QuestionService } from './question.service';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +38,11 @@ export class AppComponent {
       console.log('old version was', event.previous);
       console.log('new version is', event.current);
     });
+    updates.activated.subscribe(event => {
+      console.log('old version was', event.previous);
+      console.log('new version is', event.current);
+    });
+    interval(30000).subscribe(() => updates.checkForUpdate());
   }
 
 }
