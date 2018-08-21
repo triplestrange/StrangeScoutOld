@@ -7,7 +7,7 @@
 
 <div style="text-align:center">
 	<!-- Header -->
-	<mat-toolbar color="primary" role="header">
+	<mat-toolbar color="primary" role="heading">
 		<span (click)="visiblePage='splash'">
 			{{ title }}
 		</span>
@@ -18,7 +18,7 @@
 			{{ year }} FIRST {{ game }}
 		</div>
 		<!-- menu button -->
-		<button mat-icon-button [matMenuTriggerFor]="appMenu">
+		<button mat-icon-button aria-label="dropdown menu button" [matMenuTriggerFor]="appMenu">
 			<mat-icon>more_vert</mat-icon>
 		</button>
 		
