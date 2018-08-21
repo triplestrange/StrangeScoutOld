@@ -12,10 +12,12 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
-  imports: [ BrowserModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule],
+  imports: [ BrowserModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
   declarations: [ AppComponent, RunFormComponent, FormQuestionComponent ],
   bootstrap: [ AppComponent ]
 })

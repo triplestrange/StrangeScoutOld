@@ -5,6 +5,7 @@
 	"language": "en-US",
 	"description": "The free software FRC scouting system.",
 	"theme_color": "#3D6DB5",
+	"scope": "/",
 	"icons": [
 		{
 			"src": "assets/icon/icon-48px.png",
@@ -22,9 +23,14 @@
 			"sizes": "192x192"
 		},
 		{
-			"src": "assets/icon/icon-275px.png",
+			"src": "assets/icon/icon-256px.png",
 			"type": "image/png",
-			"sizes": "275x275"
+			"sizes": "256x256"
+		},
+		{
+			"src": "assets/icon/icon-512px.png",
+			"type": "image/png",
+			"sizes": "512x512"
 		}
 	],
 	"start_url": "index.html",
