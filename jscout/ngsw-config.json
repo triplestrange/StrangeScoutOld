@@ -4,12 +4,21 @@
     {
       "name": "app",
       "installMode": "prefetch",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
           "/index.html",
-          "/*.css",
           "/*.js"
+        ]
+      }
+    }, {
+      "name": "css",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/*.css"
         ]
       }
     }, {
