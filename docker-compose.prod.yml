@@ -1,0 +1,15 @@
+version: "3.2"
+services:
+	jscout:
+		image: team1533/jscout:production
+		environment:
+			PRODUCTION: "true"
+
+	goscout:
+		image: team1533/goscout:production
+		environment:
+			PRODUCTION: "true"
+
+	strangedb:
+		environment:
+			PRODUCTION: "true"

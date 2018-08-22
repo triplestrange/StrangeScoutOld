@@ -1,98 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule }                from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
+import { NgModule }                     from '@angular/core';
 
+import { AppComponent }                 from './app.component';
+import { RunFormComponent }         from './run-form/run-form.component';
+import { FormQuestionComponent } from './form-question/form-question.component';
+
+// Material elements
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AppComponent } from './app.component';
-
 import { environment } from '../environments/environment';
-import { MatchFormComponent } from './match-form/match-form.component';
 
-import { routing } from './app.routing';
-
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatStepperModule,
-} from '@angular/material';
-import { PitFormComponent } from './pit-form/pit-form.component';
-import { AnalyzeComponent } from './analyze/analyze.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MatchFormComponent,
-    PitFormComponent,
-    AnalyzeComponent,
-  ],
-  imports: [
-    BrowserAnimationsModule,
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatNativeDateModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatStepperModule,
-    BrowserModule,
-    FormsModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
-    routing
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  imports: [ BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
+  declarations: [ AppComponent, RunFormComponent, FormQuestionComponent ],
+  bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+  }
+}
