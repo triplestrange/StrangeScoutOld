@@ -1,5 +1,5 @@
 import { BrowserModule }                from '@angular/platform-browser';
-import { ReactiveFormsModule }          from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }          from '@angular/forms';
 import { NgModule }                     from '@angular/core';
 
 import { AppComponent }                 from './app.component';
@@ -17,7 +17,7 @@ import { environment } from '../environments/environment';
 
 
 @NgModule({
-  imports: [ BrowserModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
+  imports: [ BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
   declarations: [ AppComponent, RunFormComponent, FormQuestionComponent ],
   bootstrap: [ AppComponent ]
 })

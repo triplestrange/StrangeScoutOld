@@ -14,7 +14,7 @@ export class QuestionService {
   // TODO: make asynchronous
   getSetupQuestions() {
     let questions: QuestionBase<any>[] = [
-
+/*
       new NumberQuestion({
         key: 'TeamNumber',
         label: 'Team Number',
@@ -30,7 +30,7 @@ export class QuestionService {
         order: 2,
         min: 1
       }),
-
+*/
       new DropdownQuestion({
         key: 'StartPosition',
         label: 'Robot Starting Position',

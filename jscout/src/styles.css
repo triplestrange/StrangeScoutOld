@@ -80,6 +80,23 @@ button[type="submit"] {
 	margin: 10px;
 }
 
+.narrow-column {
+	padding: 5px;
+	margin: auto;
+	max-width: 900px;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.narrow-column * {
+	margin: 10px;
+}
+
 .form-inline * {
 	margin: 10px;
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PlatformLocation } from '@angular/common'
 import { SwUpdate } from '@angular/service-worker';
 import { interval } from 'rxjs';
 import { QuestionService } from './question.service';
@@ -21,7 +22,16 @@ export class AppComponent {
 
   visiblePage = 'splash';
 
-  constructor(qservice: QuestionService, updates: SwUpdate) {
+  team: number;
+  run: number;
+
+  constructor(location: PlatformLocation, qservice: QuestionService, updates: SwUpdate) {
+
+    location.onPopState(() => {
+      console.log('pressed back!');
+      this.visiblePage = 'splash';
+    }); history.pushState({}, '');
+
     this.setupQuestions = qservice.getSetupQuestions();
     this.autoQuestions = qservice.getAutoQuestions();
     this.teleopQuestions = qservice.getTeleopQuestions();
@@ -40,5 +50,4 @@ export class AppComponent {
     });
     interval(30000).subscribe(() => updates.checkForUpdate());
   }
-
 }
