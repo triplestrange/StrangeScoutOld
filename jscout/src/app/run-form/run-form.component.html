@@ -4,31 +4,35 @@
     <fieldset>
       <legend>Setup</legend>
 
-      <div><b>Team:</b> {{ numbers.get('TeamNumber').value }}</div>
-      <div><b>Run:</b> {{ numbers.get('MatchNumber').value }}</div>
+      <div>
+        <b>Team:</b> {{ numbers.get('TeamNumber').value }}
+      </div>
+      <div>
+        <b>Run:</b> {{ numbers.get('MatchNumber').value }}
+      </div>
 
       <div *ngFor="let question of setupQuestions" class="form-group">
         <app-question [question]="question" [form]="setupForm"></app-question>
       </div>
     </fieldset>
 
-  <div class="twocolumn">
+    <div class="twocolumn">
 
-    <fieldset class="left">
-      <legend>Autonomous Period</legend>
-      <div *ngFor="let question of autoQuestions" class="form-group">
-        <app-question [question]="question" [form]="autoForm"></app-question>
-      </div>
-    </fieldset>
+      <fieldset class="left">
+        <legend>Autonomous Period</legend>
+        <div *ngFor="let question of autoQuestions" class="form-group">
+          <app-question [question]="question" [form]="autoForm"></app-question>
+        </div>
+      </fieldset>
 
-    <fieldset class="right">
-      <legend>Teleop Period</legend>
-      <div *ngFor="let question of teleopQuestions" class="form-group">
-        <app-question [question]="question" [form]="teleopForm"></app-question>
-      </div>
-    </fieldset>
+      <fieldset class="right">
+        <legend>Teleop Period</legend>
+        <div *ngFor="let question of teleopQuestions" class="form-group">
+          <app-question [question]="question" [form]="teleopForm"></app-question>
+        </div>
+      </fieldset>
 
-  </div>  
+    </div>
 
     <fieldset>
       <legend>End Game</legend>

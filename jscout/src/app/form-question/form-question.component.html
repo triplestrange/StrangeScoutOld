@@ -27,6 +27,6 @@
 
     <textarea *ngSwitchCase="'textarea'" class="form-control" [formControlName]="question.key" [id]="question.key" [cols]="question.cols" [rows]="question.rows"></textarea>
 
-  </div> 
+  </div>
   <div class="alert alert-danger" *ngIf="!isValid">{{question.label}} is required</div>
 </div>
