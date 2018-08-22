@@ -21,6 +21,9 @@ export class AppComponent {
 
   visiblePage = 'splash';
 
+  team: number;
+  run: number;
+
   constructor(qservice: QuestionService, updates: SwUpdate) {
     this.setupQuestions = qservice.getSetupQuestions();
     this.autoQuestions = qservice.getAutoQuestions();

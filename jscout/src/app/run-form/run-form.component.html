@@ -3,6 +3,10 @@
 
     <fieldset>
       <legend>Setup</legend>
+
+      <div><b>Team:</b> {{ numbers.get('TeamNumber').value }}</div>
+      <div><b>Run:</b> {{ numbers.get('MatchNumber').value }}</div>
+
       <div *ngFor="let question of setupQuestions" class="form-group">
         <app-question [question]="question" [form]="setupForm"></app-question>
       </div>
@@ -38,3 +42,5 @@
     </div>
   </form>
 </div>
+
+{{ payload }}
