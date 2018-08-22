@@ -23,7 +23,7 @@ STRANGESCOUT_SQL_PASSWD=<$ecure|)assw0rd>
 **Needless to say, point DNS for `<yourdomain.tld>` to the IP of your server. Ensure that firewalls, AWS security groups, etc. have ports 80, 443, and 3306 (if you want remote SQL access) open. Enjoy!**
 
 ### Production Environment
-If you want to run with the pre-built production images instead of building the latest images yourself, you must specify an additional docker compose config. this can be done by running `sudo docker-compose up -f docker-compose.yml -f docker-compose.prod.yml -d`
+If you want to run with the pre-built production images instead of building the latest images yourself, you must specify an additional docker compose config. this can be done by running `sudo docker-compose -f docker-compose.prod.yml up -d`
 
 ### Subcomponents
 Use the READMEs in each subdirectory for build instructions! Have fun!
