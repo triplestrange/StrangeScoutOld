@@ -22,7 +22,7 @@
     </div>
 
     <select *ngSwitchCase="'dropdown'" class="form-control" [formControlName]="question.key" [id]="question.key">
-      <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
+      <option *ngFor="let opt of question.options" [value]="opt.key" [disabled]="opt.disabled">{{opt.value}}</option>
     </select>
 
     <textarea *ngSwitchCase="'textarea'" class="form-control" [formControlName]="question.key" [id]="question.key" [cols]="question.cols" [rows]="question.rows"></textarea>
