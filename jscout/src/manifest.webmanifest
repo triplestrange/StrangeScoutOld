@@ -1,11 +1,11 @@
 {
 	"short_name": "StrangeScout",
 	"name": "StrangeScout by Triple Strange",
-	"display": "fullscreen",
-	"language": "en-US",
 	"description": "The free software FRC scouting system.",
+	"language": "en-US",
+	"display": "fullscreen",
+	"background_color": "#FFFFFF",
 	"theme_color": "#3D6DB5",
-	"scope": "/",
 	"icons": [
 		{
 			"src": "assets/icon/icon-48px.png",
@@ -13,9 +13,34 @@
 			"sizes": "48x48"
 		},
 		{
+			"src": "assets/icon/icon-80px.png",
+			"type": "image/png",
+			"sizes": "80x80"
+		},
+		{
 			"src": "assets/icon/icon-96px.png",
 			"type": "image/png",
 			"sizes": "96x96"
+		},
+		{
+			"src": "assets/icon/icon-120px.png",
+			"type": "image/png",
+			"sizes": "120x120"
+		},
+		{
+			"src": "assets/icon/icon-152px.png",
+			"type": "image/png",
+			"sizes": "152x152"
+		},
+		{
+			"src": "assets/icon/icon-167px.png",
+			"type": "image/png",
+			"sizes": "167x167"
+		},
+		{
+			"src": "assets/icon/icon-180px.png",
+			"type": "image/png",
+			"sizes": "180x180"
 		},
 		{
 			"src": "assets/icon/icon-192px.png",
@@ -23,16 +48,16 @@
 			"sizes": "192x192"
 		},
 		{
-			"src": "assets/icon/icon-256px.png",
-			"type": "image/png",
-			"sizes": "256x256"
-		},
-		{
 			"src": "assets/icon/icon-512px.png",
 			"type": "image/png",
 			"sizes": "512x512"
+		},
+		{
+			"src": "assets/icon/icon-1024px.png",
+			"type": "image/png",
+			"sizes": "1024x1024"
 		}
 	],
-	"start_url": "index.html",
-	"background_color": "#FFFFFF"
+	"scope": "/",
+	"start_url": "index.html"
 }

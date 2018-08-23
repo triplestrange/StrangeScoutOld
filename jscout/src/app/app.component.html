@@ -1,47 +1,51 @@
 <!-- dropdown menu content -->
 <mat-menu #appMenu="matMenu">
-	<button *ngIf="visiblePage != 'splash'" class="btn btn-default" (click)="visiblePage='splash'" mat-menu-item>Home</button>
-	<button *ngIf="visiblePage != 'run'" class="btn btn-default" (click)="visiblePage='run'" mat-menu-item>Scout</button>
-	<button *ngIf="visiblePage != 'view'" class="btn btn-default" (click)="visiblePage='view'" mat-menu-item>View</button>
+  <button *ngIf="visiblePage != 'splash'" class="btn btn-default" (click)="visiblePage='splash'" mat-menu-item>Home</button>
+  <button *ngIf="visiblePage != 'run'" class="btn btn-default" (click)="visiblePage='run'" mat-menu-item>Scout</button>
+  <button *ngIf="visiblePage != 'view'" class="btn btn-default" (click)="visiblePage='view'" mat-menu-item>View</button>
 </mat-menu>
 
 <div style="text-align:center">
-	<!-- Header -->
-	<mat-toolbar color="primary" role="heading">
-		<span (click)="visiblePage='splash'">
-			{{ title }}
-		</span>
-		<span class="spacer"></span>
-		<!-- hidden if on a mobile screen -->
-		<div class="mobileHidden">
-			<!-- Display a specified year and game name -->
-			{{ year }} FIRST {{ game }}
-		</div>
-		<!-- menu button -->
-		<button mat-icon-button aria-label="dropdown menu button" [matMenuTriggerFor]="appMenu">
-			<mat-icon>more_vert</mat-icon>
-		</button>
-		
-	</mat-toolbar>
+  <!-- Header -->
+  <mat-toolbar color="primary" role="heading">
+    <span (click)="visiblePage='splash'">
+      {{ title }}
+    </span>
+    <span class="spacer"></span>
+    <!-- hidden if on a mobile screen -->
+    <div class="mobileHidden">
+      <!-- Display a specified year and game name -->
+      {{ year }} FIRST {{ game }}
+    </div>
+    <!-- menu button -->
+    <button mat-icon-button aria-label="dropdown menu button" [matMenuTriggerFor]="appMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+  </mat-toolbar>
 </div>
 
 <div *ngIf="visiblePage == 'splash'" class="container-fluid form-container">
-	<!-- Home page content goes here -->
-	<div class="narrow-column">
-		<span><legend>Team:</legend></span>
-		<span>
-			<input type="number" class="form-control" #teamInput="ngModel" [(ngModel)]="team" required>
-		</span>
-	</div>
-	<div class="narrow-column">
-			<span><legend>Run:</legend></span>
-			<span>
-				<input type="number" class="form-control" #runInput="ngModel" [(ngModel)]="run" required>
-			</span>
-	</div>
-	<div class="center-content">
-		<button class="btn btn-default btn-primary item" [disabled]="!runInput.valid || !teamInput.valid" (click)="visiblePage='run'">Scout!</button>
-	</div>
+  <!-- Home page content goes here -->
+  <div class="narrow-column">
+    <span>
+      <legend>Team:</legend>
+    </span>
+    <span>
+      <input type="number" class="form-control" #teamInput="ngModel" [(ngModel)]="team" required>
+    </span>
+  </div>
+  <div class="narrow-column">
+    <span>
+      <legend>Run:</legend>
+    </span>
+    <span>
+      <input type="number" class="form-control" #runInput="ngModel" [(ngModel)]="run" required>
+    </span>
+  </div>
+  <div class="center-content">
+    <button class="btn btn-default btn-primary item" [disabled]="!runInput.valid || !teamInput.valid" (click)="visiblePage='run'">Scout!</button>
+  </div>
 </div>
 
 <!-- Run scouting form -->

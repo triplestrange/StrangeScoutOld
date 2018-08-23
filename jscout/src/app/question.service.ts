@@ -35,6 +35,7 @@ export class QuestionService {
         key: 'StartPosition',
         label: 'Robot Starting Position',
         options: [
+          {key: '', value: 'Select Starting Position', disabled: true},
           {key: 'red_1',  value: 'Red 1'},
           {key: 'red_2',  value: 'Red 2'},
           {key: 'red_3',   value: 'Red 3'},
