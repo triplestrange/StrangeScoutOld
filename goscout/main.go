@@ -204,7 +204,9 @@ func writeMatch(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	} else {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
+		fmt.Fprintln(w, "Data successfully recorded! Thank you for using the StrangeScout system.")
 	}
 }
 
@@ -253,7 +255,8 @@ func writePit(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	} else {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.WriteHeader(201)
-		w.Write([]byte("Data successfully recorded! Thank you for using the StrangeScout system."))
+		fmt.Fprintln(w, "Data successfully recorded! Thank you for using the StrangeScout system.")
 	}
 }
