@@ -46,6 +46,7 @@
   </div>
   <div class="center-content">
     <button class="btn btn-default btn-primary item" [disabled]="!runInput.valid || !teamInput.valid" (click)="visiblePage='run'">Scout!</button>
+    <button (click)="resetScouter()">Reset Scouter ID</button>
   </div>
 </div>
 

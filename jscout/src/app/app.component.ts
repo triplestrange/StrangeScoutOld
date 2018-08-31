@@ -27,7 +27,7 @@ export class AppComponent {
   team: number;
   run: number;
 
-  constructor(location: PlatformLocation, qservice: QuestionService, updates: SwUpdate, cookieService: CookieService) {
+  constructor(private location: PlatformLocation, qservice: QuestionService, private updates: SwUpdate, private cookieService: CookieService) {
 
     location.onPopState(() => {
       console.log('pressed back!');
@@ -61,4 +61,10 @@ export class AppComponent {
       this.scouter = cookieService.get('scouter')
     }
   }
+
+  resetScouter() {
+    this.cookieService.delete('scouter');
+    location.reload();
+  }
+
 }
