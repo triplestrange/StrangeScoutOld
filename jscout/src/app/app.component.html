@@ -27,6 +27,7 @@
 
 <div *ngIf="visiblePage == 'splash'" class="container-fluid form-container">
   <!-- Home page content goes here -->
+  <div class="center-content"><h3>Welcome back {{ scouter }}!</h3></div>
   <div class="narrow-column">
     <span>
       <legend>Team:</legend>
@@ -50,5 +51,5 @@
 
 <!-- Run scouting form -->
 <div *ngIf="visiblePage == 'run'" class="container-fluid form-container">
-  <app-run-form [team]="team" [run]="run" [setupQuestions]="setupQuestions" [autoQuestions]="autoQuestions" [teleopQuestions]="teleopQuestions" [endgameQuestions]="endgameQuestions"></app-run-form>
+  <app-run-form [scouter]="scouter" [team]="team" [run]="run" [setupQuestions]="setupQuestions" [autoQuestions]="autoQuestions" [teleopQuestions]="teleopQuestions" [endgameQuestions]="endgameQuestions"></app-run-form>
 </div>

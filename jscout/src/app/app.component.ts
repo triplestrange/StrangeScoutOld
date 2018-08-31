@@ -3,6 +3,7 @@ import { PlatformLocation } from '@angular/common'
 import { SwUpdate } from '@angular/service-worker';
 import { interval } from 'rxjs';
 import { QuestionService } from './question.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -22,10 +23,11 @@ export class AppComponent {
 
   visiblePage = 'splash';
 
+  scouter: string;
   team: number;
   run: number;
 
-  constructor(location: PlatformLocation, qservice: QuestionService, updates: SwUpdate) {
+  constructor(location: PlatformLocation, qservice: QuestionService, updates: SwUpdate, cookieService: CookieService) {
 
     location.onPopState(() => {
       console.log('pressed back!');
@@ -49,5 +51,10 @@ export class AppComponent {
       console.log('new version is', event.current);
     });
     interval(30000).subscribe(() => updates.checkForUpdate());
+
+    if(cookieService.get('scouter') == '') {
+      cookieService.set('scouter', window.prompt("Enter scouter name:"));
+    }
+    this.scouter = cookieService.get('scouter')
   }
 }
