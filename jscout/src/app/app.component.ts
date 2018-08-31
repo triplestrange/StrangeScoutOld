@@ -56,7 +56,9 @@ export class AppComponent {
       do {
         this.scouter = window.prompt("Enter scouter name:");
       } while(this.scouter == null || this.scouter == "" );
+      cookieService.set('scouter', this.scouter);
+    } else {
+      this.scouter = cookieService.get('scouter')
     }
-    this.scouter = cookieService.get('scouter')
   }
 }
