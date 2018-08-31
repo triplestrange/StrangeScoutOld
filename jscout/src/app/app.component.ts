@@ -63,8 +63,10 @@ export class AppComponent {
   }
 
   resetScouter() {
-    this.cookieService.delete('scouter');
-    location.reload();
+    if (window.confirm('Are you sure?')) {
+      this.cookieService.delete('scouter');
+      location.reload();
+    }
   }
 
 }
