@@ -1,8 +1,8 @@
-import { Component, Input, OnInit }  from '@angular/core';
-import { FormGroup, FormControl }                 from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
-import { QuestionBase }              from '../questions/question-base';
-import { QuestionControlService }    from '../question-control.service';
+import { QuestionBase } from '../questions/question-base';
+import { QuestionControlService } from '../question-control.service';
 
 @Component({
   selector: 'app-run-form',
@@ -12,6 +12,7 @@ import { QuestionControlService }    from '../question-control.service';
 
 export class RunFormComponent implements OnInit {
 
+  @Input() scouter: string;
   @Input() team: number;
   @Input() run: number;
 
@@ -20,7 +21,7 @@ export class RunFormComponent implements OnInit {
   @Input() teleopQuestions: QuestionBase<any>[] = [];
   @Input() endgameQuestions: QuestionBase<any>[] = [];
   form: FormGroup;
-  numbers: FormGroup;
+  initialization: FormGroup;
   setupForm: FormGroup;
   autoForm: FormGroup;
   teleopForm: FormGroup;
@@ -33,7 +34,7 @@ export class RunFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({});
-    this.numbers = new FormGroup({ TeamNumber: new FormControl(this.team), MatchNumber: new FormControl(this.run) });
+    this.initialization = new FormGroup({Scouter: new FormControl(this.scouter), TeamNumber: new FormControl(this.team), MatchNumber: new FormControl(this.run) });
     this.setupForm = this.qcs.toFormGroup(this.setupQuestions);
     this.autoForm = this.qcs.toFormGroup(this.autoQuestions);
     this.teleopForm = this.qcs.toFormGroup(this.teleopQuestions);
@@ -52,7 +53,7 @@ get payload() {
   // create timestamp object
   var timestamp = {Timestamp: String(year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second)}
   // create JSON payload from all form objects
-  return JSON.stringify(Object.assign({}, this.numbers.value, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp));
+  return JSON.stringify(Object.assign({}, this.initialization.value, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp));
 }
 
 // submit function

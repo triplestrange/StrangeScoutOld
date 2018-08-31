@@ -5,10 +5,10 @@
       <legend>Setup</legend>
 
       <div>
-        <b>Team:</b> {{ numbers.get('TeamNumber').value }}
+        <b>Team:</b> {{ initialization.get('TeamNumber').value }}
       </div>
       <div>
-        <b>Run:</b> {{ numbers.get('MatchNumber').value }}
+        <b>Run:</b> {{ initialization.get('MatchNumber').value }}
       </div>
 
       <div *ngFor="let question of setupQuestions" class="form-group">

@@ -63,6 +63,7 @@ button[type="submit"] {
 }
 .center-content * {
 	margin: 10px;
+	text-align: center;
 }
 
 .narrow-column {
