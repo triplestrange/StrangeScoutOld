@@ -53,7 +53,9 @@ export class AppComponent {
     interval(30000).subscribe(() => updates.checkForUpdate());
 
     if(cookieService.get('scouter') == '') {
-      cookieService.set('scouter', window.prompt("Enter scouter name:"));
+      do {
+        this.scouter = window.prompt("Enter scouter name:");
+      } while(this.scouter == null || this.scouter == "" );
     }
     this.scouter = cookieService.get('scouter')
   }
