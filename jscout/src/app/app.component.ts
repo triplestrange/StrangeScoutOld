@@ -4,6 +4,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { interval } from 'rxjs';
 import { QuestionService } from './question.service';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -58,7 +59,7 @@ export class AppComponent {
       } while(this.scouter == null || this.scouter == "" );
       var expiredDate = new Date();
       expiredDate.setDate( expiredDate.getDate() + 3 );
-      cookieService.set('scouter', this.scouter, expiredDate);
+      cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
     } else {
       this.scouter = cookieService.get('scouter')
     }
