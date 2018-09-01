@@ -24,12 +24,12 @@ import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
-  imports: [ BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
-  declarations: [ AppComponent, RunFormComponent, FormQuestionComponent ],
-  providers: [ CookieService ],
-  bootstrap: [ AppComponent ]
+	imports: [ BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
+	declarations: [ AppComponent, RunFormComponent, FormQuestionComponent ],
+	providers: [ CookieService ],
+	bootstrap: [ AppComponent ]
 })
 export class AppModule {
-  constructor() {
-  }
+	constructor() {
+	}
 }

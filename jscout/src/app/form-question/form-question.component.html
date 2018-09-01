@@ -1,32 +1,32 @@
 <div [formGroup]="form">
-  <div [ngSwitch]="question.controlType">
+		<div [ngSwitch]="question.controlType">
 
-    <input *ngSwitchCase="'checkbox'" class="form-control" [formControlName]="question.key" [id]="question.key" type="checkbox">
+			<input *ngSwitchCase="'checkbox'" class="form-control" [formControlName]="question.key" [id]="question.key" type="checkbox">
 
-    <label [attr.for]="question.key">{{question.label}}</label>
+			<label [attr.for]="question.key">{{question.label}}</label>
 
-    <input *ngSwitchCase="'textbox'" class="form-control" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+			<input *ngSwitchCase="'textbox'" class="form-control" [formControlName]="question.key" [id]="question.key" [type]="question.type">
 
-    <div *ngSwitchCase="'number'" class="input-group">
-      <span class="input-group-btn" *ngIf="question.tickers">
-        <button (click)="minusbutton(question.key)" type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-field="">
-          <i class="fas fa-xs fa-minus"></i>
-        </button>
-      </span>
-      <input class="form-control input-number" [formControlName]="question.key" [id]="question.key" type="number" [min]="question.min" [max]="question.max" [value]="question.value">
-      <span class="input-group-btn" *ngIf="question.tickers">
-        <button (click)="plusbutton(question.key)" type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
-          <i class="fas fa-xs fa-plus"></i>
-        </button>
-      </span>
-    </div>
+			<div *ngSwitchCase="'number'" class="input-group">
+				<span class="input-group-btn" *ngIf="question.tickers">
+					<button (click)="minusbutton(question.key)" type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-field="">
+						<i class="fas fa-xs fa-minus"></i>
+					</button>
+				</span>
+				<input class="form-control input-number" [formControlName]="question.key" [id]="question.key" type="number" [min]="question.min" [max]="question.max" [value]="question.value">
+				<span class="input-group-btn" *ngIf="question.tickers">
+					<button (click)="plusbutton(question.key)" type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+						<i class="fas fa-xs fa-plus"></i>
+					</button>
+				</span>
+			</div>
 
-    <select *ngSwitchCase="'dropdown'" class="form-control" [formControlName]="question.key" [id]="question.key">
-      <option *ngFor="let opt of question.options" [value]="opt.key" [disabled]="opt.disabled">{{opt.value}}</option>
-    </select>
+		<select *ngSwitchCase="'dropdown'" class="form-control" [formControlName]="question.key" [id]="question.key">
+			<option *ngFor="let opt of question.options" [value]="opt.key" [disabled]="opt.disabled">{{opt.value}}</option>
+		</select>
 
-    <textarea *ngSwitchCase="'textarea'" class="form-control" [formControlName]="question.key" [id]="question.key" [cols]="question.cols" [rows]="question.rows"></textarea>
+		<textarea *ngSwitchCase="'textarea'" class="form-control" [formControlName]="question.key" [id]="question.key" [cols]="question.cols" [rows]="question.rows"></textarea>
 
-  </div>
-  <div class="alert alert-danger" *ngIf="!isValid">{{question.label}} is required</div>
+	</div>
+	<div class="alert alert-danger" *ngIf="!isValid">{{question.label}} is required</div>
 </div>

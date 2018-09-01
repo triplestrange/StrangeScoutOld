@@ -1,9 +1,9 @@
 import { QuestionBase } from './question-base';
 
 export class CheckboxQuestion extends QuestionBase<boolean> {
-  controlType = 'checkbox';
+	controlType = 'checkbox';
 
-  constructor(options: {} = {}) {
-    super(options);
-  }
+	constructor(options: {} = {}) {
+		super(options);
+	}
 }
