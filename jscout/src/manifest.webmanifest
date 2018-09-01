@@ -4,7 +4,7 @@
 	"description": "The free software FRC scouting system.",
 	"language": "en-US",
 	"display": "fullscreen",
-	"background_color": "#FFFFFF",
+	"background_color": "#3D6DB5",
 	"theme_color": "#3D6DB5",
 	"icons": [
 		{
