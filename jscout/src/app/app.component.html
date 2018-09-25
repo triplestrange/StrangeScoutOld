@@ -8,19 +8,21 @@
 <div style="text-align:center">
 	<!-- Header -->
 	<mat-toolbar color="primary" role="heading">
-	<span (click)="visiblePage='splash'">
-		{{ title }}
-	</span>
+	<button mat-flat-button (click)="visiblePage='splash'">
+	<h1>{{ title }}</h1>
+	</button>
 	<span class="spacer"></span>
 	<!-- hidden if on a mobile screen -->
-	<div class="mobileHidden">
+	<div class="mobileHidden" style="margin-right:20px;">
 		<!-- Display a specified year and game name -->
-		{{ year }} FIRST {{ game }}
+		<h1>{{ year }} FIRST {{ game }}</h1>
 	</div>
 	<!-- menu button -->
+<!--
 	<button mat-icon-button aria-label="dropdown menu button" [matMenuTriggerFor]="appMenu">
 		<mat-icon>more_vert</mat-icon>
 	</button>
+-->
   	</mat-toolbar>
 </div>
 
