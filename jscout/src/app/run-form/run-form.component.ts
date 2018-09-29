@@ -59,29 +59,33 @@ export class RunFormComponent implements OnInit {
 
 	// submit function
 	onSubmit() {
+	
 		var xhr = new XMLHttpRequest();
-
-		// POST to /api/submitmatch asynchronously
-		xhr.open("POST", '/api/submitmatch', true);
-
-		//Send the proper header information along with the request
-		xhr.setRequestHeader("Content-type", "text/plain");
-
-		xhr.onreadystatechange = function() {
-			//Call a function when the state changes.
-			if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
-				// Clear form. Data is either recorded or duplicate.
-				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
-				location.reload();
-			} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status >= 300) {
-				// Don't clear form.
-				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
+		
+		if (navigator.onLine) {
+			// POST to /api/submitmatch asynchronously
+			xhr.open("POST", '/api/submitmatch', true);
+			//Send the proper header information along with the request
+			xhr.setRequestHeader("Content-type", "text/plain");
+			xhr.onreadystatechange = function() {
+				//Call a function when the state changes.
+				if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
+					// Clear form. Data is either recorded or duplicate.
+					alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
+					location.reload();
+				} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status >= 300) {
+					// Don't clear form.
+					alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
+				}
 			}
+			// send POST request
+			xhr.send(this.payload);
+			// debugging alerts
+				// alert(this.payload);
+				// alert(xhr.responseText);
+		} else {
+			window.alert("Offline! Can't submit Data. Please reconnect to the internet.");
 		}
-		// send POST request
-		xhr.send(this.payload);
-		// debugging alerts
-			// alert(this.payload);
-			// alert(xhr.responseText);
+
 	}
 }
