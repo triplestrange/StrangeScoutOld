@@ -65,9 +65,9 @@ export class AppComponent {
 			this.scouter = cookieService.get('scouter')
 		}
 
-		if (!navigator.onLine){
-			console.log("offline");
-		}
+		window.addEventListener('online', function(event){console.log('online')});
+		window.addEventListener('offline', function(event){console.log('offline')});
+
 	}
 
 	resetScouter() {
