@@ -68,7 +68,9 @@ export class RunFormComponent implements OnInit {
 		xhr.setRequestHeader("Content-type", "text/plain");
 		xhr.onreadystatechange = function() {
 			//Call a function when the state changes.
-			if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
+			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 0) {
+				alert(`Unable to contact server`);
+			} else if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
 				// Clear form. Data is either recorded or duplicate.
 				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
 				location.reload();
@@ -78,13 +80,10 @@ export class RunFormComponent implements OnInit {
 			}
 		}
 		// send POST request
-		try {
-			xhr.send(this.payload);
-			// debugging alerts
-				// alert(this.payload);
-				// alert(xhr.responseText);
-		} catch (error) {
-			window.alert("Can't submit data: no internet connection");
-		}
+		xhr.send(this.payload);
+		// debugging alerts
+			// alert(this.payload);
+			// alert(xhr.responseText);
+
 	}
 }
