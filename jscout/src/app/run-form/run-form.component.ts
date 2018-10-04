@@ -75,8 +75,8 @@ export class RunFormComponent implements OnInit {
 		xhr.onreadystatechange = function() {
 			//Call a function when the state changes.
 			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 0) {
-				alert(`Unable to contact server - caching payload`);
 				PayloadStoreService.storePayload(payload);
+				alert(`Unable to contact server - payload cached`);
 			} else if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
 				// Clear form. Data is either recorded or duplicate.
 				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
