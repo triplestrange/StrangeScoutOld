@@ -121,3 +121,12 @@ legend{
 	align-self: flex-start;
 	flex: 1;
 }
+
+.welcome-header > h3 {
+	margin-right:-10px;
+}
+.welcome-header > button {
+	padding-top: 7px;
+	color: #555555;
+	transform: scale(0.8);
+}

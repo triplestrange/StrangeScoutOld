@@ -28,8 +28,9 @@
 
 <div *ngIf="visiblePage == 'splash'" class="container-fluid form-container">
   	<!-- Home page content goes here -->
-  	<div class="center-content">
+  	<div class="center-content welcome-header">
 		<h3>Welcome back {{ scouter }}!</h3>
+		<button mat-icon-button @.disabled (click)="editScouter()"><mat-icon>edit</mat-icon></button>
 	</div>
   	<div class="narrow-column">
 		<span>
@@ -52,9 +53,6 @@
 	</div>
 	<div class="center-content">
 		<button class="btn btn-success item" (click)="submitCache()">Submit Cached Data</button>
-	</div>
-	<div class="center-content">
-		<button class="btn btn-warning item" (click)="resetScouter()">Reset Scouter ID</button>
 	</div>
 </div>
 

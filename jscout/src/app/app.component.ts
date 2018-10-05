@@ -73,11 +73,14 @@ export class AppComponent {
 		PayloadStoreService.submitCache();
 	}
 
-	resetScouter() {
-		if (window.confirm('Are you sure?')) {
-			this.cookieService.delete('scouter');
-			location.reload();
-		}
+	editScouter() {
+		do {
+			if (this.scouter == null) {this.scouter = ""}
+			this.scouter = window.prompt("Enter scouter name:", this.scouter);
+		} while(this.scouter == null || this.scouter == "" );
+		var expiredDate = new Date();
+		expiredDate.setDate( expiredDate.getDate() + 3 );
+		this.cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
 	}
 
 }
