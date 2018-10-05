@@ -14,17 +14,20 @@ export class PayloadStoreService {
 
 	static submitCache() {
 
+		var count = localStorage.length;
+
 		var success = 0;
 		var duplicate = 0;
 		var failed = 0;
 
 		for (var key=1; key <= localStorage.length; key++) {
+
 			// get payload
 			var payload = localStorage.getItem(key.toString());
 
 			var xhr = new XMLHttpRequest();
 			// POST to /api/submitmatch asynchronously
-			xhr.open("POST", '/api/submitmatch', true);
+			xhr.open("POST", '/api/submitmatch', false);
 			//Send the proper header information along with the request
 			xhr.setRequestHeader("Content-type", "text/plain");
 			xhr.onreadystatechange = function() {
@@ -40,8 +43,10 @@ export class PayloadStoreService {
 					}
   				} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status >= 300) {
   					failed++;
-  					alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
-  				}
+				}
+				if (success + duplicate + failed == count) {
+					alert(`Successfully submitted ${success} payload(s)\nDidn't submit ${duplicate} duplicate(s)\n${failed} failure(s)`);
+				}
   			}
 			// send POST request
   			xhr.send(payload);
@@ -49,8 +54,6 @@ export class PayloadStoreService {
   				// alert(this.payload);
   				// alert(xhr.responseText);
 		}
-		
-		alert(`Successfully submitted ${success} payload(s)\nDidn't submit ${duplicate} duplicate(s)`);
 	}
 
 	static readCache(key: number) {
