@@ -51,6 +51,9 @@
 		<button class="btn btn-default btn-primary item" [disabled]="!runInput.valid || !teamInput.valid" (click)="visiblePage='run'">Scout!</button>
 	</div>
 	<div class="center-content">
+		<button class="btn btn-success item" (click)="submitCache()">Submit Cached Data</button>
+	</div>
+	<div class="center-content">
 		<button class="btn btn-warning item" (click)="resetScouter()">Reset Scouter ID</button>
 	</div>
 </div>

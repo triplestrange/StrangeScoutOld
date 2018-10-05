@@ -4,6 +4,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { QuestionBase } from '../questions/question-base';
 import { QuestionControlService } from '../question-control.service';
 
+import { PayloadStoreService } from '../payload-store.service'
+
 @Component({
 	selector: 'app-run-form',
 	templateUrl: './run-form.component.html',
@@ -59,17 +61,23 @@ export class RunFormComponent implements OnInit {
 
 	// submit function
 	onSubmit() {
-		var xhr = new XMLHttpRequest();
+	
+		// we have to set a variable to payload because it's impossible to cal `this.payload` within the `onreadystatechange` function
+		// use this value for all operations, even if you can access `this.payload` (ex. `xhr.send`)
+		var payload = this.payload;
 
+		var xhr = new XMLHttpRequest();
+		
 		// POST to /api/submitmatch asynchronously
 		xhr.open("POST", '/api/submitmatch', true);
-
 		//Send the proper header information along with the request
 		xhr.setRequestHeader("Content-type", "text/plain");
-
 		xhr.onreadystatechange = function() {
 			//Call a function when the state changes.
-			if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
+			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 0) {
+				PayloadStoreService.storePayload(payload);
+				alert(`Unable to contact server - payload cached`);
+			} else if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
 				// Clear form. Data is either recorded or duplicate.
 				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
 				location.reload();
@@ -79,9 +87,11 @@ export class RunFormComponent implements OnInit {
 			}
 		}
 		// send POST request
-		xhr.send(this.payload);
+		xhr.send(payload);
 		// debugging alerts
 			// alert(this.payload);
 			// alert(xhr.responseText);
+		
 	}
+
 }

@@ -6,6 +6,8 @@ import { QuestionService } from './question.service';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../environments/environment';
 
+import {PayloadStoreService} from './payload-store.service'
+
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
@@ -64,6 +66,11 @@ export class AppComponent {
 		} else {
 			this.scouter = cookieService.get('scouter')
 		}
+
+	}
+
+	submitCache() {
+		PayloadStoreService.submitCache();
 	}
 
 	resetScouter() {
