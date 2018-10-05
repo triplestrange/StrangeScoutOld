@@ -1,8 +1,9 @@
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-
 @import url('https://use.fontawesome.com/releases/v5.0.8/css/all.css');
+
+@import '~ngx-toastr/toastr.css';
 
 /* CSS Document */
 

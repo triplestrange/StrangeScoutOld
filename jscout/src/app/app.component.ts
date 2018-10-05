@@ -6,7 +6,9 @@ import { QuestionService } from './question.service';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../environments/environment';
 
-import {PayloadStoreService} from './payload-store.service'
+import {PayloadStoreService} from './payload-store.service';
+
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-root',
@@ -31,7 +33,7 @@ export class AppComponent {
 	team: number;
 	run: number;
 
-	constructor(private location: PlatformLocation, qservice: QuestionService, private updates: SwUpdate, private cookieService: CookieService) {
+	constructor(private toastr: ToastrService, private location: PlatformLocation, qservice: QuestionService, private updates: SwUpdate, private cookieService: CookieService) {
 
 		location.onPopState(() => {
 			console.log('pressed back!');
