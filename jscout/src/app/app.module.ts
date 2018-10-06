@@ -22,9 +22,10 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-	imports: [ BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
+	imports: [ ToastrModule.forRoot(), BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatToolbarModule, MatMenuModule, MatButtonModule, MatIconModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
 	declarations: [ AppComponent, RunFormComponent, FormQuestionComponent ],
 	providers: [ CookieService ],
 	bootstrap: [ AppComponent ]
