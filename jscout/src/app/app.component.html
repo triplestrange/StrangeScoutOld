@@ -52,7 +52,7 @@
 		<button class="btn btn-default btn-primary item" [disabled]="!runInput.valid || !teamInput.valid" (click)="visiblePage='run'">Scout!</button>
 	</div>
 	<div *ngIf="storeLength > 0" class="center-content">
-		<button class="btn btn-success item" (click)="submitCache()">Submit Cached Data</button>
+		<button class="btn btn-success item" (click)="submitCache()">Submit Cached Data</button><button class="btn btn-danger item" (click)="deleteCache()">Clear Cached Data</button>
 	</div>
 </div>
 

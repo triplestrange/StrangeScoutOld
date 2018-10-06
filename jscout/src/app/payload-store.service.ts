@@ -62,6 +62,10 @@ export class PayloadStoreService {
 
 	static readCache(key: number) {
 		return localStorage.getItem(key.toString());
-  	}
+	}
+	  
+	static deleteCache() {
+		localStorage.clear();
+	}
   
 }

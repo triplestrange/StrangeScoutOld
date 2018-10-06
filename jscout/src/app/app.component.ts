@@ -92,6 +92,14 @@ export class AppComponent {
 		this.storeLength = localStorage.length;
 	}
 
+	deleteCache() {
+		if (confirm('Are you sure you want to clear cached payloads?')) {
+			PayloadStoreService.deleteCache();
+			this.storeLength = localStorage.length;
+			this.toastr.info('Cached payloads cleared');
+		}
+	}
+
 	editScouter() {
 		do {
 			if (this.scouter == null) {this.scouter = ""}
