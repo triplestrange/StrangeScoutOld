@@ -33,7 +33,7 @@ export class AppComponent {
 	team: number;
 	run: number;
 
-	storeLength = localStorage.length;
+	storeLength: number;
 
 	constructor(private toastr: ToastrService, private location: PlatformLocation, qservice: QuestionService, private updates: SwUpdate, private cookieService: CookieService) {
 
@@ -82,6 +82,8 @@ export class AppComponent {
 				toastr.error(`${e.detail.failed} failed submission(s)`)
 			}
 		}, false)
+
+		this.storeLength = localStorage.length;
 
 	}
 
