@@ -62,6 +62,25 @@ export class AppComponent {
 			this.scouter = cookieService.get('scouter')
 		}
 
+		window.addEventListener('cachecomplete', function (e) {
+			console.log('event')
+			// @ts-ignore
+			if (e.detail.success > 0) {
+				// @ts-ignore
+				toastr.success(`${e.detail.success} successful submission(s)`)
+			}
+			// @ts-ignore
+			if (e.detail.duplicate > 0) {
+				// @ts-ignore
+				toastr.warning(`${e.detail.duplicate} duplicate(s) ignored`)
+			}
+			// @ts-ignore
+			if (e.detail.failed > 0) {
+				// @ts-ignore
+				toastr.error(`${e.detail.failed} failed submission(s)`)
+			}
+		}, false)
+
 	}
 
 	submitCache() {

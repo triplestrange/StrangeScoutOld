@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Injectable({
   providedIn: 'root'
 })
 export class PayloadStoreService {
 
-	constructor() { }
+	constructor(private toastr: ToastrService) {  }
 
 	static storePayload(payload: string) {
 		for (var store=1; store <= localStorage.length; store++);
@@ -45,7 +47,9 @@ export class PayloadStoreService {
   					failed++;
 				}
 				if (success + duplicate + failed == count) {
-					alert(`Successfully submitted ${success} payload(s)\nDidn't submit ${duplicate} duplicate(s)\n${failed} failure(s)`);
+					var detail = {'success': success, 'duplicate': duplicate, 'failed': failed};
+					console.log('dispatch')
+					window.dispatchEvent(new CustomEvent('cachecomplete', {detail: detail}));
 				}
   			}
 			// send POST request

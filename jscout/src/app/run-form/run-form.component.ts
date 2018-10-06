@@ -6,7 +6,7 @@ import { QuestionControlService } from '../question-control.service';
 
 import { PayloadStoreService } from '../payload-store.service';
 
-import { ToastrService, Toast } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-run-form',
