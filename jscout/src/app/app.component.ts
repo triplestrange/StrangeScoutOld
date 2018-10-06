@@ -33,6 +33,8 @@ export class AppComponent {
 	team: number;
 	run: number;
 
+	storeLength = localStorage.length;
+
 	constructor(private toastr: ToastrService, private location: PlatformLocation, qservice: QuestionService, private updates: SwUpdate, private cookieService: CookieService) {
 
 		this.setupQuestions = qservice.getSetupQuestions();
@@ -85,6 +87,7 @@ export class AppComponent {
 
 	submitCache() {
 		PayloadStoreService.submitCache();
+		this.storeLength = localStorage.length;
 	}
 
 	editScouter() {
