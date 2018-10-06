@@ -6,7 +6,7 @@ import { QuestionControlService } from '../question-control.service';
 
 import { PayloadStoreService } from '../payload-store.service';
 
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService, Toast } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-run-form',
@@ -35,7 +35,24 @@ export class RunFormComponent implements OnInit {
 	// define change event
 	changeEvent = new Event('change');
 
-	constructor(private qcs: QuestionControlService) {  }
+	constructor(private qcs: QuestionControlService, private toastr: ToastrService) { 
+		window.addEventListener('submitcached', function (e) {
+			toastr.warning('Data cached', 'Unable to contact server');
+		}, false)
+
+		window.addEventListener('submitsuccess', function (e) {
+			toastr.success('Data successfully submitted!');
+		}, false)
+
+		window.addEventListener('submitduplicate', function (e) {
+			toastr.warning('Duplicate data not recorded');
+		}, false)
+
+		window.addEventListener('submiterror', function (e) {
+			// @ts-ignore
+			toastr.error(e.detail, 'ERROR');
+		}, false)
+	 }
 
 	ngOnInit() {
 		this.form = new FormGroup({});
@@ -78,14 +95,14 @@ export class RunFormComponent implements OnInit {
 			//Call a function when the state changes.
 			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 0) {
 				PayloadStoreService.storePayload(payload);
-				alert(`Unable to contact server - payload cached`);
-			} else if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
-				// Clear form. Data is either recorded or duplicate.
-				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
-				location.reload();
+				window.dispatchEvent(new CustomEvent('submitcached'));
+			} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status <= 299) {
+				window.dispatchEvent(new CustomEvent('submitsuccess'));
+			} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 409) {
+				window.dispatchEvent(new CustomEvent('submitduplicate'));
 			} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status >= 300) {
-				// Don't clear form.
-				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
+				var serverresponse = `${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`
+				window.dispatchEvent(new CustomEvent('submiterror', {detail: serverresponse}));
 			}
 		}
 		// send POST request

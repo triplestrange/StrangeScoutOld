@@ -35,11 +35,6 @@ export class AppComponent {
 
 	constructor(private toastr: ToastrService, private location: PlatformLocation, qservice: QuestionService, private updates: SwUpdate, private cookieService: CookieService) {
 
-		location.onPopState(() => {
-			console.log('pressed back!');
-			this.visiblePage = 'splash';
-		}); history.pushState({}, '');
-
 		this.setupQuestions = qservice.getSetupQuestions();
 		this.autoQuestions = qservice.getAutoQuestions();
 		this.teleopQuestions = qservice.getTeleopQuestions();
@@ -48,9 +43,7 @@ export class AppComponent {
 		updates.available.subscribe(event => {
 			console.log('current version is', event.current);
 			console.log('available version is', event.available);
-			if(window.confirm("New version available. Load New Version?")) {
-				window.location.reload();
-			}
+			this.toastr.info('Reload for changes','Updates available!');
 		});
 		updates.activated.subscribe(event => {
 			console.log('old version was', event.previous);
