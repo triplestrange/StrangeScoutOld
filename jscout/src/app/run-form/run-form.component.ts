@@ -103,6 +103,9 @@ export class RunFormComponent implements OnInit {
 			} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status >= 300) {
 				var serverresponse = `${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`
 				window.dispatchEvent(new CustomEvent('submiterror', {detail: serverresponse}));
+				// also cache response
+				PayloadStoreService.storePayload(payload);
+				window.dispatchEvent(new CustomEvent('submitcached'));
 			}
 		}
 		// send POST request
