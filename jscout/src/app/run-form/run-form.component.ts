@@ -75,8 +75,17 @@ export class RunFormComponent implements OnInit {
 		// create timestamp object
 		var timestamp = {Timestamp: String(year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second)}
 		// create JSON payload from all form objects
-		return JSON.stringify(Object.assign({}, this.initialization.value, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp));
+		return JSON.stringify(this.removeFalsy(Object.assign({}, this.initialization.value, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp)));
 	}
+
+	// removes nulls from object
+	removeFalsy = (obj) => {
+		let newObj = {};
+		Object.keys(obj).forEach((prop) => {
+			if (obj[prop]) { newObj[prop] = obj[prop]; }
+		});
+		return newObj;
+	};
 
 	// submit function
 	onSubmit() {
