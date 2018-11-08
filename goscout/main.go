@@ -71,9 +71,9 @@ func startAPI() {
 
 	// Routes
 	e.GET("/version", version)
-	e.PUT("/:team/:match", submitRun)
-	e.PUT("/:event/:team/:match", submitRun)
-	e.GET("/:event/:team/:match", readRun)
+	e.PUT("/team/:team/match/:match", submitRun)
+	e.PUT("/event/:event/team/:team/match/:match", submitRun)
+	e.GET("/event/:event/team/:team/match/:match", readRun)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":15338"))

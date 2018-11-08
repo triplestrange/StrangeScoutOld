@@ -97,7 +97,7 @@ export class RunFormComponent implements OnInit {
 		var xhr = new XMLHttpRequest();
 		
 		// PUT asynchronously
-		xhr.open("PUT", '/api/' + this.initialization.value.TeamNumber + '/' + this.initialization.value.MatchNumber, true);
+		xhr.open("PUT", '/api/team/' + this.initialization.value.TeamNumber + '/match/' + this.initialization.value.MatchNumber, true);
 		//Send the proper header information along with the request
 		xhr.setRequestHeader("Content-type", "application/json");
 		xhr.onreadystatechange = function() {

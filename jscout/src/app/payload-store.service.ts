@@ -30,7 +30,7 @@ export class PayloadStoreService {
 			var xhr = new XMLHttpRequest();
 
 			// PUT asynchronously
-			xhr.open("PUT", '/api/' + JSON.parse(payload).TeamNumber + '/' + JSON.parse(payload).MatchNumber, true);
+			xhr.open("PUT", '/api/team/' + JSON.parse(payload).TeamNumber + '/match/' + JSON.parse(payload).MatchNumber, true);
 			//Send the proper header information along with the request
 			xhr.setRequestHeader("Content-type", "application/json");
 			xhr.onreadystatechange = function() {
