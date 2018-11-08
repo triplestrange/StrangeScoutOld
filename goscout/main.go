@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -71,6 +73,7 @@ func startAPI() {
 	e.GET("/version", version)
 	e.PUT("/:team/:match", submitRun)
 	e.PUT("/:event/:team/:match", submitRun)
+	e.GET("/:event/:team/:match", readRun)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":15338"))
@@ -122,4 +125,37 @@ func submitRun(c echo.Context) error {
 	}
 
 	return c.String(201, "Data successfully recorded! Thank you for using the StrangeScout system.")
+}
+
+func readRun(c echo.Context) error {
+	data := &run{}
+
+	// connect to DB
+	db, err := gorm.Open("mysql", server)
+	if err != nil {
+		log.Fatal("failed to connect database: " + err.Error())
+	}
+	defer db.Close()
+
+	// get team and match from request path
+	team, _ := strconv.Atoi(c.Param("team"))
+	match, _ := strconv.Atoi(c.Param("match"))
+
+	// query DB
+	if err := db.Where(&run{Event: c.Param("event"), TeamNumber: uint16(team), MatchNumber: uint8(match)}).First(&data).Error; err != nil {
+		// error handling
+		if strings.Contains(err.Error(), "record not found") {
+			return c.String(404, "This record does not exist in the database.")
+		}
+		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
+	}
+
+	// parse struct to JSON
+	json, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// return
+	return c.String(200, string(json))
 }
