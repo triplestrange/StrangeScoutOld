@@ -15,6 +15,7 @@ import (
 )
 
 // run struct
+/*
 type run struct {
 	Event                 string `gorm:"not null; primary_key"`
 	TeamNumber            uint16 `gorm:"not null; primary_key"`
@@ -37,6 +38,31 @@ type run struct {
 	Notes                 string `gorm:""`
 	Scouter               string `gorm:"not null; primary_key"`
 	Timestamp             string `gorm:"datetime; not null"`
+}
+*/
+
+type run struct {
+	Event                 string
+	TeamNumber            uint16
+	MatchNumber           uint8
+	StartPosition         string
+	AutoMovementLine      bool
+	AutoSwitchCubes       uint8
+	AutoScaleCubes        uint8
+	FailedAutoSwitchCubes uint8
+	FailedAutoScaleCubes  uint8
+	AutoExchange          uint8
+	TeleSwitchCubes       uint8
+	TeleScaleCubes        uint8
+	FailedTeleSwitchCubes uint8
+	FailedTeleScaleCubes  uint8
+	TeleExchange          uint8
+	EndPosition           string
+	YellowCards           uint8
+	RedCards              uint8
+	Notes                 string
+	Scouter               string
+	Timestamp             string
 }
 
 var server string
