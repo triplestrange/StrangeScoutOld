@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -150,12 +148,6 @@ func readRun(c echo.Context) error {
 		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
 	}
 
-	// parse struct to JSON
-	json, err := json.Marshal(data)
-	if err != nil {
-		fmt.Println(err)
-	}
-
 	// return
-	return c.JSON(200, string(json))
+	return c.JSON(200, data)
 }
