@@ -16,26 +16,26 @@ import (
 
 // run struct
 type run struct {
-	Event                 string `gorm:"varchar(100); not null; primary_key"`
-	TeamNumber            uint16 `gorm:"smallint; not null; primary_key"`
-	MatchNumber           uint8  `gorm:"smallint; not null; primary_key"`
-	StartPosition         string `gorm:"varchar(100)"`
-	AutoMovementLine      bool   `gorm:"boolean"`
-	AutoSwitchCubes       uint8  `gorm:"tinyint"`
-	AutoScaleCubes        uint8  `gorm:"tinyint"`
-	FailedAutoSwitchCubes uint8  `gorm:"tinyint"`
-	FailedAutoScaleCubes  uint8  `gorm:"tinyint"`
-	AutoExchange          uint8  `gorm:"tinyint"`
-	TeleSwitchCubes       uint8  `gorm:"tinyint"`
-	TeleScaleCubes        uint8  `gorm:"tinyint"`
-	FailedTeleSwitchCubes uint8  `gorm:"tinyint"`
-	FailedTeleScaleCubes  uint8  `gorm:"tinyint"`
-	TeleExchange          uint8  `gorm:"tinyint"`
-	EndPosition           string `gorm:"varchar(100)"`
-	YellowCards           uint8  `gorm:"tinyint"`
-	RedCards              uint8  `gorm:"tinyint"`
-	Notes                 string `gorm:"text(65535)"`
-	Scouter               string `gorm:"varchar(100); primary_key"`
+	Event                 string `gorm:"not null; primary_key"`
+	TeamNumber            uint16 `gorm:"not null; primary_key"`
+	MatchNumber           uint8  `gorm:"not null; primary_key"`
+	StartPosition         string `gorm:""`
+	AutoMovementLine      bool   `gorm:""`
+	AutoSwitchCubes       uint8  `gorm:""`
+	AutoScaleCubes        uint8  `gorm:""`
+	FailedAutoSwitchCubes uint8  `gorm:""`
+	FailedAutoScaleCubes  uint8  `gorm:""`
+	AutoExchange          uint8  `gorm:""`
+	TeleSwitchCubes       uint8  `gorm:""`
+	TeleScaleCubes        uint8  `gorm:""`
+	FailedTeleSwitchCubes uint8  `gorm:""`
+	FailedTeleScaleCubes  uint8  `gorm:""`
+	TeleExchange          uint8  `gorm:""`
+	EndPosition           string `gorm:""`
+	YellowCards           uint8  `gorm:""`
+	RedCards              uint8  `gorm:""`
+	Notes                 string `gorm:""`
+	Scouter               string `gorm:"not null; primary_key"`
 	Timestamp             string `gorm:"datetime; not null"`
 }
 
