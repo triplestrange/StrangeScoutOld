@@ -157,5 +157,5 @@ func readRun(c echo.Context) error {
 	}
 
 	// return
-	return c.String(200, string(json))
+	return c.JSON(200, string(json))
 }
