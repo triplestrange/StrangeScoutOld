@@ -115,7 +115,7 @@ func submitRun(c echo.Context) error {
 	// create record
 	if err := db.Create(data).Error; err != nil {
 		// error handling
-		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+		if strings.Contains(err.Error(), "Error 1062") {
 			return c.String(409, "This data duplicated an existing record. If you are trying to submit this data for the first time, your client has generateted multiple requests and your data has been safely recored. If you need to correct or delete previously entered data, please inform your system administrator.")
 		}
 		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
