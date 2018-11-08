@@ -110,6 +110,7 @@ func submitRun(c echo.Context) error {
 	db, err := gorm.Open("mysql", server)
 	if err != nil {
 		log.Fatal("failed to connect database: " + err.Error())
+		return c.String(500, "Failed to connect to the database: "+err.Error())
 	}
 	defer db.Close()
 
@@ -132,6 +133,7 @@ func readRun(c echo.Context) error {
 	db, err := gorm.Open("mysql", server)
 	if err != nil {
 		log.Fatal("failed to connect database: " + err.Error())
+		return c.String(500, "Failed to connect to the database: "+err.Error())
 	}
 	defer db.Close()
 
