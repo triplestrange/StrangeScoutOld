@@ -15,54 +15,28 @@ import (
 )
 
 // run struct
-/*
 type run struct {
-	Event                 string `gorm:"not null; primary_key"`
-	TeamNumber            uint16 `gorm:"not null; primary_key"`
-	MatchNumber           uint8  `gorm:"not null; primary_key"`
-	StartPosition         string `gorm:""`
-	AutoMovementLine      bool   `gorm:""`
-	AutoSwitchCubes       uint8  `gorm:""`
-	AutoScaleCubes        uint8  `gorm:""`
-	FailedAutoSwitchCubes uint8  `gorm:""`
-	FailedAutoScaleCubes  uint8  `gorm:""`
-	AutoExchange          uint8  `gorm:""`
-	TeleSwitchCubes       uint8  `gorm:""`
-	TeleScaleCubes        uint8  `gorm:""`
-	FailedTeleSwitchCubes uint8  `gorm:""`
-	FailedTeleScaleCubes  uint8  `gorm:""`
-	TeleExchange          uint8  `gorm:""`
-	EndPosition           string `gorm:""`
-	YellowCards           uint8  `gorm:""`
-	RedCards              uint8  `gorm:""`
-	Notes                 string `gorm:""`
-	Scouter               string `gorm:"not null; primary_key"`
-	Timestamp             string `gorm:"datetime; not null"`
-}
-*/
-
-type run struct {
-	Event                 string
-	TeamNumber            uint16
-	MatchNumber           uint8
-	StartPosition         string
-	AutoMovementLine      bool
-	AutoSwitchCubes       uint8
-	AutoScaleCubes        uint8
-	FailedAutoSwitchCubes uint8
-	FailedAutoScaleCubes  uint8
-	AutoExchange          uint8
-	TeleSwitchCubes       uint8
-	TeleScaleCubes        uint8
-	FailedTeleSwitchCubes uint8
-	FailedTeleScaleCubes  uint8
-	TeleExchange          uint8
-	EndPosition           string
-	YellowCards           uint8
-	RedCards              uint8
-	Notes                 string
-	Scouter               string
-	Timestamp             string
+	Event                 string `gorm:"type:varchar(100); not null; primary_key"`
+	TeamNumber            uint16 `gorm:"type:smallint; not null; primary_key"`
+	MatchNumber           uint8  `gorm:"type:smallint; not null; primary_key"`
+	StartPosition         string `gorm:"type:varchar(100)"`
+	AutoMovementLine      bool   `gorm:"type:boolean"`
+	AutoSwitchCubes       uint8  `gorm:"type:tinyint"`
+	AutoScaleCubes        uint8  `gorm:"type:tinyint"`
+	FailedAutoSwitchCubes uint8  `gorm:"type:tinyint"`
+	FailedAutoScaleCubes  uint8  `gorm:"type:tinyint"`
+	AutoExchange          uint8  `gorm:"type:tinyint"`
+	TeleSwitchCubes       uint8  `gorm:"type:tinyint"`
+	TeleScaleCubes        uint8  `gorm:"type:tinyint"`
+	FailedTeleSwitchCubes uint8  `gorm:"type:tinyint"`
+	FailedTeleScaleCubes  uint8  `gorm:"type:tinyint"`
+	TeleExchange          uint8  `gorm:"type:tinyint"`
+	EndPosition           string `gorm:"type:varchar(100)"`
+	YellowCards           uint8  `gorm:"type:tinyint"`
+	RedCards              uint8  `gorm:"type:tinyint"`
+	Notes                 string `gorm:"type:text(65535)"`
+	Scouter               string `gorm:"type:varchar(100); primary_key"`
+	Timestamp             string `gorm:"type:datetime; not null"`
 }
 
 var server string
