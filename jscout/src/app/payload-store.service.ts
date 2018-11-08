@@ -28,10 +28,11 @@ export class PayloadStoreService {
 			var payload = localStorage.getItem(key.toString());
 
 			var xhr = new XMLHttpRequest();
-			// POST to /api/submitmatch asynchronously
-			xhr.open("POST", '/api/submitmatch', false);
+
+			// PUT asynchronously
+			xhr.open("PUT", '/api/' + JSON.parse(payload).TeamNumber + '/' + JSON.parse(payload).MatchNumber, true);
 			//Send the proper header information along with the request
-			xhr.setRequestHeader("Content-type", "text/plain");
+			xhr.setRequestHeader("Content-type", "application/json");
 			xhr.onreadystatechange = function() {
 				//Call a function when the state changes.
 				if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 0) {

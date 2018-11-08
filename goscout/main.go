@@ -1,16 +1,43 @@
 package main
 
 import (
-	"database/sql"
-	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 
-	"github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
+
+// run struct
+type run struct {
+	Event                 string `gorm:"type:varchar(100); not null; primary_key"`
+	TeamNumber            uint16 `gorm:"type:smallint; not null; primary_key"`
+	MatchNumber           uint8  `gorm:"type:smallint; not null; primary_key"`
+	StartPosition         string `gorm:"type:varchar(100)"`
+	AutoMovementLine      bool   `gorm:"type:boolean"`
+	AutoSwitchCubes       uint8  `gorm:"type:tinyint"`
+	AutoScaleCubes        uint8  `gorm:"type:tinyint"`
+	FailedAutoSwitchCubes uint8  `gorm:"type:tinyint"`
+	FailedAutoScaleCubes  uint8  `gorm:"type:tinyint"`
+	AutoExchange          uint8  `gorm:"type:tinyint"`
+	TeleSwitchCubes       uint8  `gorm:"type:tinyint"`
+	TeleScaleCubes        uint8  `gorm:"type:tinyint"`
+	FailedTeleSwitchCubes uint8  `gorm:"type:tinyint"`
+	FailedTeleScaleCubes  uint8  `gorm:"type:tinyint"`
+	TeleExchange          uint8  `gorm:"type:tinyint"`
+	EndPosition           string `gorm:"type:varchar(100)"`
+	YellowCards           uint8  `gorm:"type:tinyint"`
+	RedCards              uint8  `gorm:"type:tinyint"`
+	Notes                 string `gorm:"type:text(65535)"`
+	Scouter               string `gorm:"type:varchar(100); primary_key"`
+	Timestamp             string `gorm:"type:datetime; not null"`
+}
 
 var server string
 
@@ -20,139 +47,79 @@ func main() {
 	startAPI()
 }
 
-type matchScoutData struct {
-	Event                 string
-	TeamNumber            uint16
-	MatchNumber           uint8
-	StartPosition         string
-	AutoMovementLine      bool
-	AutoSwitchCubes       uint8
-	AutoScaleCubes        uint8
-	FailedAutoSwitchCubes uint8
-	FailedAutoScaleCubes  uint8
-	AutoExchange          uint8
-	TeleSwitchCubes       uint8
-	TeleScaleCubes        uint8
-	FailedTeleSwitchCubes uint8
-	FailedTeleScaleCubes  uint8
-	TeleExchange          uint8
-	EndPosition           string
-	YellowCards           uint8
-	RedCards              uint8
-	Notes                 string
-	Scouter               string
-	Timestamp             string
-}
-
-// this allows us to start with a blank database
+// initialize the database
 func initDB() {
-
-	fmt.Println("Preparing to initialize database...")
-
-	db, err := sql.Open("mysql", server)
+	// connect to DB
+	db, err := gorm.Open("mysql", server)
 	if err != nil {
-		log.Fatal(err)
-	} else {
-		defer db.Close()
+		log.Fatal("failed to connect database: " + err.Error())
 	}
-	err = db.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = db.Exec("ALTER DATABASE `strangescout`" + `
-		DEFAULT CHARACTER SET utf8
-		DEFAULT COLLATE utf8_general_ci;`)
-	if err != nil {
-		log.Fatal(err)
-	}
+	defer db.Close()
 
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS MatchData (
-		Event VARCHAR(100) NOT NULL, TeamNumber SMALLINT NOT NULL,
-		MatchNumber SMALLINT NOT NULL,
-		StartPosition VARCHAR(100),
-		AutoMovementLine BOOLEAN,
-		AutoSwitchCubes TINYINT,
-		AutoScaleCubes TINYINT,
-		FailedAutoSwitchCubes TINYINT,
-		FailedAutoScaleCubes TINYINT,
-		AutoExchange TINYINT,
-		TeleSwitchCubes TINYINT,
-		TeleScaleCubes TINYINT,
-		FailedTeleSwitchCubes TINYINT,
-		FailedTeleScaleCubes TINYINT,
-		TeleExchange TINYINT,
-		EndPosition VARCHAR(100),
-		YellowCards TINYINT,
-		RedCards TINYINT,
-		Notes TEXT(65535),
-		Scouter VARCHAR(100),
-		Timestamp DATETIME NOT NULL,
-		PRIMARY KEY (Event, TeamNumber, MatchNumber, Scouter));`)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	// apply schema to DB
+	db.AutoMigrate(&run{})
 }
 
-// our main function
 func startAPI() {
-	//initialize API server and setup endpoints
-	router := mux.NewRouter()
-	router.HandleFunc("/submitmatch", writeMatch).Methods("POST")
-	http.ListenAndServe(":15338", router)
+	e := echo.New()
+
+	// Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	// Routes
+	e.GET("/version", version)
+	e.PUT("/:team/:match", submitRun)
+	e.PUT("/:event/:team/:match", submitRun)
+
+	// Start server
+	e.Logger.Fatal(e.Start(":15338"))
 }
 
-// API Handlers
-func writeMatch(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
-		http.Error(w, http.StatusText(405), 405)
-		return
+func version(c echo.Context) error {
+	// return API version
+	return c.String(http.StatusOK, "GoScout API v1.0.0a")
+}
+
+func submitRun(c echo.Context) error {
+	data := &run{}
+
+	// set data from request body
+	if err := c.Bind(data); err != nil {
+		return err
 	}
 
-	fmt.Println("Handling POST /submitmatch")
+	// set data from request URL
+	team, _ := strconv.Atoi(c.Param("team"))
+	match, _ := strconv.Atoi(c.Param("match"))
+	data.TeamNumber = uint16(team)
+	data.MatchNumber = uint8(match)
 
-	var data matchScoutData
-	_ = json.NewDecoder(r.Body).Decode(&data)
-
-	// now hardcoding is optional and set by environment variable
-	if _, b := os.LookupEnv("GOSCOUT_EVENT_HARDCODE"); b == true {
-		data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE")
-	}
-	fmt.Printf("%+v\n", data)
-	// initialize SQL and test connection
-	db, err := sql.Open("mysql", server)
-	if err != nil {
-		log.Panic(err)
+	// if request has an event, set the event
+	if c.Param("event") != "" {
+		data.Event = c.Param("event")
 	} else {
-		defer db.Close()
-	}
-	err = db.Ping()
-	if err != nil {
-		log.Panic(err)
-	}
-
-	fmt.Println(data.MatchNumber)
-
-	_, err = db.Exec("INSERT INTO MatchData (Event, TeamNumber, MatchNumber, StartPosition, AutoMovementLine, AutoSwitchCubes, AutoScaleCubes, FailedAutoSwitchCubes, FailedAutoScaleCubes, AutoExchange, TeleSwitchCubes, TeleScaleCubes, FailedTeleSwitchCubes, FailedTeleScaleCubes, TeleExchange, EndPosition, YellowCards, RedCards, Notes, Scouter, Timestamp) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", data.Event, data.TeamNumber, data.MatchNumber, data.StartPosition, data.AutoMovementLine, data.AutoSwitchCubes, data.AutoScaleCubes, data.FailedAutoSwitchCubes, data.FailedAutoScaleCubes, data.AutoExchange, data.TeleSwitchCubes, data.TeleScaleCubes, data.FailedTeleSwitchCubes, data.FailedTeleScaleCubes, data.TeleExchange, data.EndPosition, data.YellowCards, data.RedCards, data.Notes, data.Scouter, data.Timestamp)
-	// provide a soft "error" message for duplicates
-	// MariaDB/MySQL returnErro 1062 for duplicate primary keys
-	if mysqlerr, ok := err.(*mysql.MySQLError); ok {
-		if mysqlerr.Number == 1062 {
-			http.Error(w, "This data duplicated an existing record. If you are trying to submit this data for the first time, your client has generateted multiple requests and your data has been safely recored. If you need to correct or delete previously entered data, please inform your system administrator.", 409)
-			fmt.Println("Duplicate REJECTED: " + mysqlerr.Error())
-		} else {
-			http.Error(w, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+mysqlerr.Error(), 500)
-			fmt.Println("Unhandled MariaDB Error: " + mysqlerr.Error())
-			return
+		// use the env variable if the event is not in the URL
+		if _, b := os.LookupEnv("GOSCOUT_EVENT_HARDCODE"); b == true {
+			data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE")
 		}
-	} else if err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		fmt.Println(err)
-		return
-	} else {
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.WriteHeader(201)
-		fmt.Fprintln(w, "Data successfully recorded! Thank you for using the StrangeScout system.")
 	}
+
+	// connect to database
+	db, err := gorm.Open("mysql", server)
+	if err != nil {
+		log.Fatal("failed to connect database: " + err.Error())
+	}
+	defer db.Close()
+
+	// create record
+	if err := db.Create(data).Error; err != nil {
+		// error handling
+		if strings.Contains(err.Error(), "Error 1062") {
+			return c.String(409, "This data duplicated an existing record. If you are trying to submit this data for the first time, your client has generateted multiple requests and your data has been safely recored. If you need to correct or delete previously entered data, please inform your system administrator.")
+		}
+		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
+	}
+
+	return c.String(201, "Data successfully recorded! Thank you for using the StrangeScout system.")
 }

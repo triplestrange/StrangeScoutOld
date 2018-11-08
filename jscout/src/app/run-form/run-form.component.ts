@@ -75,8 +75,17 @@ export class RunFormComponent implements OnInit {
 		// create timestamp object
 		var timestamp = {Timestamp: String(year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second)}
 		// create JSON payload from all form objects
-		return JSON.stringify(Object.assign({}, this.initialization.value, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp));
+		return JSON.stringify(this.removeFalsy(Object.assign({}, this.initialization.value, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp)));
 	}
+
+	// removes nulls from object
+	removeFalsy = (obj) => {
+		let newObj = {};
+		Object.keys(obj).forEach((prop) => {
+			if (obj[prop]) { newObj[prop] = obj[prop]; }
+		});
+		return newObj;
+	};
 
 	// submit function
 	onSubmit() {
@@ -87,10 +96,10 @@ export class RunFormComponent implements OnInit {
 
 		var xhr = new XMLHttpRequest();
 		
-		// POST to /api/submitmatch asynchronously
-		xhr.open("POST", '/api/submitmatch', true);
+		// PUT asynchronously
+		xhr.open("PUT", '/api/' + this.initialization.value.TeamNumber + '/' + this.initialization.value.MatchNumber, true);
 		//Send the proper header information along with the request
-		xhr.setRequestHeader("Content-type", "text/plain");
+		xhr.setRequestHeader("Content-type", "application/json");
 		xhr.onreadystatechange = function() {
 			//Call a function when the state changes.
 			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 0) {
