@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -10,32 +11,32 @@ import (
 	"github.com/labstack/echo/middleware"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 // run struct
 type run struct {
-	Event                 string
-	TeamNumber            uint16 `gorm:"primary_key"`
-	MatchNumber           uint8
-	StartPosition         string
-	AutoMovementLine      bool
-	AutoSwitchCubes       uint8
-	AutoScaleCubes        uint8
-	FailedAutoSwitchCubes uint8
-	FailedAutoScaleCubes  uint8
-	AutoExchange          uint8
-	TeleSwitchCubes       uint8
-	TeleScaleCubes        uint8
-	FailedTeleSwitchCubes uint8
-	FailedTeleScaleCubes  uint8
-	TeleExchange          uint8
-	EndPosition           string
-	YellowCards           uint8
-	RedCards              uint8
-	Notes                 string
-	Scouter               string
-	Timestamp             string
+	Event                 string `gorm:"varchar(100); not null; primary_key"`
+	TeamNumber            uint16 `gorm:"smallint; not null; primary_key"`
+	MatchNumber           uint8  `gorm:"smallint; not null; primary_key"`
+	StartPosition         string `gorm:"varchar(100)"`
+	AutoMovementLine      bool   `gorm:"boolean"`
+	AutoSwitchCubes       uint8  `gorm:"tinyint"`
+	AutoScaleCubes        uint8  `gorm:"tinyint"`
+	FailedAutoSwitchCubes uint8  `gorm:"tinyint"`
+	FailedAutoScaleCubes  uint8  `gorm:"tinyint"`
+	AutoExchange          uint8  `gorm:"tinyint"`
+	TeleSwitchCubes       uint8  `gorm:"tinyint"`
+	TeleScaleCubes        uint8  `gorm:"tinyint"`
+	FailedTeleSwitchCubes uint8  `gorm:"tinyint"`
+	FailedTeleScaleCubes  uint8  `gorm:"tinyint"`
+	TeleExchange          uint8  `gorm:"tinyint"`
+	EndPosition           string `gorm:"varchar(100)"`
+	YellowCards           uint8  `gorm:"tinyint"`
+	RedCards              uint8  `gorm:"tinyint"`
+	Notes                 string `gorm:"text(65535)"`
+	Scouter               string `gorm:"varchar(100); primary_key"`
+	Timestamp             string `gorm:"datetime; not null"`
 }
 
 var server string
@@ -49,9 +50,9 @@ func main() {
 // initialize the database
 func initDB() {
 	// connect to DB
-	db, err := gorm.Open("sqlite3", "test.db")
+	db, err := gorm.Open("mysql", server)
 	if err != nil {
-		panic("failed to connect database")
+		log.Fatal("failed to connect database: " + err.Error())
 	}
 	defer db.Close()
 
@@ -68,6 +69,7 @@ func startAPI() {
 
 	// Routes
 	e.GET("/version", version)
+	e.PUT("/:team/:match", submitRun)
 	e.PUT("/:event/:team/:match", submitRun)
 
 	// Start server
@@ -92,12 +94,21 @@ func submitRun(c echo.Context) error {
 	match, _ := strconv.Atoi(c.Param("match"))
 	data.TeamNumber = uint16(team)
 	data.MatchNumber = uint8(match)
-	data.Event = c.Param("event")
+
+	// if request has an event, set the event
+	if c.Param("event") != "" {
+		data.Event = c.Param("event")
+	} else {
+		// use the env variable if the event is not in the URL
+		if _, b := os.LookupEnv("GOSCOUT_EVENT_HARDCODE"); b == true {
+			data.Event = os.Getenv("GOSCOUT_EVENT_HARDCODE")
+		}
+	}
 
 	// connect to database
-	db, err := gorm.Open("sqlite3", "test.db")
+	db, err := gorm.Open("mysql", server)
 	if err != nil {
-		panic("failed to connect database")
+		log.Fatal("failed to connect database: " + err.Error())
 	}
 	defer db.Close()
 
