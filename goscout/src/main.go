@@ -55,6 +55,7 @@ func startAPI() {
 	e.GET("/event/:event/match/:match", readMatch)          // whole match at event
 	e.GET("/event/:event/team/:team", readTeamRuns)         // whole team at event
 	e.GET("/event/:event/team/:team/match/:match", readRun) // single run
+	e.GET("/event/:event/match/:match/team/:team", readRun) // single run
 
 	// indexes
 	e.GET("/events", getEvents) // all events
