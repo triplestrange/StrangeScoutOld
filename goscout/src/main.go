@@ -44,26 +44,23 @@ func startAPI() {
 	e.GET("/version", version)
 
 	// submission
-	e.PUT("/team/:team/match/:match", submitRun)
-	e.PUT("/event/:event/team/:team/match/:match", submitRun)
+	e.PUT("/team/:team/match/:match", submitRun)              // submit using backends coded event
+	e.PUT("/event/:event/team/:team/match/:match", submitRun) // submit with a manually set event
 
-	// run query
-	e.GET("/event/:event/team/:team/match/:match", readRun)
-
-	// all teams runs at event
-	e.GET("/event/:event/team/:team/all", readTeamRuns)
+	// queries
+	e.GET("/dump", dumpDB)                                  // dump whole database
+	e.GET("/event/:event/team/:team/match/:match", readRun) // single run
+	e.GET("/event/:event/team/:team", readTeamRuns)         // whole team at event
 
 	// indexes
-	e.GET("/events", getEvents)
-	e.GET("/teams", getTeams)
-
+	e.GET("/events", getEvents) // all events
+	e.GET("/teams", getTeams)   // all teams
 	// event specific indexes
-	e.GET("/event/:event/teams", getEventTeams)
-	e.GET("/event/:event/team/:team/matches", getTeamMatches)
-	e.GET("/event/:event/matches", getEventMatches)
-
+	e.GET("/event/:event/teams", getEventTeams)               // all teams at an event
+	e.GET("/event/:event/team/:team/matches", getTeamMatches) // all runs a team had at an event
+	e.GET("/event/:event/matches", getEventMatches)           // all matches at an event
 	// team specific indexes
-	e.GET("/team/:team/events", getTeamEvents)
+	e.GET("/team/:team/events", getTeamEvents) // all events a team has records for
 
 	// Start server
 	e.Logger.Fatal(e.Start(":15338"))
