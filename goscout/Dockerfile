@@ -2,7 +2,7 @@ FROM golang:latest AS builder
 WORKDIR /goscout
 COPY ./ ./
 RUN go get -d -v ./...
-RUN go build -v -ldflags "-linkmode external -extldflags -static" -o GoScout -a main.go
+RUN go build -v -ldflags "-linkmode external -extldflags -static" -o GoScout -a src/main.go src/struct.go src/utils.go src/indexes.go src/queries.go
 
 FROM alpine
 COPY --from=builder /goscout/GoScout .
