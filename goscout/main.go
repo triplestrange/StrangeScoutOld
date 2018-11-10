@@ -69,9 +69,12 @@ func startAPI() {
 
 	// Routes
 	e.GET("/version", version)
+
 	e.PUT("/team/:team/match/:match", submitRun)
 	e.PUT("/event/:event/team/:team/match/:match", submitRun)
 	e.GET("/event/:event/team/:team/match/:match", readRun)
+
+	e.GET("/events", getEvents)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":15338"))
@@ -152,4 +155,44 @@ func readRun(c echo.Context) error {
 
 	// return
 	return c.JSON(200, data)
+}
+
+func getEvents(c echo.Context) error {
+	var response []run
+	var eventIndex []string
+
+	// connect to DB
+	db, err := gorm.Open("mysql", server)
+	if err != nil {
+		log.Fatal("failed to connect database: " + err.Error())
+		return c.String(500, "Failed to connect to the database: "+err.Error())
+	}
+	defer db.Close()
+
+	// query for list of events
+	if err := db.Find(&response).Pluck("event", &eventIndex).Error; err != nil {
+		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
+	}
+
+	return c.JSON(200, RemoveDuplicateStrings(eventIndex))
+}
+
+// RemoveDuplicateStrings : removes duplicates from a string slice
+func RemoveDuplicateStrings(s []string) []string {
+	m := make(map[string]bool)
+
+	// cycle through values + test for unique-ness
+	for _, item := range s {
+		if _, ok := m[item]; !ok {
+			m[item] = true
+		}
+	}
+
+	// append values to new slice
+	var result []string
+	for item := range m {
+		result = append(result, item)
+	}
+
+	return result
 }
