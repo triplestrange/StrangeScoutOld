@@ -83,3 +83,26 @@ func readRun(c echo.Context) error {
 	// return
 	return c.JSON(200, data)
 }
+
+func readAll(c echo.Context) error {
+	var response []run
+	var team, _ = strconv.Atoi(c.Param("team"))
+
+	// connect to DB
+	db, err := gorm.Open("mysql", server)
+	if err != nil {
+		log.Fatal("failed to connect database: " + err.Error())
+		return c.String(500, "Failed to connect to the database: "+err.Error())
+	}
+	defer db.Close()
+
+	// query for list of matches with specified event
+	if err := db.Where(&run{Event: c.Param("event"), TeamNumber: uint16(team)}).Find(&response).Error; err != nil {
+		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
+	}
+	if len(response) == 0 {
+		return c.String(404, "No matching records found in the database.")
+	}
+
+	return c.JSON(200, response)
+}
