@@ -50,7 +50,8 @@ func startAPI() {
 	// run query
 	e.GET("/event/:event/team/:team/match/:match", readRun)
 
-	e.GET("/event/:event/team/:team/all", readAll)
+	// all teams runs at event
+	e.GET("/event/:event/team/:team/all", readTeamRuns)
 
 	// indexes
 	e.GET("/events", getEvents)
