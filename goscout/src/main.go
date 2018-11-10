@@ -37,6 +37,7 @@ func startAPI() {
 	e := echo.New()
 
 	// Middleware
+	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
