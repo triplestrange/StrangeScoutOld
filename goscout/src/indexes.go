@@ -79,6 +79,30 @@ func getEventTeams(c echo.Context) error {
 	return c.JSON(200, RemoveDuplicateInts(teamIndex))
 }
 
+func getMatchTeams(c echo.Context) error {
+	var response []run
+	var teamIndex []int
+	var match, _ = strconv.Atoi(c.Param("match"))
+
+	// connect to DB
+	db, err := gorm.Open("mysql", server)
+	if err != nil {
+		log.Fatal("failed to connect database: " + err.Error())
+		return c.String(500, "Failed to connect to the database: "+err.Error())
+	}
+	defer db.Close()
+
+	// query for list of teams with specified event
+	if err := db.Find(&response).Where(&run{MatchNumber: uint8(match)}).Pluck("team_number", &teamIndex).Error; err != nil {
+		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
+	}
+	if len(teamIndex) == 0 {
+		return c.String(404, "No matching records found in the database.")
+	}
+
+	return c.JSON(200, RemoveDuplicateInts(teamIndex))
+}
+
 func getEventMatches(c echo.Context) error {
 	var response []run
 	var matchIndex []int

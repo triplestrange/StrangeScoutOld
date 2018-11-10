@@ -48,9 +48,12 @@ func startAPI() {
 	e.PUT("/event/:event/team/:team/match/:match", submitRun) // submit with a manually set event
 
 	// queries
-	e.GET("/dump", dumpDB)                                  // dump whole database
-	e.GET("/event/:event/team/:team/match/:match", readRun) // single run
+	e.GET("/dump", dumpDB)                                  // dump whole database}
+	e.GET("/event/:event", readEvent)                       // dump whole event
+	e.GET("/team/:team", readTeam)                          // dump whole team
+	e.GET("/event/:event/match/:match", readMatch)          // whole match at event
 	e.GET("/event/:event/team/:team", readTeamRuns)         // whole team at event
+	e.GET("/event/:event/team/:team/match/:match", readRun) // single run
 
 	// indexes
 	e.GET("/events", getEvents) // all events
@@ -59,6 +62,8 @@ func startAPI() {
 	e.GET("/event/:event/teams", getEventTeams)               // all teams at an event
 	e.GET("/event/:event/team/:team/matches", getTeamMatches) // all runs a team had at an event
 	e.GET("/event/:event/matches", getEventMatches)           // all matches at an event
+	// match specific indexes
+	e.GET("/event/:event/match/:match/teams", getMatchTeams) // all teams in a match at an event
 	// team specific indexes
 	e.GET("/team/:team/events", getTeamEvents) // all events a team has records for
 

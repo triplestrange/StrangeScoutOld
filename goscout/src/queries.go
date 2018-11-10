@@ -96,12 +96,12 @@ func readRun(c echo.Context) error {
 		return c.String(500, "Unable to convert response to CSV"+err.Error())
 	}
 
-	// create filename from query
-	var name = c.Param("event") + "_" + c.Param("team") + "_" + c.Param("match") + ".csv"
+	// get a timestamp
+	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
 
-	//return c.Attachment(response, name)
+	// set headers and return csv
 	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename="+name)
+	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=event-"+c.Param("event")+"_team-"+c.Param("team")+"_match-"+c.Param("match")+"_"+time+".csv")
 	c.Response().WriteHeader(http.StatusOK)
 	c.Response().Write([]byte(csv))
 
@@ -154,6 +154,140 @@ func dumpDB(c echo.Context) error {
 	return blankerr
 }
 
+func readEvent(c echo.Context) error {
+	var response []run
+
+	// connect to DB
+	db, err := gorm.Open("mysql", server)
+	if err != nil {
+		log.Fatal("failed to connect database: " + err.Error())
+		return c.String(500, "Failed to connect to the database: "+err.Error())
+	}
+	defer db.Close()
+
+	// query for list of matches with specified event
+	if err := db.Where(&run{Event: c.Param("event")}).Find(&response).Error; err != nil {
+		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
+	}
+	if len(response) == 0 {
+		return c.String(404, "No matching records found in the database.")
+	}
+
+	if c.Request().Header.Get("Accept") == "application/json" {
+		// encode as JSON and return
+		return c.JSON(200, response)
+	}
+
+	// create csv string from struct
+	csv, err := gocsv.MarshalString(response)
+	if err != nil {
+		return c.String(500, "Unable to convert response to CSV"+err.Error())
+	}
+
+	// get a timestamp
+	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
+
+	// set headers and return csv
+	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
+	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=event-"+c.Param("event")+"_"+time+".csv")
+	c.Response().WriteHeader(http.StatusOK)
+	c.Response().Write([]byte(csv))
+
+	// blank error for the return
+	var blankerr error
+	return blankerr
+}
+
+func readTeam(c echo.Context) error {
+	var response []run
+	var team, _ = strconv.Atoi(c.Param("team"))
+
+	// connect to DB
+	db, err := gorm.Open("mysql", server)
+	if err != nil {
+		log.Fatal("failed to connect database: " + err.Error())
+		return c.String(500, "Failed to connect to the database: "+err.Error())
+	}
+	defer db.Close()
+
+	// query for list of matches with specified event
+	if err := db.Where(&run{TeamNumber: uint16(team)}).Find(&response).Error; err != nil {
+		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
+	}
+	if len(response) == 0 {
+		return c.String(404, "No matching records found in the database.")
+	}
+
+	if c.Request().Header.Get("Accept") == "application/json" {
+		// encode as JSON and return
+		return c.JSON(200, response)
+	}
+
+	// create csv string from struct
+	csv, err := gocsv.MarshalString(response)
+	if err != nil {
+		return c.String(500, "Unable to convert response to CSV"+err.Error())
+	}
+
+	// get a timestamp
+	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
+
+	// set headers and return csv
+	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
+	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=team-"+c.Param("team")+"_"+time+".csv")
+	c.Response().WriteHeader(http.StatusOK)
+	c.Response().Write([]byte(csv))
+
+	// blank error for the return
+	var blankerr error
+	return blankerr
+}
+
+func readMatch(c echo.Context) error {
+	var response []run
+	var match, _ = strconv.Atoi(c.Param("match"))
+
+	// connect to DB
+	db, err := gorm.Open("mysql", server)
+	if err != nil {
+		log.Fatal("failed to connect database: " + err.Error())
+		return c.String(500, "Failed to connect to the database: "+err.Error())
+	}
+	defer db.Close()
+
+	// query for list of matches with specified event
+	if err := db.Where(&run{Event: c.Param("event"), MatchNumber: uint8(match)}).Find(&response).Error; err != nil {
+		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
+	}
+	if len(response) == 0 {
+		return c.String(404, "No matching records found in the database.")
+	}
+
+	if c.Request().Header.Get("Accept") == "application/json" {
+		// encode as JSON and return
+		return c.JSON(200, response)
+	}
+
+	// create csv string from struct
+	csv, err := gocsv.MarshalString(response)
+	if err != nil {
+		return c.String(500, "Unable to convert response to CSV"+err.Error())
+	}
+
+	// get a timestamp
+	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
+
+	// set headers and return csv
+	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
+	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=event-"+c.Param("event")+"_match-"+c.Param("match")+"_"+time+".csv")
+	c.Response().WriteHeader(http.StatusOK)
+	c.Response().Write([]byte(csv))
+
+	// blank error for the return
+	var blankerr error
+	return blankerr
+}
+
 func readTeamRuns(c echo.Context) error {
 	var response []run
 	var team, _ = strconv.Atoi(c.Param("team"))
@@ -185,12 +319,12 @@ func readTeamRuns(c echo.Context) error {
 		return c.String(500, "Unable to convert response to CSV"+err.Error())
 	}
 
-	// create filename from query
-	var name = c.Param("event") + "_" + c.Param("team") + ".csv"
+	// get a timestamp
+	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
 
-	//return c.Attachment(response, name)
+	// set headers and return csv
 	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename="+name)
+	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=event-"+c.Param("event")+"_team-"+c.Param("team")+"_"+time+".csv")
 	c.Response().WriteHeader(http.StatusOK)
 	c.Response().Write([]byte(csv))
 
