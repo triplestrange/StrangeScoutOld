@@ -17,7 +17,7 @@ import (
 )
 
 func submitRun(c echo.Context) error {
-	data := run{}
+	data := &run{}
 
 	// set data from request body
 	if err := c.Bind(data); err != nil {
