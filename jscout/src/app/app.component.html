@@ -1,2 +1,14 @@
+<!-- Header -->
+<mat-toolbar color="primary" role="heading">
+	<button mat-flat-button color="primary">
+		<h1>{{ title }}</h1>
+	</button>
+	<span class="spacer"></span>
+	<!-- hidden if on a mobile screen -->
+	<div class="mobileHidden" style="margin-right:20px;">
+		<!-- Display a specified year and game name -->
+		<h1>{{ year }} FIRST {{ game }}</h1>
+	</div>
+</mat-toolbar>
 
 <router-outlet></router-outlet>
