@@ -1,133 +1,13 @@
-@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
+/* Global Styles */
+
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://use.fontawesome.com/releases/v5.0.8/css/all.css');
 
 @import '~ngx-toastr/toastr.css';
 
-/* CSS Document */
-
-body {
-  margin: 0;
-  font-family: Roboto, sans-serif;
-}
-
 .spacer {
-	/* This fills the remaining space, by using flexbox. 
+	/* This fills the remaining space, by using flexbox.
 	   Every toolbar row uses a flexbox row layout. */
 	flex: 1 1 auto;
-}
-
-fieldset {
-	margin: 10px 20px 10px 20px;
-	border-color: rgb(26, 24, 167);
-	border-style: solid;
-}
-fieldset * {
-	margin: 5px 0px 5px 0px;
-}
-
-input[type="radio"] {
-	display: inline;
-	position: relative;
-	top: 2px;
-	width: auto;
-}
-input[type="checkbox"] {
-	display: inline;
-	position: relative;
-	top: 2px;
-	right: 5px;
-	width: auto;
-}
-
-input[type="hidden"] {
-	display: none;
-}
-
-button[type="submit"] {
-	margin-left: 20px;
-	margin-right: 20px;
-	width: calc( 100% - 40px );
-}
-
-.center-content {
-	height: 100%;
-	padding: 5px;
-	margin: 10px;
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	justify-content: center;
-}
-.center-content * {
-	margin: 10px;
-	text-align: center;
-}
-
-.narrow-column {
-	padding: 5px;
-	margin: auto;
-	max-width: 900px;
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.narrow-column * {
-	margin: 10px;
-}
-
-.form-inline * {
-	margin: 10px;
-}
-
-/* Bootstrap 3 CSS for legends */
-legend{
-	display:block;
-	width:100%;
-	padding:0;
-	margin-bottom:20px;
-	line-height:inherit;
-	color:#333;
-	border:0;
-	border-bottom:1px solid #e5e5e5
-}
-
-@media screen and (max-width: 450px) {
-	.mobileHidden {
-		text-align: right;
-		width: 50%;
-		padding: 0;
-		margin: 0;
-		visibility: hidden;
-		display:none;
-	}
-}
-
-@media screen and (max-width:825px) {
-	.twocolumn { flex-direction: column; }
-	.twocolumn > fieldset { margin-left: 20px; margin-right: 20px; width: calc( 100% - 40px ); }
-}
-.twocolumn {
-    display: flex;
-	justify-content: space-between;
-}
-.twocolumn > * {
-	align-self: flex-start;
-	flex: 1;
-}
-
-.welcome-header > h3 {
-	margin-right:-10px;
-}
-.welcome-header > button {
-	padding-top: 7px;
-	color: #555555;
-	transform: scale(0.8);
 }
