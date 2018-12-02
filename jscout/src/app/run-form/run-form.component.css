@@ -1,0 +1,12 @@
+/* Run Form Styles */
+
+#runForm > mat-card {
+	max-width: 350px;
+	width: 90%;
+}
+
+button.submit-run {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	width: 200px;
+}

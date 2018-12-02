@@ -1,0 +1,26 @@
+/* Home Styles */
+
+.splash-card {
+	max-width: 350px;
+	width: 90%;
+	margin-top: 50px;
+}
+
+.splash-card > mat-card-header {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.splash-card > mat-card-header * {
+	text-align: center;
+}
+
+.splash-button {
+	margin-bottom: 10px;
+}
+
+#edit-scouter {
+	transform: scale(0.65);
+	padding-bottom: 35px;
+}

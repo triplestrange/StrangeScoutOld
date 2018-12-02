@@ -1,3 +1,43 @@
-<p>
-  run-form works!
-</p>
+<form class="center-container" id="runForm" (ngSubmit)="onSubmit()">
+
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>Setup</mat-card-title>
+	</mat-card-header>
+	<div *ngFor="let question of setupQuestions" class="form-group">
+		<app-form-block [question]="question" [form]="setupForm"></app-form-block>
+	</div>
+</mat-card>
+
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>Autonomous Period</mat-card-title>
+	</mat-card-header>
+	<div *ngFor="let question of autoQuestions" class="form-group">
+		<app-form-block [question]="question" [form]="autoForm"></app-form-block>
+	</div>
+</mat-card>
+
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>Teleop Period</mat-card-title>
+	</mat-card-header>
+	<div *ngFor="let question of teleopQuestions" class="form-group">
+		<app-form-block [question]="question" [form]="teleopForm"></app-form-block>
+	</div>
+</mat-card>
+
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>End Game</mat-card-title>
+	</mat-card-header>
+	<div *ngFor="let question of endgameQuestions" class="form-group">
+		<app-form-block [question]="question" [form]="endgameForm"></app-form-block>
+	</div>
+</mat-card>
+
+<div class="form-group">
+	<button mat-raised-button color="primary" type="submit" class="submit-run" [disabled]="!setupForm.valid || !autoForm.valid || !teleopForm.valid || !endgameForm.valid">Submit</button>
+</div>
+
+</form>

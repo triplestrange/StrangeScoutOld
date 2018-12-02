@@ -1,0 +1,61 @@
+<div [formGroup]="form">
+<!-- switch based on input type -->
+<div [ngSwitch]="question.controlType">
+
+
+	<!-- checkbox -->
+	<div class="checkbox-div">
+		<mat-checkbox *ngSwitchCase="'checkbox'" class="" [formControlName]="question.key" [id]="question.key" type="checkbox"><label class="form-label">{{question.label}}</label></mat-checkbox>
+	</div>
+
+	<!-- item label (after checkbox before other) -->
+	<label *ngIf="question.controlType != 'checkbox'" [attr.for]="question.key" class="form-label">{{question.label}}</label>
+
+
+	<!-- textbox -->
+	<input matInput *ngSwitchCase="'textbox'" class="" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+
+
+	<!-- number -->
+	<div *ngSwitchCase="'number'">
+		<!-- add minus ticker if bool option is true -->
+		<span class="input-group-btn" *ngIf="question.tickers">
+			<button mat-icon-button (click)="minusbutton(question.key)" type="button" class="quantity-left-minus minus-button" data-type="minus" data-field="">
+				<i class="fas fa-xs fa-minus"></i>
+			</button>
+		</span>
+		<!-- number input itself -->
+		<mat-form-field>
+			<input matInput class="" [formControlName]="question.key" [id]="question.key" type="number" [min]="question.min" [max]="question.max" [value]="question.value">
+		</mat-form-field>
+		<!-- add plus ticker if bool option is true -->
+		<span class="input-group-btn" *ngIf="question.tickers">
+			<button mat-icon-button (click)="plusbutton(question.key)" type="button" class="quantity-right-plus plus-button" data-type="plus" data-field="">
+				<i class="fas fa-xs fa-plus"></i>
+			</button>
+		</span>
+	</div>
+
+
+	<!-- select -->
+	<div *ngSwitchCase="'dropdown'">
+	<mat-form-field>
+		<mat-select class="" [formControlName]="question.key" [id]="question.key">
+			<!-- loop through all options -->
+			<mat-option *ngFor="let opt of question.options" [value]="opt.key" [disabled]="opt.disabled">{{opt.value}}</mat-option>
+		</mat-select>
+	</mat-form-field>
+	</div>
+
+	<!-- textarea -->
+	<div *ngSwitchCase="'textarea'">
+		<mat-form-field>
+			<textarea matInput [formControlName]="question.key" [id]="question.key" [cols]="question.cols" [rows]="question.rows"></textarea>
+		</mat-form-field>
+	</div>
+
+
+</div>
+<!-- alert for required fields -->
+<div class="alert-required" *ngIf="!isValid">{{question.label}} is required</div>
+</div>

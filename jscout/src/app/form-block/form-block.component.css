@@ -1,0 +1,26 @@
+/* Form Item Styles */
+
+.form-label {
+	color: #4b4b4b;
+}
+
+.alert-required {
+	margin-top: -15px;
+	padding-top: 0px;
+	margin-bottom: 15px;
+	color: #ff0000;
+}
+
+button.minus-button {
+	background-color: #db4b41;
+	margin-right: 10px;
+}
+
+button.plus-button {
+	background-color: #55b458;
+	margin-left: 10px;
+}
+
+.checkbox-div {
+	margin-bottom: 10px;
+}

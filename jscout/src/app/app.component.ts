@@ -1,18 +1,27 @@
 import { Component } from '@angular/core';
+import { environment } from '../environments/environment';
 
+// service worker stuff
 import { SwUpdate } from '@angular/service-worker';
 import { interval } from 'rxjs';
 
+// cookies
 import { CookieService } from 'ngx-cookie-service';
 
-import { environment } from '../environments/environment';
-
+// toasts
 import { ToastrService } from 'ngx-toastr';
+
+// cache service
+import { PayloadStoreService } from './payload-store.service';
+
+// scouter id service
+import { ScouterService } from './scouter.service';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.css']
+	styleUrls: [],
+	providers: [ ScouterService ]
 })
 
 export class AppComponent {
@@ -27,7 +36,7 @@ export class AppComponent {
 	// counter for the items in cache
 	storeLength: number;
 
-	constructor(private toastr: ToastrService, private updates: SwUpdate, private cookieService: CookieService) {
+	constructor(private ss: ScouterService, private toastr: ToastrService, private updates: SwUpdate, private cookieService: CookieService) {
 		// notify of updates
 		this.updates.available.subscribe(event => {
 			console.log('current version is', event.current);
@@ -42,20 +51,8 @@ export class AppComponent {
 		// check for updates
 		interval(30000).subscribe(() => this.updates.checkForUpdate());
 
-		// check if there's a scouter name cookie
-		if(cookieService.get('scouter') == '') {
-			// loop to prompt for scouter name
-			do {
-				this.scouter = window.prompt("Enter scouter name:");
-			} while(this.scouter == null || this.scouter == "" );
-			// set cookie and expire after 3 days (typical competition length)
-			var expiredDate = new Date();
-			expiredDate.setDate( expiredDate.getDate() + 3 );
-			cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
-		} else {
-			// load scouter name
-			this.scouter = cookieService.get('scouter')
-		}
+		// check for and load scouter ID
+		ss.loadScouter();
 
 		// listener for completion of cache submissions
 		window.addEventListener('cachecomplete', function (e) {
@@ -82,15 +79,19 @@ export class AppComponent {
 
 	}
 
-	editScouter() {
-		// same loop as ^
-		do {
-			if (this.scouter == null) {this.scouter = ""}
-			this.scouter = window.prompt("Enter scouter name:", this.scouter);
-		} while(this.scouter == null || this.scouter == "" );
-		var expiredDate = new Date();
-		expiredDate.setDate( expiredDate.getDate() + 3 );
-		this.cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
+	// submit cached payloads
+	submitCache() {
+		PayloadStoreService.submitCache();
+		this.storeLength = localStorage.length;
+	}
+
+	// clear cached payloads
+	deleteCache() {
+		if (confirm('Are you sure you want to clear cached payloads?')) {
+			PayloadStoreService.deleteCache();
+			this.storeLength = localStorage.length;
+			this.toastr.info('Cached payloads cleared');
+		}
 	}
 
 }
