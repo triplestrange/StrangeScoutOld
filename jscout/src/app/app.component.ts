@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 
 // service worker stuff
@@ -24,7 +24,7 @@ import { ScouterService } from './scouter.service';
 	providers: [ ScouterService ]
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
 	// base information strings
 	title = 'StrangeScout';
 	year = '2018';
@@ -35,6 +35,10 @@ export class AppComponent {
 
 	// counter for the items in cache
 	storeLength: number;
+
+	ngOnInit() {
+		navigator.serviceWorker.register('/ngsw-worker.js')
+	}
 
 	constructor(private ss: ScouterService, private toastr: ToastrService, private updates: SwUpdate, private cookieService: CookieService) {
 		// notify of updates
