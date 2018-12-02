@@ -12,6 +12,11 @@ export class HomeComponent implements OnInit {
 	constructor(private ss: ScouterService) { }
 
 	scouter = this.ss.getScouter();
+	
+	editScouter() {
+		this.ss.editScouter();
+		this.scouter = this.ss.getScouter();
+	}
 
 	ngOnInit() {
 	}
