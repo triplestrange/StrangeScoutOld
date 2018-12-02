@@ -1,16 +1,10 @@
-version: "3.2"
+version: "3.4"
 services:
         jscout:
                 build: jscout/
                 restart: always
                 depends_on:
                         - "goscout"
-                volumes:
-                        - type: volume
-                          source: jscout_caddydir
-                          target: /.caddy
-                          volume:
-                                 nocopy: true
                 environment:
                         JSCOUT_DOMAIN:
                         GOSCOUT_HOST: "goscout"
@@ -48,8 +42,7 @@ services:
 
 volumes:
         strangedb:
-        jscout_caddydir:
-
+             name: "${PREFIX}_strangedb"
 networks:
         ${TRAEFIK_NETWORK}:
                 external: true
