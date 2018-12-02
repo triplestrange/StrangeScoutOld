@@ -1,23 +1,19 @@
 /* Home Styles */
 
-.splash-card {
+mat-card.splash-card {
 	max-width: 350px;
-	width: 90%;
+	width: 85%;
 	margin-top: 50px;
 }
 
-.splash-card > mat-card-header {
+mat-card.splash-card mat-card-header {
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.splash-card > mat-card-header * {
 	text-align: center;
 }
 
 .splash-button {
 	margin-bottom: 10px;
+	text-align: center;
 }
 
 #edit-scouter {

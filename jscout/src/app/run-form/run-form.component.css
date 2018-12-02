@@ -1,5 +1,9 @@
 /* Run Form Styles */
 
+.center-container {
+	flex-flow: column;
+}
+
 #runForm mat-card {
 	max-width: 350px;
 	width: 85%;

@@ -34,10 +34,9 @@ body {
 
 .center-container {
 	display: flex;
-	align-items: center;
 	justify-content: center;
-	flex-wrap:wrap;
-	flex-flow: column;
+	align-items: center;
+	flex-wrap: wrap;
 }
 
 mat-card {
