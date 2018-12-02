@@ -68,7 +68,7 @@ export class QuestionService {
 
 			new NumberQuestion({
 				key: 'FailedAutoSwitchCubes',
-				label: 'Missed Autonomous Power Cubes on Switch',
+				label: 'Missed Auto Power Cubes on Switch',
 				tickers: true,
 				min: 0,
 				value: 0,
@@ -86,7 +86,7 @@ export class QuestionService {
 
 			new NumberQuestion({
 				key: 'FailedAutoScaleCubes',
-				label: 'Missed Autonomous Power Cubes on Scale',
+				label: 'Missed Auto Power Cubes on Scale',
 				tickers: true,
 				min: 0,
 				value: 0,
