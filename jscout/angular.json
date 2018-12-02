@@ -21,11 +21,11 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-			  "src/manifest.webmanifest"
-			],
+              "src/manifest.webmanifest"
+            ],
             "styles": [
-				"src/styles.css",
-				"node_modules/ngx-toastr/toastr.css"
+              "src/styles.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
@@ -53,7 +53,7 @@
                   "maximumError": "5mb"
                 }
               ],
-              "serviceWorker": true
+              "serviceWorker": false
             }
           }
         },
@@ -82,8 +82,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-				"src/styles.css",
-				"node_modules/ngx-toastr/toastr.css"
+              "src/styles.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [],
             "assets": [

@@ -5,9 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 
-// Service Worker
-import { ServiceWorkerModule } from '@angular/service-worker';
-
 // Cookies
 import { CookieService } from 'ngx-cookie-service';
 
@@ -53,8 +50,7 @@ import { HomeComponent } from './home/home.component';
 		MatInputModule,
 		MatCheckboxModule,
 		MatSelectModule,
-		ToastrModule.forRoot(),
-		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+		ToastrModule.forRoot()
 	],
 	providers: [ CookieService ],
 	bootstrap: [ AppComponent ]
