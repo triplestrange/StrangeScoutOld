@@ -1,12 +1,16 @@
 /* Run Form Styles */
 
-#runForm > mat-card {
+#runForm mat-card {
 	max-width: 350px;
-	width: 90%;
+	width: 85%;
 }
 
-#runForm > mat-card > mat-card-header {
+#runForm mat-card mat-card-header {
 	margin-left: -17px;
+}
+
+#runForm mat-card mat-card-header mat-card-title {
+	font-size: 1.7em;
 }
 
 button.submit-run {
