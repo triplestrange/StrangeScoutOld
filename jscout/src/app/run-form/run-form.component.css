@@ -5,6 +5,10 @@
 	width: 90%;
 }
 
+#runForm > mat-card > mat-card-header {
+	margin-left: -17px;
+}
+
 button.submit-run {
 	margin-top: 10px;
 	margin-bottom: 20px;

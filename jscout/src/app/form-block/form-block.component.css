@@ -21,6 +21,14 @@ button.plus-button {
 	margin-left: 10px;
 }
 
+.number-field {
+	width: 65%;
+}
+
+.textarea-field {
+	width: 90%;
+}
+
 .checkbox-div {
 	margin-bottom: 10px;
 }
