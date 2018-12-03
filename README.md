@@ -25,6 +25,9 @@ STRANGESCOUT_SQL_PASSWD=<$ecure|)assw0rd>
 ### Production Environment
 If you want to run with the pre-built production images instead of building the latest images yourself, you must specify an additional docker compose config. this can be done by running `sudo docker-compose -f docker-compose.prod.yml up -d`
 
+### Traefik Support
+If you want to run using `traefik`, set the `PREFIX`, `MYSQL_PUBLIC_PORT`, and `TRAEFIK_NETWORK` variables in your `.env` file, abd use `sudp docker-compose -f docker-compose.traefik.yml up -d`
+
 ### Subcomponents
 Use the READMEs in each subdirectory for build instructions! Have fun!
 
