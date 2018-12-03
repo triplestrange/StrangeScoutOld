@@ -1,8 +1,9 @@
 FROM alpine AS builder
 WORKDIR /strangescout
 RUN apk add --update nodejs nodejs-npm git
+RUN echo $(if git describe --tags --exact-match &> /dev/null; then git describe --tags --exact-match; else git show --oneline -s | awk '{print $1;}'; fi) > version; cat version
 COPY ./ ./
-RUN export SS_VERSION=$(if git describe --tags --exact-match &> /dev/null; then git describe --tags --exact-match; else git show --oneline -s | awk '{print $1;}'; fi); echo $SS_VERSION; sed -i s/version/$SS_VERSION/ src/environments/environment.prod.ts
+RUN  sed -i "s/version/$(cat version)/" src/environments/environment.prod.ts
 RUN sed -i s/localhost/$JSCOUT_DOMAIN/ src/environments/environment.prod.ts
 RUN npm install -g @angular/cli
 RUN npm update --save
