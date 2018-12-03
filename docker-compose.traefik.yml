@@ -17,9 +17,9 @@ services:
                         - "default"
                 labels:
                         traefik.enable: "true"
-                        traefik.docker.network: "${TRAEFIK_NETWORK}"
+                        traefik.docker.network: "${TRAEFIK_NETWORK?did not setup network to reach traefik on}"
                         traefik.port: "80"
-                        traefik.frontend.rule: "Host:$JSCOUT_DOMAIN,www.$JSCOUT_DOMAIN"
+                        traefik.frontend.rule: "Host:${JSCOUT_DOMAIN?did not set domain},www.$JSCOUT_DOMAIN"
                         traefik.frontend.headers.STSSeconds: "31536000"
                         traefik.frontend.headers.STSIncludeSubdomains: "true"
                         traefik.frontend.headers.STSPreload: "true"
@@ -31,12 +31,11 @@ services:
                         - "strangedb"
                 environment:
                         GOSCOUT_SQL_USER: "strangescout"
-                        GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD}"
+                        GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD?did not set password}"
                         GOSCOUT_SQL_HOST: "strangedb"
                         GOSCOUT_EVENT_HARDCODE:
                 expose: # for internal use, proxied by jscout container
                         - "15338"
-
                 labels:
                         traefik.enable: "false"
         
@@ -50,20 +49,20 @@ services:
                 environment:
                         MYSQL_RANDOM_ROOT_PASSWORD: "yes"
                         MYSQL_DATABASE: "strangescout"
-                        MYSQL_PASSWORD: "${STRANGESCOUT_SQL_PASSWD}"
+                        MYSQL_PASSWORD: "${STRANGESCOUT_SQL_PASSWD?did not set password}"
                         MYSQL_USER: "strangescout" 
                 expose:
                         - "3306"
                 ports: # should probably not leave this open in production
-                        - "3306:${MYSQL_PUBLIC_PORT}"
+                        - "${MYSQL_PUBLIC_PORT:-3306}:3306"
 
                 labels:
                         traefik.enable: "false"
 
 volumes:
         strangedb:
-             name: ${PREFIX}_strangedb
+                name: ${PREFIX-prod}_strangedb
 networks:
         traefik:
                 external: true
-                name: ${TRAEFIK_NETWORK}
+                name: ${TRAEFIK_NETWORK?did not set a network to reach traefik on}
