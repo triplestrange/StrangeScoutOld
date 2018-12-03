@@ -1,7 +1,5 @@
 # MAIN HOST CONFIG
-{$JSCOUT_DOMAIN}, www.{$JSCOUT_DOMAIN} {
-	# ensure that ports 40 and 443 are exposed to the above domain for ACME to automagically get certificates
-	# automatically obtains Let's Encrypt using ACME HTTP verification, and redirect HTTP->HTTPS
+*:80 {
 	
 	ext .html .htm .php
 	# allow "clean" URLs without pesky extensions that might scare Windows users...
@@ -11,9 +9,6 @@
 		level 5
 	}
 	# enable automatic gzip compression if client-supported
-
-	tls {$JSCOUT_LETS_ENCRYPT_EMAIL}
-	# specify admin email for Let's Encrypt Automatic HTTPS to avoid startup prompt
 
 	root /srv
 
@@ -28,8 +23,6 @@
 
 
 	# A GoScout API server must be exposed to this container on port 15338.
-
-	tls {$JSCOUT_LETS_ENCRYPT_EMAIL}
 
 	# for Docker logs
 	log stdout
