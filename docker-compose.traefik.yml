@@ -1,8 +1,9 @@
 version: '3.5'
 services:
         jscout:
-                build: jscout/
-                  dockerfile: Dockerfile_traefik
+                build:
+                        context: ./jscout/
+                        dockerfile: Dockerfile-traefik
                 restart: always
                 depends_on:
                         - "goscout"
