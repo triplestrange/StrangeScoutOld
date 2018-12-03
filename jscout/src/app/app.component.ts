@@ -25,7 +25,7 @@ import { ScouterService } from './scouter.service';
 		transition('cache-management => home', rightIn),
 		transition('run-form => home', leftIn)
 	])],
-	styleUrls: [],
+	styleUrls: ['./app.component.css'],
 	providers: [ ScouterService ]
 })
 

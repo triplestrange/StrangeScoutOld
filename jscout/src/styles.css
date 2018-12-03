@@ -17,10 +17,6 @@ body {
 	flex: 1 1 auto;
 }
 
-.title-bar {
-	width: 100%;
-}
-
 @media screen and (max-width: 500px) {
 	.mobileHidden {
 		text-align: right;
