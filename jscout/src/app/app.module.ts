@@ -31,13 +31,15 @@ import { AppComponent } from './app.component';
 import { RunFormComponent } from './run-form/run-form.component';
 import { FormBlockComponent } from './form-block/form-block.component';
 import { HomeComponent } from './home/home.component';
+import { CacheManagementComponent } from './cache-management/cache-management.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		RunFormComponent,
 		FormBlockComponent,
-		HomeComponent
+		HomeComponent,
+		CacheManagementComponent
 	],
 	imports: [
 		BrowserModule,
