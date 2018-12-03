@@ -1,62 +1,16 @@
-<!-- dropdown menu content -->
-<mat-menu #appMenu="matMenu">
-	<button *ngIf="visiblePage != 'splash'" class="btn btn-default" (click)="visiblePage='splash'" mat-menu-item>Home</button>
-	<button *ngIf="visiblePage != 'run'" class="btn btn-default" (click)="visiblePage='run'" mat-menu-item>Scout</button>
-	<button *ngIf="visiblePage != 'view'" class="btn btn-default" (click)="visiblePage='view'" mat-menu-item>View</button>
-</mat-menu>
-
-<div style="text-align:center">
-	<!-- Header -->
-	<mat-toolbar color="primary" role="heading">
-	<button mat-flat-button (click)="visiblePage='splash'">
-	<h1>{{ title }}</h1>
-	</button>
+<!-- Header -->
+<mat-toolbar class="title-bar" color="primary" role="heading">
+	<a routerLink="/">
+		<button mat-flat-button color="primary">
+			<h1>{{ title }}</h1>
+		</button>
+	</a>
 	<span class="spacer"></span>
 	<!-- hidden if on a mobile screen -->
 	<div class="mobileHidden" style="margin-right:20px;">
 		<!-- Display a specified year and game name -->
 		<h1>{{ year }} FIRST {{ game }}</h1>
 	</div>
-	<!-- menu button -->
-<!--
-	<button mat-icon-button aria-label="dropdown menu button" [matMenuTriggerFor]="appMenu">
-		<mat-icon>more_vert</mat-icon>
-	</button>
--->
-  	</mat-toolbar>
-</div>
+</mat-toolbar>
 
-<div *ngIf="visiblePage == 'splash'" class="container-fluid form-container">
-  	<!-- Home page content goes here -->
-  	<div class="center-content welcome-header">
-		<h3>Welcome back {{ scouter }}!</h3>
-		<button mat-icon-button @.disabled (click)="editScouter()"><mat-icon>edit</mat-icon></button>
-	</div>
-  	<div class="narrow-column">
-		<span>
-			<legend>Team:</legend>
-		</span>
-		<span>
-			<input type="number" class="form-control" #teamInput="ngModel" [(ngModel)]="team" required>
-		</span>
-	</div>
-	<div class="narrow-column">
-		<span>
-			<legend>Match:</legend>
-		</span>
-		<span>
-			<input type="number" class="form-control" #runInput="ngModel" [(ngModel)]="run" required>
-		</span>
-	</div>
-  	<div class="center-content">
-		<button class="btn btn-default btn-primary item" [disabled]="!runInput.valid || !teamInput.valid" (click)="visiblePage='run'">Scout!</button>
-	</div>
-	<div *ngIf="storeLength > 0" class="center-content">
-		<button class="btn btn-success item" (click)="submitCache()">Submit Cached Data</button><button class="btn btn-danger item" (click)="deleteCache()">Clear Cached Data</button>
-	</div>
-</div>
-
-<!-- Run scouting form -->
-<div *ngIf="visiblePage == 'run'" class="container-fluid form-container">
-	<app-run-form [scouter]="scouter" [team]="team" [run]="run" [setupQuestions]="setupQuestions" [autoQuestions]="autoQuestions" [teleopQuestions]="teleopQuestions" [endgameQuestions]="endgameQuestions"></app-run-form>
-</div>
+<router-outlet></router-outlet>

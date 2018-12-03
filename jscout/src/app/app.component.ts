@@ -1,113 +1,53 @@
-import { Component } from '@angular/core';
-import { PlatformLocation } from '@angular/common'
-import { SwUpdate } from '@angular/service-worker';
-import { interval } from 'rxjs';
-import { QuestionService } from './question.service';
-import { CookieService } from 'ngx-cookie-service';
+import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 
-import {PayloadStoreService} from './payload-store.service';
+// service worker stuff
+import { SwUpdate } from '@angular/service-worker';
+import { interval } from 'rxjs';
 
+// toasts
 import { ToastrService } from 'ngx-toastr';
+
+// scouter id service
+import { ScouterService } from './scouter.service';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.css'],
-	providers:  [QuestionService]
+	styleUrls: [],
+	providers: [ ScouterService ]
 })
 
-export class AppComponent {
-	setupQuestions: any[];
-	autoQuestions: any[];
-	teleopQuestions: any[];
-	endgameQuestions: any[];
-
+export class AppComponent implements OnInit {
+	// base information strings
 	title = 'StrangeScout';
 	year = '2018';
 	game = 'Power Up';
 
-	visiblePage = 'splash';
-
+	// string for the scouter name
 	scouter: string;
-	team: number;
-	run: number;
 
-	storeLength: number;
+	ngOnInit() {
+		navigator.serviceWorker.register('/ngsw-worker.js')
+	}
 
-	constructor(private toastr: ToastrService, private location: PlatformLocation, qservice: QuestionService, private updates: SwUpdate, private cookieService: CookieService) {
-
-		this.setupQuestions = qservice.getSetupQuestions();
-		this.autoQuestions = qservice.getAutoQuestions();
-		this.teleopQuestions = qservice.getTeleopQuestions();
-		this.endgameQuestions = qservice.getEndgameQuestions();
-
-		updates.available.subscribe(event => {
+	constructor(private ss: ScouterService, private toastr: ToastrService, private updates: SwUpdate) {
+		// notify of updates
+		this.updates.available.subscribe(event => {
 			console.log('current version is', event.current);
 			console.log('available version is', event.available);
 			this.toastr.info('Reload for changes','Updates available!');
 		});
-		updates.activated.subscribe(event => {
+		// log after updates
+		this.updates.activated.subscribe(event => {
 			console.log('old version was', event.previous);
 			console.log('new version is', event.current);
 		});
-		interval(30000).subscribe(() => updates.checkForUpdate());
+		// check for updates
+		interval(30000).subscribe(() => this.updates.checkForUpdate());
 
-		if(cookieService.get('scouter') == '') {
-			do {
-				this.scouter = window.prompt("Enter scouter name:");
-			} while(this.scouter == null || this.scouter == "" );
-			var expiredDate = new Date();
-			expiredDate.setDate( expiredDate.getDate() + 3 );
-			cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
-		} else {
-			this.scouter = cookieService.get('scouter')
-		}
-
-		window.addEventListener('cachecomplete', function (e) {
-			console.log('event')
-			// @ts-ignore
-			if (e.detail.success > 0) {
-				// @ts-ignore
-				toastr.success(`${e.detail.success} successful submission(s)`)
-			}
-			// @ts-ignore
-			if (e.detail.duplicate > 0) {
-				// @ts-ignore
-				toastr.warning(`${e.detail.duplicate} duplicate(s) ignored`)
-			}
-			// @ts-ignore
-			if (e.detail.failed > 0) {
-				// @ts-ignore
-				toastr.error(`${e.detail.failed} failed submission(s)`)
-			}
-		}, false)
-
-		this.storeLength = localStorage.length;
-
-	}
-
-	submitCache() {
-		PayloadStoreService.submitCache();
-		this.storeLength = localStorage.length;
-	}
-
-	deleteCache() {
-		if (confirm('Are you sure you want to clear cached payloads?')) {
-			PayloadStoreService.deleteCache();
-			this.storeLength = localStorage.length;
-			this.toastr.info('Cached payloads cleared');
-		}
-	}
-
-	editScouter() {
-		do {
-			if (this.scouter == null) {this.scouter = ""}
-			this.scouter = window.prompt("Enter scouter name:", this.scouter);
-		} while(this.scouter == null || this.scouter == "" );
-		var expiredDate = new Date();
-		expiredDate.setDate( expiredDate.getDate() + 3 );
-		this.cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
+		// check for and load scouter ID
+		ss.loadScouter();
 	}
 
 }

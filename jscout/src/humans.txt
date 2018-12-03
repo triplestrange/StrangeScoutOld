@@ -14,7 +14,7 @@ Fullstack Developer: Noah Piraino
 Twitter: @penguinsnail
 Email: penguinsnail@onebuttonmouse.com (05561DDEEEFF5C40576181011E1AEB66D76CBE52)
 School: High Point Central High School, NC, USA
-Location: Greensboro, North Carolina, United States
+Location: High Point, North Carolina, United States
 
 /* THANKS */
 
@@ -36,5 +36,5 @@ the License for more details. A copy of the License is available at /LICENSE on 
 The GNU Licenses are available at https://gnu.org/licenses. Source code and upstream
 development for this program is located at https://github.com/triplestrange/StrangeScout.
 
-Frontend Stack: Angular2
+Frontend Stack: Angular6
 Backend Stack: Golang, MariaDB, Docker Compose

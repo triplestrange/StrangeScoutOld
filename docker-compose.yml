@@ -1,27 +1,22 @@
-version: '3.5'
+version: "3.5"
 services:
         jscout:
                 build: jscout/
                 restart: always
                 depends_on:
                         - "goscout"
+                volumes:
+                        - type: volume
+                          source: jscout_caddydir
+                          target: /.caddy
+                          volume:
+                                 nocopy: true
                 environment:
                         JSCOUT_DOMAIN:
                         GOSCOUT_HOST: "goscout"
-                expose: # this container exports HTTP-as-a-service
-                        - "80"
-                networks:
-                        - "traefik"
-                        - "default"
-                labels:
-                        traefik.enable: "true"
-                        traefik.docker.network: "${TRAEFIK_NETWORK}"
-                        traefik.port: "80"
-                        traefik.frontend.rule: "Host:$JSCOUT_DOMAIN,www.$JSCOUT_DOMAIN"
-                        traefik.frontend.headers.STSSeconds: "31536000"
-                        traefik.frontend.headers.STSIncludeSubdomains: "true"
-                        traefik.frontend.headers.STSPreload: "true"
-
+                ports:
+                        - "80:80"
+                        - "443:443"
         goscout:
                 build: goscout/
                 restart: always
@@ -32,11 +27,10 @@ services:
                         GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD}"
                         GOSCOUT_SQL_HOST: "strangedb"
                         GOSCOUT_EVENT_HARDCODE:
-                expose: # for internal use, proxied by jscout container
+                expose:
                         - "15338"
-
-                labels:
-                        traefik.enable: "false"
+                ports:
+                        - "15338:15338"
         
         strangedb:
                 image: mariadb
@@ -52,16 +46,9 @@ services:
                         MYSQL_USER: "strangescout" 
                 expose:
                         - "3306"
-                ports: # should probably not leave this open in production
-                        - "3306:${MYSQL_PUBLIC_PORT}"
-
-                labels:
-                        traefik.enable: "false"
+                ports:
+                        - "3306:3306"
 
 volumes:
         strangedb:
-             name: ${PREFIX}_strangedb
-networks:
-        traefik:
-                external: true
-                name: ${TRAEFIK_NETWORK}
+        jscout_caddydir:
