@@ -25,9 +25,6 @@ TRAEFIK_NETWORK=<the_docker_network_traefik_is_on>
 
 **Needless to say, point DNS for `<yourdomain.tld>` to the IP of your server. Ensure that firewalls, AWS security groups, etc. have ports 80, 443, and 3306 (if you want remote SQL access) open. Enjoy!**
 
-### Production Environment
-If you want to run with the pre-built production images instead of building the latest images yourself, you must specify an additional docker compose config. this can be done by running `sudo docker-compose -f docker-compose.prod.yml up -d`
-
 ### Traefik Support
 If you want to run using `traefik`, set the `PREFIX`, `MYSQL_PUBLIC_PORT`, and `TRAEFIK_NETWORK` variables in your `.env` file, abd use `sudp docker-compose -f docker-compose.traefik.yml up -d`
 
