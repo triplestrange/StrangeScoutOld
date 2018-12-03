@@ -44,17 +44,17 @@ export class RunFormComponent implements OnInit {
 		// listeners to trigger notifications
 		window.addEventListener('submitcached', function (e) {
 			toastr.warning('Data cached', 'Unable to contact server');
-		}, false)
+		})
 		window.addEventListener('submitsuccess', function (e) {
 			toastr.success('Data successfully submitted!');
-		}, false)
+		})
 		window.addEventListener('submitduplicate', function (e) {
 			toastr.warning('Duplicate data not recorded');
-		}, false)
+		})
 		window.addEventListener('submiterror', function (e) {
 			// @ts-ignore
 			toastr.error(e.detail, 'ERROR');
-		}, false)
+		})
 	}
 
 	ngOnInit() {
