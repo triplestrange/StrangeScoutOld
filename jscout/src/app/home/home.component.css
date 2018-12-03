@@ -11,12 +11,22 @@ mat-card.splash-card mat-card-header {
 	text-align: center;
 }
 
+mat-card.splash-card mat-card-header mat-card-subtitle {
+	margin-top: -15px;
+}
+
 .splash-button {
 	margin-bottom: 10px;
 	text-align: center;
 }
 
+.splash-button button {
+	max-width: 185px;
+	width: 100%;
+}
+
 #edit-scouter {
 	transform: scale(0.65);
-	padding-bottom: 35px;
+	padding-bottom: 6px;
+
 }

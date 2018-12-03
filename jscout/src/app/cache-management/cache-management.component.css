@@ -15,3 +15,8 @@ mat-card.splash-card mat-card-header {
 	margin-bottom: 10px;
 	text-align: center;
 }
+
+.splash-button button {
+	max-width: 210px;
+	width: 100%;
+}
