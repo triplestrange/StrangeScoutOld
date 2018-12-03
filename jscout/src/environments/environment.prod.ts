@@ -1,5 +1,5 @@
 export const environment = {
 	production: true,
-	domain: 'localhost'
+	domain: 'localhost',
 	version: 'version'
 };
