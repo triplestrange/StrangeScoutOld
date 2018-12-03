@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 
+// animations
+import {trigger, transition} from '@angular/animations';
+import { leftIn, rightIn } from './app-routing.animations';
+
 // service worker stuff
 import { SwUpdate } from '@angular/service-worker';
 import { interval } from 'rxjs';
@@ -11,12 +15,16 @@ import { ToastrService } from 'ngx-toastr';
 // scouter id service
 import { ScouterService } from './scouter.service';
 
-import { routerTransition } from './app-routing.animations';
-
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
-	animations: [ routerTransition ],
+	animations: [trigger('routerTransition', [
+		// set which animation to play on view change
+		transition('home => cache-management', leftIn),
+		transition('home => run-form', rightIn),
+		transition('cache-management => home', rightIn),
+		transition('run-form => home', leftIn)
+	])],
 	styleUrls: [],
 	providers: [ ScouterService ]
 })
@@ -53,6 +61,7 @@ export class AppComponent implements OnInit {
 		ss.loadScouter();
 	}
 
+	// get current view of a router outlet
 	getState(outlet) {
 		return outlet.activatedRouteData.state;
 	}
