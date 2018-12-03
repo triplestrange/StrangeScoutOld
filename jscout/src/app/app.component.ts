@@ -11,9 +11,12 @@ import { ToastrService } from 'ngx-toastr';
 // scouter id service
 import { ScouterService } from './scouter.service';
 
+import { routerTransition } from './app-routing.animations';
+
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
+	animations: [ routerTransition ],
 	styleUrls: [],
 	providers: [ ScouterService ]
 })
@@ -48,6 +51,10 @@ export class AppComponent implements OnInit {
 
 		// check for and load scouter ID
 		ss.loadScouter();
+	}
+
+	getState(outlet) {
+		return outlet.activatedRouteData.state;
 	}
 
 }

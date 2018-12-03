@@ -6,9 +6,9 @@ import { HomeComponent } from './home/home.component';
 import { CacheManagementComponent } from './cache-management/cache-management.component';
 
 const routes: Routes = [
-	{ path: '', component: HomeComponent },
-	{ path: 'scout', component: RunFormComponent },
-	{ path: 'cache', component: CacheManagementComponent }
+	{ path: '', component: HomeComponent, data: { state: 'home' } },
+	{ path: 'scout', component: RunFormComponent, data: { state: 'run-form' } },
+	{ path: 'cache', component: CacheManagementComponent, data: { state: 'cache-management' } }
 ];
 
 @NgModule({
