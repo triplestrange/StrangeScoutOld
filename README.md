@@ -12,7 +12,7 @@
 ## Docker Compose
 Install [Docker](https://docs.docker.com/install/). Install [Docker Compose](https://docs.docker.com/compose/install/). Clone repo. Make a new `.env` file in the repo root (don't worry, it's in the `.gitignore`) as follows *(do not use quotes!)*:
 
-If you want StrangeScout to talk directly to client's computers over the network (i.e. this is a dedicated server or virtual machine), run `ln -s docker-compose.standalone.yml docker-compose.yml`. If you need this server to be shared with other apps, you'll need a reverse proxy: we recommend [Traefik](https://github.com/containous/traefik). If you are using Traefik, execute `ln -s docker-compose.traefik.yml docker-compose.yml`
+If you want StrangeScout to talk directly to client's computers over the network (i.e. this is a dedicated server or virtual machine), run `ln -s docker-compose.standalone.yml docker-compose.yml`. If you need this server to be shared with other apps, you'll need a reverse proxy: we recommend (and support) [Traefik](https://github.com/containous/traefik). If you are using Traefik, execute `ln -s docker-compose.traefik.yml docker-compose.yml`
 
 ```
 JSCOUT_DOMAIN=<yourdomain.tld>
@@ -21,15 +21,12 @@ STRANGESCOUT_SQL_PASSWD=<$ecure|)assw0rd>
 TRAEFIK_NETWORK=<the_docker_network_traefik_is_on>
 ```
 
-**Run `sudo docker-compose up -d` and sit back.** You're ready to scout... no, you're totally needed for maintenance and support and there's no way you'd have time to scout yourself right ;) HTTPS certs from Let's Encrypt and your SQL database are safely stored in Docker volumes, so you're free to start and stop containers at will, or even delete them!
+**Do `sudo ./build.sh`, then run `sudo docker-compose up -d` and sit back.** You're ready to scout... no, you're totally needed for maintenance and support and there's no way you'd have time to scout yourself right ;) HTTPS certs from Let's Encrypt and your SQL database are safely stored in Docker volumes, so you're free to start and stop containers at will, or even delete them!
 
 **Needless to say, point DNS for `<yourdomain.tld>` to the IP of your server. Ensure that firewalls, AWS security groups, etc. have ports 80, 443, and 3306 (if you want remote SQL access) open. Enjoy!**
 
 ### Traefik Support
-If you want to run using `traefik`, set the `PREFIX`, `MYSQL_PUBLIC_PORT`, and `TRAEFIK_NETWORK` variables in your `.env` file, abd use `sudp docker-compose -f docker-compose.traefik.yml up -d`
-
-### Subcomponents
-Use the READMEs in each subdirectory for build instructions! Have fun!
+If you want to run using `traefik`, you must also set the `PREFIX`, `MYSQL_PUBLIC_PORT`, and `TRAEFIK_NETWORK` variables in your `.env` file.
 
 ## Usage
 ### SQL Access
