@@ -1,9 +1,9 @@
 FROM alpine AS builder
 ARG SS_VERSION
 WORKDIR /strangescout
-RUN apk add --update nodejs nodejs-npm git
+RUN apk add --update nodejs nodejs-npm
 COPY ./ ./
-RUN  sed -i s/version/$SS_VERSION/ src/environments/environment.prod.ts
+RUN  sed -i s/placeholder_ver/$SS_VERSION/ src/environments/environment.prod.ts
 RUN sed -i s/localhost/$JSCOUT_DOMAIN/ src/environments/environment.prod.ts
 RUN npm install -g @angular/cli
 RUN npm update --save

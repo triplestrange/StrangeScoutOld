@@ -5,7 +5,7 @@
 export const environment = {
 	production: false,
 	domain: 'localhost',
-	version: 'version'
+	version: 'placeholder_ver'
 };
 
 /*
