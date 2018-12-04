@@ -10,7 +10,7 @@ RUN npm update --save
 RUN ng build --prod
 
 FROM joshix/caddy:latest
-COPY Caddyfile_traefik /var/www/html/Caddyfile
+COPY Caddyfile-traefik /var/www/html/Caddyfile
 COPY --from=builder /strangescout/dist/jscout /srv
 EXPOSE 80 443
 VOLUME /.caddy/
