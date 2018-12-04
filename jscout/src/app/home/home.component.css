@@ -30,3 +30,9 @@ mat-card.splash-card mat-card-header mat-card-subtitle {
 	padding-bottom: 6px;
 
 }
+
+.footer {
+	color: gray;
+	width: 100%;
+	text-align: center;
+}

@@ -1,5 +1,7 @@
 # JScout
 
+**WARNING: This document is here for historical purposes only and is not being maintained. The instructions contained within may or may not function as intended.**
+
 The modern web frontend to [StrangeScout](https://github.com/strangescout).
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.7.

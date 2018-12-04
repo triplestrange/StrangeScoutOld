@@ -1,4 +1,7 @@
 # GoScout
+
+**WARNING: This document is here for historical purposes only and is not being maintained. The instructions contained within may or may not function as intended.**
+
 [StrangeScout](https://github.com/strangescout) API backend.
 
 ## Building and Deploying with Docker
