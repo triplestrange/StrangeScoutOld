@@ -12,7 +12,7 @@ services:
                           volume:
                                  nocopy: true
                 environment:
-                        JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name!}
+                        JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
                         GOSCOUT_HOST: "goscout"
                 ports:
                         - "80:80"
