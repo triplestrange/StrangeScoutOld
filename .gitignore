@@ -4,3 +4,7 @@
 .tgz
 .txz
 .tbz
+jscout-old
+
+# let the user create this as a symlink
+docker-compose.yml

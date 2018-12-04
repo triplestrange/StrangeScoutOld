@@ -1,28 +1,37 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { AppComponent } from '../app.component';
 
-import { QuestionBase } from '../questions/question-base';
+// toasts
+import { ToastrService } from 'ngx-toastr';
+
+// questions
+import { QuestionBase } from '../question-types/question-base';
 import { QuestionControlService } from '../question-control.service';
+
+// cache service
+import { PayloadStoreService } from '../payload-store.service';
+
+// scouter id service
+import { ScouterService } from '../scouter.service';
+
+// questions
+import { QuestionService } from '../question.service';
 
 @Component({
 	selector: 'app-run-form',
 	templateUrl: './run-form.component.html',
-	providers: [ QuestionControlService ]
+	styleUrls: ['./run-form.component.css'],
+	providers: [ ScouterService, QuestionControlService, QuestionService ]
 })
-
 export class RunFormComponent implements OnInit {
 
-	@Input() scouter: string;
-	@Input() team: number;
-	@Input() run: number;
+	setupQuestions = this.qservice.getSetupQuestions();
+	autoQuestions = this.qservice.getAutoQuestions();
+	teleopQuestions = this.qservice.getTeleopQuestions();
+	endgameQuestions = this.qservice.getEndgameQuestions();
 
-	@Input() setupQuestions: QuestionBase<any>[] = [];
-	@Input() autoQuestions: QuestionBase<any>[] = [];
-	@Input() teleopQuestions: QuestionBase<any>[] = [];
-	@Input() endgameQuestions: QuestionBase<any>[] = [];
-
-	form: FormGroup;
-	initialization: FormGroup;
+	runForm: FormGroup;
 	setupForm: FormGroup;
 	autoForm: FormGroup;
 	teleopForm: FormGroup;
@@ -31,11 +40,26 @@ export class RunFormComponent implements OnInit {
 	// define change event
 	changeEvent = new Event('change');
 
-	constructor(private qcs: QuestionControlService) {  }
+	constructor(private ss: ScouterService, private qcs: QuestionControlService, private toastr: ToastrService, private qservice: QuestionService) {
+		// listeners to trigger notifications
+		window.addEventListener('submitcached', function (e) {
+			toastr.warning('Data cached', 'Unable to contact server');
+		})
+		window.addEventListener('submitsuccess', function (e) {
+			toastr.success('Data successfully submitted!');
+		})
+		window.addEventListener('submitduplicate', function (e) {
+			toastr.warning('Duplicate data not recorded');
+		})
+		window.addEventListener('submiterror', function (e) {
+			// @ts-ignore
+			toastr.error(e.detail, 'ERROR');
+		})
+	}
 
 	ngOnInit() {
-		this.form = new FormGroup({});
-		this.initialization = new FormGroup({Scouter: new FormControl(this.scouter), TeamNumber: new FormControl(this.team), MatchNumber: new FormControl(this.run) });
+		this.runForm = new FormGroup({});
+		// set form groups using QuestionControlService to convert question sets to form groups
 		this.setupForm = this.qcs.toFormGroup(this.setupQuestions);
 		this.autoForm = this.qcs.toFormGroup(this.autoQuestions);
 		this.teleopForm = this.qcs.toFormGroup(this.teleopQuestions);
@@ -53,35 +77,57 @@ export class RunFormComponent implements OnInit {
 		var second = dt.getUTCSeconds();
 		// create timestamp object
 		var timestamp = {Timestamp: String(year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second)}
+		// get scouter
+		var scouter = {Scouter: this.ss.getScouter()}
 		// create JSON payload from all form objects
-		return JSON.stringify(Object.assign({}, this.initialization.value, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp));
+		return JSON.stringify(this.removeFalsy(Object.assign({}, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp, scouter)));
 	}
+
+	// removes nulls from object
+	removeFalsy = (obj) => {
+		let newObj = {};
+		Object.keys(obj).forEach((prop) => {
+			if (obj[prop]) { newObj[prop] = obj[prop]; }
+		});
+		return newObj;
+	};
 
 	// submit function
 	onSubmit() {
+	
+		// we have to set a variable to payload because it's impossible to cal `this.payload` within the `onreadystatechange` function
+		// use this value for all operations, even if you can access `this.payload` (ex. `xhr.send`)
+		var payload = this.payload;
+
 		var xhr = new XMLHttpRequest();
-
-		// POST to /api/submitmatch asynchronously
-		xhr.open("POST", '/api/submitmatch', true);
-
+		
+		// PUT asynchronously
+		xhr.open("PUT", '/api/team/' + this.setupForm.value.TeamNumber + '/match/' + this.setupForm.value.MatchNumber, true);
 		//Send the proper header information along with the request
-		xhr.setRequestHeader("Content-type", "text/plain");
-
+		xhr.setRequestHeader("Content-type", "application/json");
 		xhr.onreadystatechange = function() {
 			//Call a function when the state changes.
-			if (xhr.readyState == XMLHttpRequest.DONE && (xhr.status <= 299 || xhr.status == 409)) {
-				// Clear form. Data is either recorded or duplicate.
-				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
-				location.reload();
+			if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 0) {
+				PayloadStoreService.storePayload(payload);
+				window.dispatchEvent(new CustomEvent('submitcached'));
+			} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status <= 299) {
+				window.dispatchEvent(new CustomEvent('submitsuccess'));
+			} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 409) {
+				window.dispatchEvent(new CustomEvent('submitduplicate'));
 			} else if (xhr.readyState == XMLHttpRequest.DONE && xhr.status >= 300) {
-				// Don't clear form.
-				alert(`Message from server: ${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`);
+				var serverresponse = `${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`
+				window.dispatchEvent(new CustomEvent('submiterror', {detail: serverresponse}));
+				// also cache response
+				PayloadStoreService.storePayload(payload);
+				window.dispatchEvent(new CustomEvent('submitcached'));
 			}
 		}
 		// send POST request
-		xhr.send(this.payload);
+		xhr.send(payload);
 		// debugging alerts
 			// alert(this.payload);
 			// alert(xhr.responseText);
+		
 	}
+
 }

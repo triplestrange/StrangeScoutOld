@@ -1,0 +1,19 @@
+/* Main Styles */
+
+.title-bar {
+	position: fixed;
+	z-index: 10;
+	box-shadow: 0 7px 8px rgba(0, 0, 0, 0.12);
+}
+
+.main-content {
+	padding-top: 70px;
+}
+
+.footer {
+	margin-top: auto;
+	flex-grow: 1;
+	width: 100%;
+	color: gray;
+	text-align: right;
+}

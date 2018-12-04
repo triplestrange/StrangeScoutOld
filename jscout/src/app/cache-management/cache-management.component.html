@@ -1,0 +1,16 @@
+<div class="center-container">
+	<mat-card class="splash-card">
+		<mat-card-header>
+			<mat-card-title>Cache Management</mat-card-title>
+			<mat-card-subtitle>{{ storeLength }} cached payloads</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content class="center-container">
+			<div class="splash-button">
+				<button mat-raised-button color="primary" [disabled]="storeLength < 1" (click)="submitCache()">Submit Cached Payloads</button>
+			</div>
+			<div class="splash-button">
+				<button mat-raised-button color="warn" [disabled]="storeLength < 1" (click)="deleteCache()">Clear Cached Payloads</button>
+			</div>
+		</mat-card-content>
+	</mat-card>
+</div>

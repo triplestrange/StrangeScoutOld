@@ -1,76 +1,69 @@
-import { Component } from '@angular/core';
-import { PlatformLocation } from '@angular/common'
+import { Component, OnInit } from '@angular/core';
+import { environment } from '../environments/environment';
+
+// animations
+import {trigger, transition} from '@angular/animations';
+import { leftIn, rightIn } from './app-routing.animations';
+
+// service worker stuff
 import { SwUpdate } from '@angular/service-worker';
 import { interval } from 'rxjs';
-import { QuestionService } from './question.service';
-import { CookieService } from 'ngx-cookie-service';
-import { environment } from '../environments/environment';
+
+// toasts
+import { ToastrService } from 'ngx-toastr';
+
+// scouter id service
+import { ScouterService } from './scouter.service';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
+	animations: [trigger('routerTransition', [
+		// set which animation to play on view change
+		transition('home => cache-management', leftIn),
+		transition('home => run-form', rightIn),
+		transition('cache-management => home', rightIn),
+		transition('run-form => home', leftIn)
+	])],
 	styleUrls: ['./app.component.css'],
-	providers:  [QuestionService]
+	providers: [ ScouterService ]
 })
 
-export class AppComponent {
-	setupQuestions: any[];
-	autoQuestions: any[];
-	teleopQuestions: any[];
-	endgameQuestions: any[];
-
+export class AppComponent implements OnInit {
+	// base information strings
 	title = 'StrangeScout';
 	year = '2018';
 	game = 'Power Up';
 
-	visiblePage = 'splash';
-
+	// string for the scouter name
 	scouter: string;
-	team: number;
-	run: number;
 
-	constructor(private location: PlatformLocation, qservice: QuestionService, private updates: SwUpdate, private cookieService: CookieService) {
+	ngOnInit() {
+		navigator.serviceWorker.register('/ngsw-worker.js')
+	}
 
-		location.onPopState(() => {
-			console.log('pressed back!');
-			this.visiblePage = 'splash';
-		}); history.pushState({}, '');
-
-		this.setupQuestions = qservice.getSetupQuestions();
-		this.autoQuestions = qservice.getAutoQuestions();
-		this.teleopQuestions = qservice.getTeleopQuestions();
-		this.endgameQuestions = qservice.getEndgameQuestions();
-
-		updates.available.subscribe(event => {
+	constructor(private ss: ScouterService, private toastr: ToastrService, private updates: SwUpdate) {
+		// notify of updates
+		this.updates.available.subscribe(event => {
 			console.log('current version is', event.current);
 			console.log('available version is', event.available);
-			if(window.confirm("New version available. Load New Version?")) {
-				window.location.reload();
-			}
+			this.toastr.info('Reload for changes','Updates available!');
 		});
-		updates.activated.subscribe(event => {
+		// log after updates
+		this.updates.activated.subscribe(event => {
 			console.log('old version was', event.previous);
 			console.log('new version is', event.current);
 		});
-		interval(30000).subscribe(() => updates.checkForUpdate());
+		// check for updates
+		interval(30000).subscribe(() => this.updates.checkForUpdate());
 
-		if(cookieService.get('scouter') == '') {
-			do {
-				this.scouter = window.prompt("Enter scouter name:");
-			} while(this.scouter == null || this.scouter == "" );
-			var expiredDate = new Date();
-			expiredDate.setDate( expiredDate.getDate() + 3 );
-			cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
-		} else {
-			this.scouter = cookieService.get('scouter')
-		}
+		// check for and load scouter ID
+		ss.loadScouter();
 	}
 
-	resetScouter() {
-		if (window.confirm('Are you sure?')) {
-			this.cookieService.delete('scouter');
-			location.reload();
-		}
+	// get current view of a router outlet
+	getState(outlet) {
+		return outlet.activatedRouteData.state;
 	}
 
 }

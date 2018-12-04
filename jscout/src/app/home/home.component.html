@@ -1,0 +1,19 @@
+<div class="center-container">
+<mat-card class="splash-card">
+	<mat-card-header>
+		<mat-card-title>Welcome back {{ this.scouter }}!</mat-card-title>
+		<mat-card-subtitle><button mat-button (click)="editScouter()">Edit scouter name <mat-icon id="edit-scouter">edit</mat-icon></button></mat-card-subtitle>
+	</mat-card-header>
+	<mat-card-content class="center-container">
+		<div class="splash-button">
+			<a routerLink="scout" routerLinkActive="active"><button mat-raised-button color="primary">Scout a Match</button></a>
+		</div>
+		<div class="splash-button">
+			<a routerLink="cache" routerLinkActive="active"><button mat-raised-button color="warn">Manage Cached Data</button></a>
+		</div>
+	</mat-card-content>
+</mat-card>
+<div class="footer">
+	StrangeScout v{{ version }}
+</div>
+</div>

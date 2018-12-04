@@ -1,0 +1,32 @@
+# MAIN HOST CONFIG
+*:80 {
+	
+	ext .html .htm .php
+	# allow "clean" URLs without pesky extensions that might scare Windows users...
+	# a URL without extension will be autocompleted to the first-working extension specified above
+	
+	gzip {
+		level 5
+	}
+	# enable automatic gzip compression if client-supported
+
+	root /srv
+
+	# for Docker logs
+	log stdout
+	errors stdout
+	
+	## REVERSE PROXY CONFIG
+	proxy /api/ {$GOSCOUT_HOST}:15338 {
+		without /api
+	}
+
+
+	# A GoScout API server must be exposed to this container on port 15338.
+
+	# for Docker logs
+	log stdout
+	errors stdout
+
+	header / Cache-Control "public"
+}

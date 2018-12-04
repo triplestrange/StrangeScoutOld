@@ -1,0 +1,38 @@
+/* Home Styles */
+
+mat-card.splash-card {
+	max-width: 350px;
+	width: 85%;
+	margin-top: 50px;
+}
+
+mat-card.splash-card mat-card-header {
+	display: block;
+	text-align: center;
+}
+
+mat-card.splash-card mat-card-header mat-card-subtitle {
+	margin-top: -15px;
+}
+
+.splash-button {
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+.splash-button button {
+	max-width: 185px;
+	width: 100%;
+}
+
+#edit-scouter {
+	transform: scale(0.65);
+	padding-bottom: 6px;
+
+}
+
+.footer {
+	color: gray;
+	width: 100%;
+	text-align: center;
+}

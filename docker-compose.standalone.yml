@@ -1,7 +1,7 @@
-version: "3.2"
+version: "3.5"
 services:
         jscout:
-                image: team1533/jscout:production
+                build: jscout/
                 restart: always
                 depends_on:
                         - "goscout"
@@ -12,26 +12,23 @@ services:
                           volume:
                                  nocopy: true
                 environment:
-                        JSCOUT_DOMAIN:
+                        JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
                         GOSCOUT_HOST: "goscout"
                 ports:
                         - "80:80"
                         - "443:443"
         goscout:
-                image: team1533/goscout:production
+                build: goscout/
                 restart: always
                 depends_on:
                         - "strangedb"
                 environment:
                         GOSCOUT_SQL_USER: "strangescout"
-                        GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD}"
+                        GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD?did not set password}"
                         GOSCOUT_SQL_HOST: "strangedb"
                         GOSCOUT_EVENT_HARDCODE:
                 expose:
                         - "15338"
-                ports:
-                        - "15338:15338"
-        
         strangedb:
                 image: mariadb
                 restart: always
@@ -42,13 +39,15 @@ services:
                 environment:
                         MYSQL_RANDOM_ROOT_PASSWORD: "yes"
                         MYSQL_DATABASE: "strangescout"
-                        MYSQL_PASSWORD: "${STRANGESCOUT_SQL_PASSWD}"
+                        MYSQL_PASSWORD: "${STRANGESCOUT_SQL_PASSWD?did not set password!}"
                         MYSQL_USER: "strangescout" 
                 expose:
                         - "3306"
                 ports:
-                        - "3306:3306"
+                        - "{$MYSQL_PUBLIC_PORT:-3306}:3306"
 
 volumes:
         strangedb:
-        jscout_caddydir:
+                name: {$PREFIX-prod}_strangedb
+        jscout_caddydir: # stores certs--if you don't persist these you will QUICKLY hit a Let's Encrypt ratelimit!
+                name: ${PREFIX-prod}_jscout_caddydir

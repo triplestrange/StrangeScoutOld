@@ -1,18 +1,18 @@
 import { Injectable }       from '@angular/core';
 
-import { QuestionBase }     from './questions/question-base';
-import { CheckboxQuestion }  from './questions/question-checkbox';
-import { DropdownQuestion } from './questions/question-dropdown';
-import { NumberQuestion }  from './questions/question-number';
-import { TextareaQuestion } from './questions/question-textarea';
-import { TextboxQuestion }  from './questions/question-textbox';
+import { QuestionBase }     from './question-types/question-base';
+import { CheckboxQuestion }  from './question-types/question-checkbox';
+import { DropdownQuestion } from './question-types/question-dropdown';
+import { NumberQuestion }  from './question-types/question-number';
+import { TextareaQuestion } from './question-types/question-textarea';
+import { TextboxQuestion }  from './question-types/question-textbox';
 
 @Injectable()
 export class QuestionService {
 
+	// DO NOT EDIT THESE QUESTIONS
 	getSetupQuestions() {
 		let questions: QuestionBase<any>[] = [
-/*
 			new NumberQuestion({
 				key: 'TeamNumber',
 				label: 'Team Number',
@@ -20,7 +20,6 @@ export class QuestionService {
 				order: 1,
 				min: 1
 			}),
-
 			new NumberQuestion({
 				key: 'MatchNumber',
 				label: 'Match Number',
@@ -28,7 +27,6 @@ export class QuestionService {
 				order: 2,
 				min: 1
 			}),
-*/
 			new DropdownQuestion({
 				key: 'StartPosition',
 				label: 'Robot Starting Position',
@@ -44,11 +42,12 @@ export class QuestionService {
 				required: true,
 				order: 3
 			})
-
 		];
 		return questions.sort((a, b) => a.order - b.order);
 	}
+	// ================================================================================
 
+	// Autonomous period questions
 	getAutoQuestions() {
 		let questions: QuestionBase<any>[] = [
 
@@ -69,7 +68,7 @@ export class QuestionService {
 
 			new NumberQuestion({
 				key: 'FailedAutoSwitchCubes',
-				label: 'Missed Autonomous Power Cubes on Switch',
+				label: 'Missed Auto Power Cubes on Switch',
 				tickers: true,
 				min: 0,
 				value: 0,
@@ -87,7 +86,7 @@ export class QuestionService {
 
 			new NumberQuestion({
 				key: 'FailedAutoScaleCubes',
-				label: 'Missed Autonomous Power Cubes on Scale',
+				label: 'Missed Auto Power Cubes on Scale',
 				tickers: true,
 				min: 0,
 				value: 0,
@@ -107,6 +106,7 @@ export class QuestionService {
 		return questions.sort((a, b) => a.order - b.order);
 	}
 
+	// Teleop period questions
 	getTeleopQuestions() {
 		let questions: QuestionBase<any>[] = [
 
@@ -159,6 +159,7 @@ export class QuestionService {
 		return questions.sort((a, b) => a.order - b.order);
 	}
 
+	// Endgame questions
 	getEndgameQuestions() {
 		let questions: QuestionBase<any>[] = [
 
