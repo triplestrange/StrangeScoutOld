@@ -34,6 +34,4 @@
 	# for Docker logs
 	log stdout
 	errors stdout
-
-	header / Cache-Control "public"
 }
