@@ -32,6 +32,7 @@ import { RunFormComponent } from './run-form/run-form.component';
 import { FormBlockComponent } from './form-block/form-block.component';
 import { HomeComponent } from './home/home.component';
 import { CacheManagementComponent } from './cache-management/cache-management.component';
+import { DataComponent } from './data/data.component';
 
 @NgModule({
 	declarations: [
@@ -39,7 +40,8 @@ import { CacheManagementComponent } from './cache-management/cache-management.co
 		RunFormComponent,
 		FormBlockComponent,
 		HomeComponent,
-		CacheManagementComponent
+		CacheManagementComponent,
+		DataComponent
 	],
 	imports: [
 		BrowserModule,

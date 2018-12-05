@@ -21,8 +21,10 @@ import { ScouterService } from './scouter.service';
 	animations: [trigger('routerTransition', [
 		// set which animation to play on view change
 		transition('home => cache-management', leftIn),
+		transition('home => data', leftIn),
 		transition('home => run-form', rightIn),
 		transition('cache-management => home', rightIn),
+		transition('data => home', rightIn),
 		transition('run-form => home', leftIn)
 	])],
 	styleUrls: ['./app.component.css'],
