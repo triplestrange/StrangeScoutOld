@@ -25,23 +25,21 @@ export class DataComponent implements OnInit {
 	}
 
 	loadEvents() {
-		var response = this.query.getEvents(this.team)
-		console.log(response)
-		if (this.isJSON(response)) {
-			this.events = JSON.parse(response)
-		} else {
-			this.events = []
-		}
+		this.query.getEvents(this.team, function(response) {
+			if (this.isJSON(response)) {
+				this.events = JSON.parse(response)
+			} else {
+				this.events = []
+			}
+		})
 	}
 
 	isJSON(j: string) {
 		try {
 			JSON.parse(j)
 		} catch(e) {
-			console.log("no")
 			return false
 		}
-		console.log("yes")
 		return true
 	}
 }

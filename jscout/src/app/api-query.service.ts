@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ApiQueryService {
 
-	getEvents(team: string): any {
+	getEvents(team: string, callback) {
 		var xhr = new XMLHttpRequest();
 		var requestPath: string;
 		if (parseInt(team) == 0) {
@@ -16,13 +16,13 @@ export class ApiQueryService {
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
 				if (xhr.status == 200) {
-					return xhr.responseText;
+					callback(xhr.responseText)
 				} else {
-					return '[]'
+					callback('[]')
 				}
 			}
 		}
-		xhr.open('GET', requestPath, true)
+		xhr.open('GET', requestPath, false)
 		xhr.send()
 	}
 
