@@ -17,7 +17,13 @@ export class DataComponent implements OnInit {
 	match: string;
 
 	constructor(private query: ApiQueryService) {
+		this.event = "all"
+		this.team = "0"
+		this.match = "0"
+
 		this.loadEvents()
+		this.loadTeams()
+		this.loadMatches()
 	}
 
 	ngOnInit() {
@@ -30,6 +36,28 @@ export class DataComponent implements OnInit {
 				self.events = JSON.parse(response)
 			} else {
 				self.events = []
+			}
+		})
+	}
+
+	loadTeams() {
+		var self = this
+		this.query.getTeams(this.event, this.match, function(response) {
+			if (self.isJSON(response)) {
+				self.teams = JSON.parse(response)
+			} else {
+				self.teams = []
+			}
+		})
+	}
+
+	loadMatches() {
+		var self = this
+		this.query.getMatches(this.event, this.team, function(response) {
+			if (self.isJSON(response)) {
+				self.matches = JSON.parse(response)
+			} else {
+				self.matches = []
 			}
 		})
 	}
