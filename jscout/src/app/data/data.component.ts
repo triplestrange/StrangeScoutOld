@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiQueryService } from '../api-query.service';
-import { query } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-data',
@@ -25,11 +24,12 @@ export class DataComponent implements OnInit {
 	}
 
 	loadEvents() {
+		var self = this
 		this.query.getEvents(this.team, function(response) {
-			if (this.isJSON(response)) {
-				this.events = JSON.parse(response)
+			if (self.isJSON(response)) {
+				self.events = JSON.parse(response)
 			} else {
-				this.events = []
+				self.events = []
 			}
 		})
 	}
