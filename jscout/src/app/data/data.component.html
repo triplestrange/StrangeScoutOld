@@ -4,23 +4,23 @@
 		<mat-card-title>Data Selection</mat-card-title>
 	</mat-card-header>
 	<mat-form-field>
-			<mat-select placeholder="Select Event" [(ngModel)]="event">
+			<mat-select placeholder="Select Event" [(ngModel)]="event" (ngModelChange)="loadTeams(); loadMatches();">
 				<!-- loop through all options -->
-				<mat-option value="">All Events</mat-option>
+				<mat-option value="all">All Events</mat-option>
 				<mat-option *ngFor="let event of events" [value]="event">{{ event }}</mat-option>
 			</mat-select>
 		</mat-form-field>
 		<mat-form-field>
-			<mat-select placeholder="Select Team" [(ngModel)]="team">
+			<mat-select placeholder="Select Team" [(ngModel)]="team" (ngModelChange)="loadEvents(); loadMatches();">
 				<!-- loop through all options -->
-				<mat-option selected="selected" value="">All Teams</mat-option>
+				<mat-option selected="selected" value="0">All Teams</mat-option>
 				<mat-option *ngFor="let team of teams" [value]="team">{{ team }}</mat-option>
 			</mat-select>
 		</mat-form-field>
 		<mat-form-field>
-			<mat-select placeholder="Select Match" [(ngModel)]="match">
+			<mat-select placeholder="Select Match" [(ngModel)]="match" (ngModelChange)="loadTeams();">
 				<!-- loop through all options -->
-				<mat-option selected="selected" value="">All Matches</mat-option>
+				<mat-option selected="selected" value="0">All Matches</mat-option>
 				<mat-option *ngFor="let match of matches" [value]="match">{{ match }}</mat-option>
 			</mat-select>
 		</mat-form-field>

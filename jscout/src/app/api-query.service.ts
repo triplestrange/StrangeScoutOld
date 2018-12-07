@@ -9,9 +9,9 @@ export class ApiQueryService {
 		var xhr = new XMLHttpRequest();
 		var requestPath: string;
 		if (parseInt(team) == 0) {
-			requestPath = "/api/team/" + team + "/events"
-		} else {
 			requestPath = "/api/events"
+		} else {
+			requestPath = "/api/team/" + team + "/events"
 		}
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
@@ -44,6 +44,7 @@ export class ApiQueryService {
 					callback(xhr.responseText)
 				} else {
 					callback('[]')
+					return
 				}
 			}
 		}
@@ -62,6 +63,7 @@ export class ApiQueryService {
 			}
 		} else {
 			callback('[]')
+			return
 		}
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
@@ -69,6 +71,7 @@ export class ApiQueryService {
 					callback(xhr.responseText)
 				} else {
 					callback('[]')
+					return
 				}
 			}
 		}

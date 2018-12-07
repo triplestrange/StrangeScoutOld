@@ -8,19 +8,23 @@ import { ApiQueryService } from '../api-query.service';
 })
 export class DataComponent implements OnInit {
 
+	// sets
 	events: string[]
 	teams: string[]
 	matches: string[]
 
+	// selection
 	event: string;
 	team: string;
 	match: string;
 
 	constructor(private query: ApiQueryService) {
+		// default selection
 		this.event = "all"
 		this.team = "0"
 		this.match = "0"
 
+		// initial index loads
 		this.loadEvents()
 		this.loadTeams()
 		this.loadMatches()
