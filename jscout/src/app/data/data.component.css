@@ -29,3 +29,9 @@ th, td {
 }
 
 tr:nth-child(even){background-color: #f2f2f2}
+
+button.download-csv {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	width: 200px;
+}
