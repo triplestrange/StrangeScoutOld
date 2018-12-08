@@ -128,7 +128,7 @@ export class ApiQueryService {
 						if (!response.startsWith("[")) {
 							response = "[" + response
 						}
-						if (!response.startsWith("[")) {
+						if (!response.endsWith("]")) {
 							response = response + "]"
 						}
 					}
