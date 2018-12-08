@@ -66,6 +66,10 @@ export class DataComponent implements OnInit {
 		})
 	}
 
+	downloadQuery() {
+		window.open(this.query.getQueryPath(this.event, this.team, this.match))
+	}
+
 	isJSON(j: string) {
 		try {
 			JSON.parse(j)

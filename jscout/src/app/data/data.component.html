@@ -1,5 +1,5 @@
 <div class="center-container">
-<mat-card class="splash-card center-container">
+	<mat-card class="splash-card center-container">
 	<mat-card-header>
 		<mat-card-title>Data Selection</mat-card-title>
 	</mat-card-header>
@@ -24,5 +24,6 @@
 				<mat-option *ngFor="let match of matches" [value]="match">{{ match }}</mat-option>
 			</mat-select>
 		</mat-form-field>
-</mat-card>
+	</mat-card>
+	<button mat-raised-button color="primary" (click)="downloadQuery()">Download CSV</button>
 </div>

@@ -79,8 +79,7 @@ export class ApiQueryService {
 		xhr.send()
 	}
 
-	getQuery(event: string, team: string, match: string, callback) {
-		var xhr = new XMLHttpRequest();
+	getQueryPath(event: string, team: string, match: string) {
 		var requestPath: string;
 		if (event == "all") {
 			// all events
@@ -113,19 +112,32 @@ export class ApiQueryService {
 				}
 			}
 		}
+		return requestPath
+	}
+
+	getQuery(event: string, team: string, match: string, json: boolean, callback) {
+		var xhr = new XMLHttpRequest();
+		var requestPath: string;
+		requestPath = this.getQueryPath(event, team, match)
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
 				if (xhr.status == 200) {
 					callback(xhr.responseText)
 				} else {
-					callback('[]')
+					if (json) {
+						callback('[]')
+					} else {
+						callback('')
+					}
 					return
 				}
 			}
 		}
 		xhr.open('GET', requestPath, true)
 		// need this to get JSON back
-		xhr.setRequestHeader('Accept', 'application/json')
+		if (json) {
+			xhr.setRequestHeader('Accept', 'application/json')
+		}
 		xhr.send()
 	}
 
