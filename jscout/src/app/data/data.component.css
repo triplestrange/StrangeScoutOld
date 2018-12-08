@@ -1,0 +1,37 @@
+/* Data Styles */
+
+.center-container {
+	flex-flow: column;
+}
+
+mat-card.splash-card mat-card-header {
+	display: block;
+	text-align: center;
+}
+
+mat-card.table-card {
+	max-width: 85%;
+}
+
+div.hscroll {
+	width: 100%;
+	height: auto;
+	overflow: scroll;
+	overflow-y:hidden;
+	-webkit-overflow-scrolling: touch;
+}
+
+th, td {
+	text-align: left;
+	padding: 8px;
+	word-wrap: normal;
+	min-width: 175px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+button.download-csv {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	width: 200px;
+}

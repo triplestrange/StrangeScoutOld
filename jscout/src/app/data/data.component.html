@@ -1,0 +1,41 @@
+<div class="center-container">
+	<mat-card class="splash-card center-container">
+		<mat-card-header>
+			<mat-card-title>Data Selection</mat-card-title>
+		</mat-card-header>
+		<mat-form-field>
+			<mat-select placeholder="Select Event" [(ngModel)]="event" (ngModelChange)="loadTeams(); loadMatches(); loadQueryData();">
+				<!-- loop through all options -->
+				<mat-option value="">All Events</mat-option>
+				<mat-option *ngFor="let event of events" [value]="event">{{ event }}</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-select placeholder="Select Team" [(ngModel)]="team" (ngModelChange)="loadEvents(); loadMatches(); loadQueryData();">
+				<!-- loop through all options -->
+				<mat-option value="">All Teams</mat-option>
+				<mat-option *ngFor="let team of teams" [value]="team">{{ team }}</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field>
+			<mat-select placeholder="Select Match" [(ngModel)]="match" (ngModelChange)="loadTeams(); loadQueryData();">
+				<!-- loop through all options -->
+				<mat-option value="">All Matches</mat-option>
+				<mat-option *ngFor="let match of matches" [value]="match">{{ match }}</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</mat-card>
+	<mat-card class="table-card">
+		<div class="hscroll">
+			<table>
+				<tr>
+					<th *ngFor="let key of keys">{{ key }}</th>
+				</tr>
+				<tr *ngFor="let run of queryData">
+					<td *ngFor="let value of getValues(run)">{{ value }}</td>
+				</tr>
+			</table>
+		</div>
+	</mat-card>
+	<button mat-raised-button color="primary" class="download-csv" (click)="downloadQuery()">Download CSV</button>
+</div>
