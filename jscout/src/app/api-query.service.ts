@@ -8,7 +8,7 @@ export class ApiQueryService {
 	getEvents(team: string, callback) {
 		var xhr = new XMLHttpRequest();
 		var requestPath: string;
-		if (parseInt(team) == 0) {
+		if (team == "") {
 			requestPath = "/api/events"
 		} else {
 			requestPath = "/api/team/" + team + "/events"
@@ -29,10 +29,10 @@ export class ApiQueryService {
 	getTeams(event: string, match: string, callback) {
 		var xhr = new XMLHttpRequest();
 		var requestPath: string;
-		if (event == "all") {
+		if (event == "") {
 				requestPath = "/api/teams"
 		} else {
-			if (parseInt(match) == 0) {
+			if (match == "") {
 				requestPath = "/api/event/" + event + "/teams"
 			} else {
 				requestPath = "/api/event/" + event + "/match/" + match + "/teams"
@@ -55,8 +55,8 @@ export class ApiQueryService {
 	getMatches(event: string, team: string, callback) {
 		var xhr = new XMLHttpRequest();
 		var requestPath: string;
-		if (event != "all") {
-			if (parseInt(team) == 0) {
+		if (event != "") {
+			if (team == "") {
 				requestPath = "/api/event/" + event + "/matches"
 			} else {
 				requestPath = "/api/event/" + event + "/team/" + team + "/matches"
@@ -81,9 +81,9 @@ export class ApiQueryService {
 
 	getQueryPath(event: string, team: string, match: string) {
 		var requestPath: string;
-		if (event == "all") {
+		if (event == "") {
 			// all events
-			if (team == "0") {
+			if (team == "") {
 				// all teams (whole DB)
 				requestPath = "/api/dump"
 			} else {
@@ -92,9 +92,9 @@ export class ApiQueryService {
 			}
 		} else {
 			// specific event
-			if (team == "0") {
+			if (team == "") {
 				// all teams
-				if (match == "0") {
+				if (match == "") {
 					// all matches (full event)
 					requestPath = "/api/event/" + event
 				} else {
@@ -103,7 +103,7 @@ export class ApiQueryService {
 				}
 			} else {
 				// specific team
-				if (match == "0") {
+				if (match == "") {
 					// all matches (team at event)
 					requestPath = "/api/event/" + event + "/team/" + team
 				} else {
