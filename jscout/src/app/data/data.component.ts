@@ -51,6 +51,7 @@ export class DataComponent implements OnInit {
 			} else {
 				self.events = []
 			}
+			self.events.sort()
 		})
 	}
 
@@ -63,6 +64,7 @@ export class DataComponent implements OnInit {
 			} else {
 				self.teams = []
 			}
+			self.teams.sort(function(a, b) { return parseInt(a) - parseInt(b) })
 		})
 	}
 
@@ -75,6 +77,7 @@ export class DataComponent implements OnInit {
 			} else {
 				self.matches = []
 			}
+			self.matches.sort(function(a, b) { return parseInt(a) - parseInt(b) })
 		})
 	}
 
