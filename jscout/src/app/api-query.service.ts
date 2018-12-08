@@ -118,11 +118,21 @@ export class ApiQueryService {
 	getQuery(event: string, team: string, match: string, json: boolean, callback) {
 		var xhr = new XMLHttpRequest();
 		var requestPath: string;
+		var response: string;
 		requestPath = this.getQueryPath(event, team, match)
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4) {
 				if (xhr.status == 200) {
-					callback(xhr.responseText)
+					response = xhr.responseText
+					if (json) {
+						if (!response.startsWith("[")) {
+							response = "[" + response
+						}
+						if (!response.startsWith("[")) {
+							response = response + "]"
+						}
+					}
+					callback(response)
 				} else {
 					if (json) {
 						callback('[]')
