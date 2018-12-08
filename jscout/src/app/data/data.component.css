@@ -10,7 +10,7 @@ mat-card.splash-card mat-card-header {
 }
 
 mat-card.table-card {
-	width: 85%;
+	max-width: 85%;
 }
 
 div.hscroll {

@@ -25,8 +25,9 @@
 			</mat-select>
 		</mat-form-field>
 	</mat-card>
-	<mat-card *ngIf="queryData.length" class="table-card">
-		<div class="hscroll">
+	<mat-card class="table-card">
+		<mat-spinner *ngIf="!queryData.length"></mat-spinner>
+		<div *ngIf="queryData.length" class="hscroll">
 			<table>
 				<tr>
 					<th *ngFor="let key of keys">{{ key }}</th>
