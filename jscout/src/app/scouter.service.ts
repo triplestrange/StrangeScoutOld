@@ -6,7 +6,7 @@ import { environment } from '../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ScouterService {
 
@@ -16,30 +16,32 @@ export class ScouterService {
 
 	loadScouter() {
 		// check if there's a scouter name cookie
-		if(this.cookieService.get('scouter') == '') {
+		if (this.cookieService.get('scouter') === '') {
 			// loop to prompt for scouter name
 			do {
-				this.scouter = window.prompt("Enter scouter name:");
-			} while(this.scouter == null || this.scouter == "" );
+				this.scouter = window.prompt('Enter scouter name:');
+			} while (this.scouter === null || this.scouter === '');
 			// set cookie and expire after 3 days (typical competition length)
-			var expiredDate = new Date();
+			const expiredDate = new Date();
 			expiredDate.setDate( expiredDate.getDate() + 3 );
-			this.cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
+			this.cookieService.set('scouter', this.scouter, expiredDate, '/', environment.domain);
 		} else {
 			// load scouter name
-			this.scouter = this.cookieService.get('scouter')
+			this.scouter = this.cookieService.get('scouter');
 		}
 	}
 
 	editScouter() {
 		// same loop as ^
 		do {
-			if (this.scouter == null) {this.scouter = ""}
-			this.scouter = window.prompt("Enter scouter name:", this.scouter);
-		} while(this.scouter == null || this.scouter == "" );
-		var expiredDate = new Date();
+			// if we don't set it to '' it shows as 'null' in the prompt
+			if (this.scouter === null) { this.scouter = ''; }
+			this.scouter = window.prompt('Enter scouter name:', this.scouter);
+		} while (this.scouter === null || this.scouter === '');
+		// set cookie expire date
+		const expiredDate = new Date();
 		expiredDate.setDate( expiredDate.getDate() + 3 );
-		this.cookieService.set('scouter', this.scouter, expiredDate, "/", environment.domain);
+		this.cookieService.set('scouter', this.scouter, expiredDate, '/', environment.domain);
 	}
 
 	getScouter() {

@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
 
 	scouter = this.ss.getScouter();
 	version = environment.version;
-	
+
 	editScouter() {
 		this.ss.editScouter();
 		this.scouter = this.ss.getScouter();

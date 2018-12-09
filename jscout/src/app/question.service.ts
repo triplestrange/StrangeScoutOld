@@ -1,18 +1,18 @@
-import { Injectable }       from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { QuestionBase }     from './question-types/question-base';
-import { CheckboxQuestion }  from './question-types/question-checkbox';
+import { QuestionBase } from './question-types/question-base';
+import { CheckboxQuestion } from './question-types/question-checkbox';
 import { DropdownQuestion } from './question-types/question-dropdown';
-import { NumberQuestion }  from './question-types/question-number';
+import { NumberQuestion } from './question-types/question-number';
 import { TextareaQuestion } from './question-types/question-textarea';
-import { TextboxQuestion }  from './question-types/question-textbox';
+import { TextboxQuestion } from './question-types/question-textbox';
 
 @Injectable()
 export class QuestionService {
 
 	// DO NOT EDIT THESE QUESTIONS
 	getSetupQuestions() {
-		let questions: QuestionBase<any>[] = [
+		const questions: QuestionBase<any>[] = [
 			new NumberQuestion({
 				key: 'TeamNumber',
 				label: 'Team Number',
@@ -49,7 +49,7 @@ export class QuestionService {
 
 	// Autonomous period questions
 	getAutoQuestions() {
-		let questions: QuestionBase<any>[] = [
+		const questions: QuestionBase<any>[] = [
 
 			new CheckboxQuestion({
 				key: 'AutoMovementLine',
@@ -108,7 +108,7 @@ export class QuestionService {
 
 	// Teleop period questions
 	getTeleopQuestions() {
-		let questions: QuestionBase<any>[] = [
+		const questions: QuestionBase<any>[] = [
 
 			new NumberQuestion({
 				key: 'TeleSwitchCubes',
@@ -161,7 +161,7 @@ export class QuestionService {
 
 	// Endgame questions
 	getEndgameQuestions() {
-		let questions: QuestionBase<any>[] = [
+		const questions: QuestionBase<any>[] = [
 
 			new DropdownQuestion({
 				key: 'EndPosition',
