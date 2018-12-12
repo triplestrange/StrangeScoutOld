@@ -12,8 +12,8 @@
 	<label *ngIf="question.controlType != 'checkbox'" [attr.for]="question.key" class="form-label">{{question.label}}</label>
 
 
-	<!-- textbox -->
-	<input matInput *ngSwitchCase="'textbox'" class="" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+	<!-- text -->
+	<input matInput *ngSwitchCase="'text'" class="" [formControlName]="question.key" [id]="question.key" [type]="text">
 
 
 	<!-- number -->
@@ -50,7 +50,7 @@
 	<!-- textarea -->
 	<div *ngSwitchCase="'textarea'">
 		<mat-form-field class="textarea-field">
-			<textarea matInput [formControlName]="question.key" [id]="question.key" [cols]="question.cols" [rows]="question.rows"></textarea>
+			<textarea matInput [formControlName]="question.key" [id]="question.key" [rows]="question.rows"></textarea>
 		</mat-form-field>
 	</div>
 

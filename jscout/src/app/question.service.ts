@@ -5,7 +5,7 @@ import { CheckboxQuestion } from './question-types/question-checkbox';
 import { DropdownQuestion } from './question-types/question-dropdown';
 import { NumberQuestion } from './question-types/question-number';
 import { TextareaQuestion } from './question-types/question-textarea';
-import { TextboxQuestion } from './question-types/question-textbox';
+import { TextQuestion } from './question-types/question-text';
 
 @Injectable()
 export class QuestionService {
@@ -196,7 +196,6 @@ export class QuestionService {
 			new TextareaQuestion({
 				key: 'Notes',
 				label: 'Additional Notes',
-				cols: 40,
 				rows: 5,
 				order: 4
 			})
