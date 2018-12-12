@@ -31,13 +31,13 @@ export class QuestionService {
 				key: 'StartPosition',
 				label: 'Robot Starting Position',
 				options: [
-					{key: '', value: 'Select Starting Position', disabled: true},
-					{key: 'red_1',  value: 'Red 1'},
-					{key: 'red_2',  value: 'Red 2'},
-					{key: 'red_3',   value: 'Red 3'},
-					{key: 'blue_1',  value: 'Blue 1'},
-					{key: 'blue_2',  value: 'Blue 2'},
-					{key: 'blue_3',   value: 'Blue 3'}
+					{value: '', name: 'Select Starting Position', disabled: true},
+					{value: 'red_1',  name: 'Red 1'},
+					{value: 'red_2',  name: 'Red 2'},
+					{value: 'red_3',   name: 'Red 3'},
+					{value: 'blue_1',  name: 'Blue 1'},
+					{value: 'blue_2',  name: 'Blue 2'},
+					{value: 'blue_3',   name: 'Blue 3'}
 				],
 				required: true,
 				order: 3
