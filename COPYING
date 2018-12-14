@@ -19,7 +19,7 @@ current and historical versions of StrangeScout can be found online
 at <https://github.com/triplestrange/StrangeScout/>.
 
 Before contributing to upstream at the above URL (thanks in advance!)
-please read the .CONTRIBUTING.md file, which states that by making any
+please read the ./CONTRIBUTING.md file, which states that by making any
 contribution to our GitHub repository you affirm the Developer
 Certificate of Origin, a legal document affirming that you have
 the rights to license your contributions under the GNU AGPL v3.

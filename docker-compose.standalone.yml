@@ -13,6 +13,7 @@ services:
                                  nocopy: true
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
+                        JSCOUT_LETS_ENCRYPT_EMAIL: ${JSCOUT_LETS_ENCRYPT_EMAIL?did not set the Lets Encrylt email}
                         GOSCOUT_HOST: "goscout"
                 ports:
                         - "80:80"

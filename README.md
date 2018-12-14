@@ -33,6 +33,8 @@ _Excerpted from our [Deployment Guide](https://github.com/triplestrange/StrangeS
 >		PREFIX=<dev> # set if you'd like to set a prefix for the docker images (defaults to prod if not set)
 >	```
 >	- If you're using `traefik`, also set the `TRAEFIK_NETWORK` var
+>	- If you're using a standalone install, also set the `JSCOUT_LETS_ENCRYPT_EMAIL` var
+>		- This specifies the email used to get Lets Encrypt certificates for HTTPS support
 >6. **Run `./build.sh`**
 >7. **Do `docker-compose up -d`** 
 
