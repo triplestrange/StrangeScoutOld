@@ -21,6 +21,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
 // Material Form elements
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -57,6 +59,8 @@ import { DataComponent } from './data/data.component';
 		MatInputModule,
 		MatCheckboxModule,
 		MatSelectModule,
+		MatTableModule,
+		MatSortModule,
 		ToastrModule.forRoot(),
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
 	],

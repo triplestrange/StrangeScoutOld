@@ -27,13 +27,13 @@
 	</mat-card>
 	<mat-card class="table-card">
 		<div class="hscroll">
-			<table>
-				<tr>
-					<th *ngFor="let key of keys">{{ key }}</th>
-				</tr>
-				<tr *ngFor="let run of queryData">
-					<td *ngFor="let value of getValues(run)">{{ value }}</td>
-				</tr>
+			<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+				<ng-container *ngFor="let key of keys" [matColumnDef]="key">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{ key }} </th>
+					<td mat-cell *matCellDef="let item">{{ item[key] }}</td>
+				</ng-container>
+				<tr mat-header-row *matHeaderRowDef="keys"></tr>
+				<tr mat-row *matRowDef="let row; columns: keys;"></tr>
 			</table>
 		</div>
 	</mat-card>
