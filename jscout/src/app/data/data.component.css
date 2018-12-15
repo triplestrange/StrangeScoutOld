@@ -15,9 +15,9 @@ mat-card.table-card {
 
 div.hscroll {
 	width: 100%;
+	max-height: 550px;
 	height: auto;
 	overflow: scroll;
-	overflow-y:hidden;
 	-webkit-overflow-scrolling: touch;
 }
 
