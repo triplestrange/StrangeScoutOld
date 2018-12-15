@@ -25,17 +25,23 @@ th, td {
 	text-align: left;
 	padding: 8px;
 	word-wrap: normal;
-	min-width: 175px;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+tr:nth-child(even) {
+	background-color: #f2f2f2
+}
+
+th.mat-column-TeamNumber, td.mat-column-TeamNumber {
+	padding-left: 8px;
+}
+
+.mat-table-sticky:first-child {
+	border-right: 1px solid #e0e0e0;
+	border-left: 1px solid #e0e0e0;
+}
 
 button.download-csv {
 	margin-top: 10px;
 	margin-bottom: 20px;
 	width: 200px;
-}
-
-th.mat-column-TeamNumber, td.mat-column-TeamNumber {
-	padding-left: 8px;
 }
