@@ -35,3 +35,7 @@ button.download-csv {
 	margin-bottom: 20px;
 	width: 200px;
 }
+
+th.mat-column-TeamNumber, td.mat-column-TeamNumber {
+	padding-left: 8px;
+}

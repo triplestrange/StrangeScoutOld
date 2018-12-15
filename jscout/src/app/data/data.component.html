@@ -28,11 +28,11 @@
 	<mat-card class="table-card">
 		<div class="hscroll">
 			<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-				<ng-container *ngFor="let key of keys" [matColumnDef]="key">
+				<ng-container *ngFor="let key of keys" [matColumnDef]="key" [sticky]="key === 'TeamNumber'">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{ key }} </th>
 					<td mat-cell *matCellDef="let item">{{ item[key] }}</td>
 				</ng-container>
-				<tr mat-header-row *matHeaderRowDef="keys"></tr>
+				<tr mat-header-row *matHeaderRowDef="keys; sticky: true"></tr>
 				<tr mat-row *matRowDef="let row; columns: keys;"></tr>
 			</table>
 		</div>
