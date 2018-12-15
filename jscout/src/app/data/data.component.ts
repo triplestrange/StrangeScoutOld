@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiQueryService } from '../api-query.service';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
 
 @Component({
 	selector: 'app-data',
@@ -42,6 +42,7 @@ export class DataComponent implements OnInit {
 	}
 
 	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild(MatPaginator) paginator: MatPaginator;
 
 	ngOnInit() {
 	}
@@ -113,6 +114,7 @@ export class DataComponent implements OnInit {
 			// set datasource values and sort
 			self.dataSource = new MatTableDataSource(self.queryData);
 			self.dataSource.sort = self.sort;
+			self.dataSource.paginator = self.paginator;
 		});
 	}
 
