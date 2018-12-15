@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiQueryService } from '../api-query.service';
+import {MatSort, MatTableDataSource} from '@angular/material';
 
 @Component({
 	selector: 'app-data',
@@ -22,6 +23,9 @@ export class DataComponent implements OnInit {
 	queryData: {}[];
 	keys: string[];
 
+	// table datasource
+	dataSource: MatTableDataSource<{}>;
+
 	constructor(private query: ApiQueryService) {
 		// default selection
 		this.event = '';
@@ -36,6 +40,8 @@ export class DataComponent implements OnInit {
 		// initial query data load
 		this.loadQueryData();
 	}
+
+	@ViewChild(MatSort) sort: MatSort;
 
 	ngOnInit() {
 	}
@@ -104,6 +110,9 @@ export class DataComponent implements OnInit {
 		this.query.getQuery(this.event, this.team, this.match, true, function(response) {
 			self.queryData = JSON.parse(response);
 			self.keys = Object.keys(self.queryData[0]);
+			// set datasource values and sort
+			self.dataSource = new MatTableDataSource(self.queryData);
+			self.dataSource.sort = self.sort;
 		});
 	}
 
