@@ -34,8 +34,8 @@ import { ScouterService } from './scouter.service';
 export class AppComponent implements OnInit {
 	// base information strings
 	title = 'StrangeScout';
-	year = '2018';
-	game = 'Power Up';
+	year = '2019';
+	game = 'Deep Space';
 
 	// string for the scouter name
 	scouter: string;
