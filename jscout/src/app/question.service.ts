@@ -6,6 +6,7 @@ import { DropdownQuestion } from './question-types/question-dropdown';
 import { NumberQuestion } from './question-types/question-number';
 import { TextareaQuestion } from './question-types/question-textarea';
 import { TextQuestion } from './question-types/question-text';
+import { SliderQuestion } from './question-types/question-slider'
 
 @Injectable()
 export class QuestionService {
@@ -51,55 +52,70 @@ export class QuestionService {
 	getAutoQuestions() {
 		const questions: QuestionBase<any>[] = [
 
-			new CheckboxQuestion({
-				key: 'AutoMovementLine',
-				label: 'Autonomous Movement Line',
+			new SliderQuestion({
+				key: 'SandBottomShipPanel',
+				label: 'Sandstorm Bottom Ship Panel',
+				min: 0,
+				max: 4,
+				value: 0,
+				order: 0
+			}),
+			new SliderQuestion({
+				key: 'SandMiddleShipPanel',
+				label: 'Sandstorm Middle Ship Panel',
+				min: 0,
+				max: 4,
+				value: 0,
 				order: 1
 			}),
-
-			new NumberQuestion({
-				key: 'AutoSwitchCubes',
-				label: 'Autonomous Power Cubes on Switch',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandTopShipPanel',
+				label: 'Sandstorm Top Ship Panel',
 				min: 0,
+				max: 4,
 				value: 0,
 				order: 2
 			}),
-
-			new NumberQuestion({
-				key: 'FailedAutoSwitchCubes',
-				label: 'Missed Auto Power Cubes on Switch',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandCargoBayPanel',
+				label: 'Sandstorm Cargo Bay Panel',
 				min: 0,
+				max: 8,
 				value: 0,
 				order: 3
 			}),
 
-			new NumberQuestion({
-				key: 'AutoScaleCubes',
-				label: 'Autonomous Power Cubes on Scale',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandBottomShipCargo',
+				label: 'Sandstorm Bottom Ship Cargo',
 				min: 0,
+				max: 4,
 				value: 0,
 				order: 4
 			}),
-
-			new NumberQuestion({
-				key: 'FailedAutoScaleCubes',
-				label: 'Missed Auto Power Cubes on Scale',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandMiddleShipCargo',
+				label: 'Sandstorm Middle Ship Cargo',
 				min: 0,
+				max: 4,
 				value: 0,
 				order: 5
 			}),
-
-			new NumberQuestion({
-				key: 'AutoExchange',
-				label: 'Autonomous Power Cubes in Exchange',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandTopShipCargo',
+				label: 'Sandstorm Top Ship Cargo',
 				min: 0,
+				max: 4,
 				value: 0,
 				order: 6
+			}),
+			new SliderQuestion({
+				key: 'SandCargoBayCargo',
+				label: 'Sandstorm Cargo Bay Cargo',
+				min: 0,
+				max: 8,
+				value: 0,
+				order: 7
 			})
 
 		];
@@ -110,49 +126,70 @@ export class QuestionService {
 	getTeleopQuestions() {
 		const questions: QuestionBase<any>[] = [
 
-			new NumberQuestion({
-				key: 'TeleSwitchCubes',
-				label: 'Teleop Power Cubes on Switch',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandBottomShipPanel',
+				label: 'Sandstorm Bottom Ship Panel',
 				min: 0,
+				max: 4,
+				value: 0,
+				order: 0
+			}),
+			new SliderQuestion({
+				key: 'SandMiddleShipPanel',
+				label: 'Sandstorm Middle Ship Panel',
+				min: 0,
+				max: 4,
 				value: 0,
 				order: 1
 			}),
-
-			new NumberQuestion({
-				key: 'FailedTeleSwitchCubes',
-				label: 'Missed Teleop Power Cubes on Switch',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandTopShipPanel',
+				label: 'Sandstorm Top Ship Panel',
 				min: 0,
+				max: 4,
 				value: 0,
 				order: 2
 			}),
-
-			new NumberQuestion({
-				key: 'TeleScaleCubes',
-				label: 'Teleop Power Cubes on Scale',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandCargoBayPanel',
+				label: 'Sandstorm Cargo Bay Panel',
 				min: 0,
+				max: 8,
 				value: 0,
 				order: 3
 			}),
 
-			new NumberQuestion({
-				key: 'FailedTeleScaleCubes',
-				label: 'Missed Teleop Power Cubes on Scale',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandBottomShipCargo',
+				label: 'Sandstorm Bottom Ship Cargo',
 				min: 0,
+				max: 4,
 				value: 0,
 				order: 4
 			}),
-
-			new NumberQuestion({
-				key: 'TeleExchange',
-				label: 'Teleop Power Cubes in Exchange',
-				tickers: true,
+			new SliderQuestion({
+				key: 'SandMiddleShipCargo',
+				label: 'Sandstorm Middle Ship Cargo',
 				min: 0,
+				max: 4,
 				value: 0,
 				order: 5
+			}),
+			new SliderQuestion({
+				key: 'SandTopShipCargo',
+				label: 'Sandstorm Top Ship Cargo',
+				min: 0,
+				max: 4,
+				value: 0,
+				order: 6
+			}),
+			new SliderQuestion({
+				key: 'SandCargoBayCargo',
+				label: 'Sandstorm Cargo Bay Cargo',
+				min: 0,
+				max: 8,
+				value: 0,
+				order: 7
 			})
 
 		];
@@ -164,14 +201,15 @@ export class QuestionService {
 		const questions: QuestionBase<any>[] = [
 
 			new DropdownQuestion({
-				key: 'EndPosition',
-				label: 'Robot End Position',
+				key: 'HabitatPosition',
+				label: 'Robot Habitat Position',
 				options: [
-					{key: 'neither',  value: 'Neither'},
-					{key: 'park',  value: 'Parked'},
-					{key: 'climb',   value: 'Climbed'}
+					{value: '0', name: 'None'},
+					{value: '1', name: 'Level 1'},
+					{value: '2', name: 'Level 2'},
+					{value: '3', name: 'Level 3'}
 				],
-				value: 'neither',
+				value: '0',
 				order: 1
 			}),
 
