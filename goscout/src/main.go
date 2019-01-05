@@ -42,7 +42,6 @@ func startAPI() {
 	e.Use(middleware.Recover())
 
 	// Routes
-	e.GET("/version", version)
 
 	// submission
 	e.PUT("/team/:team/match/:match", submitRun)              // submit using backends coded event
@@ -71,9 +70,4 @@ func startAPI() {
 
 	// Start server
 	e.Logger.Fatal(e.Start(":15338"))
-}
-
-func version(c echo.Context) error {
-	// return API version
-	return c.String(http.StatusOK, "GoScout API v1.0.0a")
 }
