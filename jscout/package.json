@@ -26,6 +26,7 @@
     "@angular/router": "~7.0.0",
     "@angular/service-worker": "~7.0.0",
     "core-js": "^2.5.4",
+    "hammerjs": "^2.0.8",
     "ngx-cookie-service": "^2.0.2",
     "ngx-toastr": "^9.1.1",
     "rxjs": "~6.3.3",

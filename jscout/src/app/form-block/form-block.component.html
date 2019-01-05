@@ -11,6 +11,10 @@
 	<!-- item label (after checkbox before other) -->
 	<label *ngIf="question.controlType != 'checkbox'" [attr.for]="question.key" class="form-label">{{question.label}}</label>
 
+	<!-- slider -->
+	<div>
+		<mat-slider thumbLabel *ngSwitchCase="'slider'" tickInterval="1" class="" [formControlName]="question.key" [id]="question.key" [min]="question.min" [max]="question.max" [value]="question.value"></mat-slider>
+	</div>
 
 	<!-- text -->
 	<input matInput *ngSwitchCase="'text'" class="" [formControlName]="question.key" [id]="question.key" [type]="text">

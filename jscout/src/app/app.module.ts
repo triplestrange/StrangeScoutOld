@@ -28,6 +28,7 @@ import { MatPaginatorModule } from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
+import {MatSliderModule} from '@angular/material/slider';
 
 // Components
 import { AppComponent } from './app.component';
@@ -55,6 +56,7 @@ import { DataComponent } from './data/data.component';
 		MatToolbarModule,
 		MatMenuModule,
 		MatButtonModule,
+		MatSliderModule,
 		MatIconModule,
 		MatCardModule,
 		MatInputModule,
