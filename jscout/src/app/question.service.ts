@@ -52,69 +52,77 @@ export class QuestionService {
 	getAutoQuestions() {
 		const questions: QuestionBase<any>[] = [
 
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandBottomShipPanel',
 				label: 'Sandstorm Bottom Ship Panel',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 0
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandMiddleShipPanel',
 				label: 'Sandstorm Middle Ship Panel',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 1
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandTopShipPanel',
 				label: 'Sandstorm Top Ship Panel',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 2
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandCargoBayPanel',
 				label: 'Sandstorm Cargo Bay Panel',
 				min: 0,
 				max: 8,
 				value: 0,
+				tickers: true,
 				order: 3
 			}),
 
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandBottomShipCargo',
 				label: 'Sandstorm Bottom Ship Cargo',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 4
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandMiddleShipCargo',
 				label: 'Sandstorm Middle Ship Cargo',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 5
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandTopShipCargo',
 				label: 'Sandstorm Top Ship Cargo',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 6
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandCargoBayCargo',
 				label: 'Sandstorm Cargo Bay Cargo',
 				min: 0,
 				max: 8,
 				value: 0,
+				tickers: true,
 				order: 7
 			})
 
@@ -126,69 +134,77 @@ export class QuestionService {
 	getTeleopQuestions() {
 		const questions: QuestionBase<any>[] = [
 
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandBottomShipPanel',
 				label: 'Sandstorm Bottom Ship Panel',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 0
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandMiddleShipPanel',
 				label: 'Sandstorm Middle Ship Panel',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 1
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandTopShipPanel',
 				label: 'Sandstorm Top Ship Panel',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 2
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandCargoBayPanel',
 				label: 'Sandstorm Cargo Bay Panel',
 				min: 0,
 				max: 8,
 				value: 0,
+				tickers: true,
 				order: 3
 			}),
 
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandBottomShipCargo',
 				label: 'Sandstorm Bottom Ship Cargo',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 4
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandMiddleShipCargo',
 				label: 'Sandstorm Middle Ship Cargo',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 5
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandTopShipCargo',
 				label: 'Sandstorm Top Ship Cargo',
 				min: 0,
 				max: 4,
 				value: 0,
+				tickers: true,
 				order: 6
 			}),
-			new SliderQuestion({
+			new NumberQuestion({
 				key: 'SandCargoBayCargo',
 				label: 'Sandstorm Cargo Bay Cargo',
 				min: 0,
 				max: 8,
 				value: 0,
+				tickers: true,
 				order: 7
 			})
 
