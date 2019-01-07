@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
 		this.updates.available.subscribe(event => {
 			console.log('current version is', event.current);
 			console.log('available version is', event.available);
-			this.toastr.info('Reload for changes', 'Updates available!');
+			this.toastr.info('Reload for changes', 'New version available!');
 		});
 		// log after updates
 		this.updates.activated.subscribe(event => {
