@@ -49,9 +49,13 @@
 	</ng-container>
 </mat-card>
 
+<mat-card *ngIf="showForm" style="text-align: center;">
+	<h3>Last Event: {{ lastEvent }}</h3>
+</mat-card>
+
 <mat-card *ngIf="showForm" class="button-card">
 	<div *ngFor="let element of gameElements">
-		<button mat-raised-button *ngIf="showForm && (counter - time) > element.RevealTime" class="element-button" type="button" color="primary" (click)="getElement(element)">{{element.Name}}</button>
+		<button mat-raised-button *ngIf="showForm" class="element-button" type="button" color="primary" [disabled]="(counter - time) < (element.RevealTime + 1) || time < 1" (click)="getElement(element)">{{element.Name}}</button>
 	</div>
 </mat-card>
 

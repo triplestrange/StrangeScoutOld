@@ -85,16 +85,18 @@ export class RunFormComponent implements OnInit {
 		dialogRef.afterClosed().subscribe(result => {
 			// show form body
 			this.showForm = true;
-			// loadout journal entry
-			var entry = new EventJournalEntry;
-			entry.Time = 0;
-			entry.Event = this.load;
-			this.journal.push(entry);
 
 			// if the starting load is not "none"
 			if (this.load !== "none") {
 				// local var of load
 				var load = this.load
+
+				// loadout journal entry
+				var entry = new EventJournalEntry;
+				entry.Time = 0;
+				entry.Event = this.load;
+				this.journal.push(entry);
+				
 				// find the gameElement with a matching top level event to the load value
 				var element = this.gameElements.find(function(item){return item.Event === load})
 				// opens a popup with sub events
@@ -141,6 +143,14 @@ export class RunFormComponent implements OnInit {
 		entry.Event = Event;
 		// add to journal
 		this.journal.push(entry);
+	}
+
+	get lastEvent() {
+		if (this.journal.length > 0) {
+			return this.journal[this.journal.length-1].Event;
+		} else {
+			return "None"
+		}
 	}
 
 	get displayTime() {
