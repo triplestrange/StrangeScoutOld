@@ -176,7 +176,7 @@ export class RunFormComponent implements OnInit {
 		// create JSON payload from all form objects
 		return JSON.stringify(
 			this.removeFalsy(
-				Object.assign({}, setup, {"Journal": this.journal}, end, scouter, timestamp)
+				Object.assign({}, setup, {"Journal": JSON.stringify(this.journal)}, end, scouter, timestamp)
 			)
 		);
 	}
