@@ -171,7 +171,7 @@ export class RunFormComponent implements OnInit {
 		// get scouter
 		const scouter = { Scouter: this.ss.getScouter() };
 		// general data objects
-		const setup = { TeamNumber: this.team, MatchNumber: this.match, StartingPosition: this.start };
+		const setup = { TeamNumber: this.team, MatchNumber: this.match, StartPosition: this.start };
 		const end = { Notes: this.notes }
 		// create JSON payload from all form objects
 		return JSON.stringify(
