@@ -1,13 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { AppComponent } from '../app.component';
+import { Component, OnInit } from '@angular/core';
+
+// dialog imports
+import { MatDialog } from '@angular/material';
+
+// dialog components
+import { BeginMatchDialogComponent } from '../begin-match-dialog/begin-match-dialog.component'
+import { ElementEventDialogComponent } from '../element-event-dialog/element-event-dialog.component'
 
 // toasts
 import { ToastrService } from 'ngx-toastr';
-
-// questions
-import { QuestionBase } from '../question-types/question-base';
-import { QuestionControlService } from '../question-control.service';
 
 // cache service
 import { PayloadStoreService } from '../payload-store.service';
@@ -15,32 +16,48 @@ import { PayloadStoreService } from '../payload-store.service';
 // scouter id service
 import { ScouterService } from '../scouter.service';
 
-// questions
-import { QuestionService } from '../question.service';
+// custom classes
+import { EventJournalEntry, OptionEventChoice, GameElement } from '../run-classes'
+
+// data for the form body
+import { RunFormDataService } from '../run-form-data.service'
 
 @Component({
 	selector: 'app-run-form',
 	templateUrl: './run-form.component.html',
 	styleUrls: ['./run-form.component.css'],
-	providers: [ ScouterService, QuestionControlService, QuestionService ]
+	providers: [ ScouterService ]
 })
 export class RunFormComponent implements OnInit {
 
-	setupQuestions = this.qservice.getSetupQuestions();
-	autoQuestions = this.qservice.getAutoQuestions();
-	teleopQuestions = this.qservice.getTeleopQuestions();
-	endgameQuestions = this.qservice.getEndgameQuestions();
+	// bool to show form contents
+	showForm = false;
 
-	runForm: FormGroup;
-	setupForm: FormGroup;
-	autoForm: FormGroup;
-	teleopForm: FormGroup;
-	endgameForm: FormGroup;
+	// countdown vars
+	time: number;
+	counter = 150;
+	interval = 1000;
+
+	// data to collect
+	team: number;
+	match: number;
+	start: string;
+	load: string;
+	notes = "";
+	// empty journal array
+	journal: EventJournalEntry[] = [];
+
+	// starting positions
+	startingPositions: OptionEventChoice[] = RunFormDataService.startingPositions;
+	// starting configs
+	startingConfigs: OptionEventChoice[] = RunFormDataService.startingConfigs;
+	// define possible events
+	gameElements: GameElement[] = RunFormDataService.gameElements;
 
 	// define change event
 	changeEvent = new Event('change');
 
-	constructor(private ss: ScouterService, private qcs: QuestionControlService, private toastr: ToastrService, private qservice: QuestionService) {
+	constructor(private ss: ScouterService, private toastr: ToastrService, public dialog: MatDialog) {
 		// listeners to trigger notifications
 		window.addEventListener('submitcached', function (e) {
 			toastr.warning('Data cached', 'Unable to contact server');
@@ -58,33 +75,100 @@ export class RunFormComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.runForm = new FormGroup({});
-		// set form groups using QuestionControlService to convert question sets to form groups
-		this.setupForm = this.qcs.toFormGroup(this.setupQuestions);
-		this.autoForm = this.qcs.toFormGroup(this.autoQuestions);
-		this.teleopForm = this.qcs.toFormGroup(this.teleopQuestions);
-		this.endgameForm = this.qcs.toFormGroup(this.endgameQuestions);
+	}
+
+	// on start
+	startMatch() {
+		// popup before match start
+		const dialogRef = this.dialog.open(BeginMatchDialogComponent);
+		// after closing popup
+		dialogRef.afterClosed().subscribe(result => {
+			// show form body
+			this.showForm = true;
+			// loadout journal entry
+			var entry = new EventJournalEntry;
+			entry.Time = 0;
+			entry.Event = this.load;
+			this.journal.push(entry);
+
+			// if the starting load is not "none"
+			if (this.load !== "none") {
+				// local var of load
+				var load = this.load
+				// find the gameElement with a matching top level event to the load value
+				var element = this.gameElements.find(function(item){return item.Event === load})
+				// opens a popup with sub events
+				const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: "250px", disableClose: true, autoFocus: false, data: element});
+				// after the popup is closed
+				dialogRef.afterClosed().subscribe(result => {
+					if (result === "cancel") {
+						// remove last event if canceled
+						this.journal.pop();
+					} else {
+						// new event
+						this.newJournalEntry(result);
+					}
+				});
+			}
+		});
+	}
+
+	// run after a getElement event
+	getElement(element) {
+		// creates a new journal entry for the event specified by the element
+		this.newJournalEntry(element.Event);
+		// opens a popup with sub events
+		const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: "250px", disableClose: true, autoFocus: false, data: element});
+		// after the popup is closed
+		dialogRef.afterClosed().subscribe(result => {
+			if (result === "cancel") {
+				// remove the last event if canceled
+				this.journal.pop();
+			} else {
+				// new event
+				this.newJournalEntry(result);
+			}
+		});
+	}
+
+	// add a new event to the journal
+	newJournalEntry(Event: string) {
+		// new entry of class EventJournalEntry
+		var entry = new EventJournalEntry;
+		// set elapsed time of event
+		entry.Time = this.counter - this.time;
+		// set event name
+		entry.Event = Event;
+		// add to journal
+		this.journal.push(entry);
+	}
+
+	get displayTime() {
+		// get minutes from countdown
+		var minutes = Math.floor(this.time / 60);
+		// get seconds from countdown
+		var seconds = this.time - (minutes * 60);
+		// format countdown to display
+		return minutes + ":" + ("0" + seconds).slice(-2);
 	}
 
 	get payload() {
 		// get timestamp data
-		const dt = new Date();
-		const year = dt.getUTCFullYear();
-		const month = dt.getUTCMonth() + 1;
-		const day = dt.getUTCDate();
-		const hour = dt.getUTCHours();
-		const minute = dt.getUTCMinutes();
-		const second = dt.getUTCSeconds();
+		var now = new Date;
+		var utc_timestamp = Date.UTC(now.getFullYear(),now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
 		// create timestamp object
-		const timestamp = { Timestamp: String(year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second) };
+		const timestamp = { Timestamp: utc_timestamp };
 		// get scouter
 		const scouter = { Scouter: this.ss.getScouter() };
+		// general data objects
+		const setup = { TeamNumber: this.team, MatchNumber: this.match, StartingPosition: this.start };
+		const end = { Notes: this.notes }
 		// create JSON payload from all form objects
 		return JSON.stringify(
 			this.removeFalsy(
-				Object.assign({}, this.setupForm.value, this.autoForm.value, this.teleopForm.value, this.endgameForm.value, timestamp, scouter)
-				)
-			);
+				Object.assign({}, setup, {"Journal": this.journal}, end, scouter, timestamp)
+			)
+		);
 	}
 
 	// removes nulls from object
@@ -105,7 +189,7 @@ export class RunFormComponent implements OnInit {
 		const xhr = new XMLHttpRequest();
 
 		// PUT asynchronously
-		xhr.open('PUT', '/api/team/' + this.setupForm.value.TeamNumber + '/match/' + this.setupForm.value.MatchNumber, true);
+		xhr.open('PUT', '/api/team/' + this.team + '/match/' + this.match, true);
 		// Send the proper header information along with the request
 		xhr.setRequestHeader('Content-type', 'application/json');
 		xhr.onreadystatechange = function() {

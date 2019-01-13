@@ -20,11 +20,11 @@ export class ScouterService {
 			// loop to prompt for scouter name
 			do {
 				this.scouter = window.prompt('Enter scouter name:');
+				// set cookie and expire after 3 days (typical competition length)
+				const expiredDate = new Date();
+				expiredDate.setDate( expiredDate.getDate() + 3 );
+				this.cookieService.set('scouter', this.scouter, expiredDate, '/', environment.domain);
 			} while (this.scouter === null || this.scouter === '');
-			// set cookie and expire after 3 days (typical competition length)
-			const expiredDate = new Date();
-			expiredDate.setDate( expiredDate.getDate() + 3 );
-			this.cookieService.set('scouter', this.scouter, expiredDate, '/', environment.domain);
 		} else {
 			// load scouter name
 			this.scouter = this.cookieService.get('scouter');
@@ -37,11 +37,11 @@ export class ScouterService {
 			// if we don't set it to '' it shows as 'null' in the prompt
 			if (this.scouter === null) { this.scouter = ''; }
 			this.scouter = window.prompt('Enter scouter name:', this.scouter);
+			// set cookie expire date
+			const expiredDate = new Date();
+			expiredDate.setDate( expiredDate.getDate() + 3 );
+			this.cookieService.set('scouter', this.scouter, expiredDate, '/', environment.domain);
 		} while (this.scouter === null || this.scouter === '');
-		// set cookie expire date
-		const expiredDate = new Date();
-		expiredDate.setDate( expiredDate.getDate() + 3 );
-		this.cookieService.set('scouter', this.scouter, expiredDate, '/', environment.domain);
 	}
 
 	getScouter() {

@@ -23,7 +23,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material';
+import {MatPaginatorModule} from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
 // Material Form elements
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -33,19 +34,23 @@ import {MatSliderModule} from '@angular/material/slider';
 // Components
 import { AppComponent } from './app.component';
 import { RunFormComponent } from './run-form/run-form.component';
-import { FormBlockComponent } from './form-block/form-block.component';
 import { HomeComponent } from './home/home.component';
 import { CacheManagementComponent } from './cache-management/cache-management.component';
 import { DataComponent } from './data/data.component';
+import { CounterDirective } from './counter.directive';
+import { BeginMatchDialogComponent } from './begin-match-dialog/begin-match-dialog.component';
+import { ElementEventDialogComponent } from './element-event-dialog/element-event-dialog.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		RunFormComponent,
-		FormBlockComponent,
 		HomeComponent,
 		CacheManagementComponent,
-		DataComponent
+		DataComponent,
+		CounterDirective,
+		BeginMatchDialogComponent,
+		ElementEventDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -65,10 +70,12 @@ import { DataComponent } from './data/data.component';
 		MatTableModule,
 		MatSortModule,
 		MatPaginatorModule,
+		MatDialogModule,
 		ToastrModule.forRoot(),
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
 	],
 	providers: [ CookieService ],
-	bootstrap: [ AppComponent ]
+	bootstrap: [ AppComponent ],
+	entryComponents: [BeginMatchDialogComponent, ElementEventDialogComponent]
 })
 export class AppModule { }
