@@ -29,7 +29,7 @@ func initDB() {
 	defer db.Close()
 
 	// apply schema to DB
-	db.AutoMigrate(&run{})
+	db.AutoMigrate(&dbRun{})
 }
 
 func startAPI() {

@@ -17,12 +17,15 @@ import (
 )
 
 func submitRun(c echo.Context) error {
-	data := &run{}
+	input := apiRun{}
+	data := dbRun{}
 
 	// set data from request body
-	if err := c.Bind(data); err != nil {
+	if err := c.Bind(input); err != nil {
 		return err
 	}
+
+	data = APItoDB(input)
 
 	// set data from request URL
 	team, _ := strconv.Atoi(c.Param("team"))
@@ -61,7 +64,8 @@ func submitRun(c echo.Context) error {
 }
 
 func readRun(c echo.Context) error {
-	data := run{}
+	data := dbRun{}
+	output := apiRun{}
 
 	// connect to DB
 	db, err := gorm.Open("mysql", server)
@@ -76,7 +80,7 @@ func readRun(c echo.Context) error {
 	match, _ := strconv.Atoi(c.Param("match"))
 
 	// query DB
-	if err := db.Where(&run{Event: c.Param("event"), TeamNumber: uint16(team), MatchNumber: uint8(match)}).First(&data).Error; err != nil {
+	if err := db.Where(&dbRun{Event: c.Param("event"), TeamNumber: uint16(team), MatchNumber: uint8(match)}).First(&data).Error; err != nil {
 		// error handling
 		if strings.Contains(err.Error(), "record not found") {
 			return c.String(404, "This record does not exist in the database.")
@@ -84,12 +88,14 @@ func readRun(c echo.Context) error {
 		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
 	}
 
+	output = DBtoAPI(data)
+
 	if c.Request().Header.Get("Accept") == "application/json" {
 		// encode as JSON and return
-		return c.JSON(200, data)
+		return c.JSON(200, output)
 	}
 
-	var records = []run{data}
+	var records = []apiRun{output}
 	// create csv string from struct
 	csv, err := gocsv.MarshalString(records)
 	if err != nil {
@@ -111,7 +117,8 @@ func readRun(c echo.Context) error {
 }
 
 func dumpDB(c echo.Context) error {
-	var response []run
+	var data []dbRun
+	var output []apiRun
 
 	// connect to DB
 	db, err := gorm.Open("mysql", server)
@@ -122,20 +129,24 @@ func dumpDB(c echo.Context) error {
 	defer db.Close()
 
 	// query for list of matches with specified event
-	if err := db.Find(&response).Error; err != nil {
+	if err := db.Find(&data).Error; err != nil {
 		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
 	}
-	if len(response) == 0 {
+	if len(data) == 0 {
 		return c.String(404, "No matching records found in the database.")
+	}
+
+	for i, v := range data {
+		output[i] = DBtoAPI(v)
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
 		// encode as JSON and return
-		return c.JSON(200, response)
+		return c.JSON(200, output)
 	}
 
 	// create csv string from struct
-	csv, err := gocsv.MarshalString(response)
+	csv, err := gocsv.MarshalString(output)
 	if err != nil {
 		return c.String(500, "Unable to convert response to CSV"+err.Error())
 	}
@@ -155,7 +166,8 @@ func dumpDB(c echo.Context) error {
 }
 
 func readEvent(c echo.Context) error {
-	var response []run
+	var data []dbRun
+	var output []apiRun
 
 	// connect to DB
 	db, err := gorm.Open("mysql", server)
@@ -166,20 +178,24 @@ func readEvent(c echo.Context) error {
 	defer db.Close()
 
 	// query for list of matches with specified event
-	if err := db.Where(&run{Event: c.Param("event")}).Find(&response).Error; err != nil {
+	if err := db.Where(&dbRun{Event: c.Param("event")}).Find(&data).Error; err != nil {
 		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
 	}
-	if len(response) == 0 {
+	if len(data) == 0 {
 		return c.String(404, "No matching records found in the database.")
+	}
+
+	for i, v := range data {
+		output[i] = DBtoAPI(v)
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
 		// encode as JSON and return
-		return c.JSON(200, response)
+		return c.JSON(200, output)
 	}
 
 	// create csv string from struct
-	csv, err := gocsv.MarshalString(response)
+	csv, err := gocsv.MarshalString(output)
 	if err != nil {
 		return c.String(500, "Unable to convert response to CSV"+err.Error())
 	}
@@ -199,7 +215,8 @@ func readEvent(c echo.Context) error {
 }
 
 func readTeam(c echo.Context) error {
-	var response []run
+	var data []dbRun
+	var output []apiRun
 	var team, _ = strconv.Atoi(c.Param("team"))
 
 	// connect to DB
@@ -211,20 +228,24 @@ func readTeam(c echo.Context) error {
 	defer db.Close()
 
 	// query for list of matches with specified event
-	if err := db.Where(&run{TeamNumber: uint16(team)}).Find(&response).Error; err != nil {
+	if err := db.Where(&dbRun{TeamNumber: uint16(team)}).Find(&data).Error; err != nil {
 		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
 	}
-	if len(response) == 0 {
+	if len(data) == 0 {
 		return c.String(404, "No matching records found in the database.")
+	}
+
+	for i, v := range data {
+		output[i] = DBtoAPI(v)
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
 		// encode as JSON and return
-		return c.JSON(200, response)
+		return c.JSON(200, output)
 	}
 
 	// create csv string from struct
-	csv, err := gocsv.MarshalString(response)
+	csv, err := gocsv.MarshalString(output)
 	if err != nil {
 		return c.String(500, "Unable to convert response to CSV"+err.Error())
 	}
@@ -244,7 +265,8 @@ func readTeam(c echo.Context) error {
 }
 
 func readMatch(c echo.Context) error {
-	var response []run
+	var data []dbRun
+	var output []apiRun
 	var match, _ = strconv.Atoi(c.Param("match"))
 
 	// connect to DB
@@ -256,20 +278,24 @@ func readMatch(c echo.Context) error {
 	defer db.Close()
 
 	// query for list of matches with specified event
-	if err := db.Where(&run{Event: c.Param("event"), MatchNumber: uint8(match)}).Find(&response).Error; err != nil {
+	if err := db.Where(&dbRun{Event: c.Param("event"), MatchNumber: uint8(match)}).Find(&data).Error; err != nil {
 		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
 	}
-	if len(response) == 0 {
+	if len(data) == 0 {
 		return c.String(404, "No matching records found in the database.")
+	}
+
+	for i, v := range data {
+		output[i] = DBtoAPI(v)
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
 		// encode as JSON and return
-		return c.JSON(200, response)
+		return c.JSON(200, output)
 	}
 
 	// create csv string from struct
-	csv, err := gocsv.MarshalString(response)
+	csv, err := gocsv.MarshalString(output)
 	if err != nil {
 		return c.String(500, "Unable to convert response to CSV"+err.Error())
 	}
@@ -289,7 +315,8 @@ func readMatch(c echo.Context) error {
 }
 
 func readTeamRuns(c echo.Context) error {
-	var response []run
+	var data []dbRun
+	var output []apiRun
 	var team, _ = strconv.Atoi(c.Param("team"))
 
 	// connect to DB
@@ -301,20 +328,24 @@ func readTeamRuns(c echo.Context) error {
 	defer db.Close()
 
 	// query for list of matches with specified event
-	if err := db.Where(&run{Event: c.Param("event"), TeamNumber: uint16(team)}).Find(&response).Error; err != nil {
+	if err := db.Where(&dbRun{Event: c.Param("event"), TeamNumber: uint16(team)}).Find(&data).Error; err != nil {
 		return c.String(500, "The StrangeScout database server returned an unhandled error. Please contact your system adminstrator and provide them with the following: "+err.Error())
 	}
-	if len(response) == 0 {
+	if len(data) == 0 {
 		return c.String(404, "No matching records found in the database.")
+	}
+
+	for i, v := range data {
+		output[i] = DBtoAPI(v)
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
 		// encode as JSON and return
-		return c.JSON(200, response)
+		return c.JSON(200, output)
 	}
 
 	// create csv string from struct
-	csv, err := gocsv.MarshalString(response)
+	csv, err := gocsv.MarshalString(output)
 	if err != nil {
 		return c.String(500, "Unable to convert response to CSV"+err.Error())
 	}
