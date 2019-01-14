@@ -136,8 +136,8 @@ func dumpDB(c echo.Context) error {
 		return c.String(404, "No matching records found in the database.")
 	}
 
-	for i, v := range data {
-		output[i] = DBtoAPI(v)
+	for _, v := range data {
+		output = append(output, DBtoAPI(v))
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
@@ -185,8 +185,8 @@ func readEvent(c echo.Context) error {
 		return c.String(404, "No matching records found in the database.")
 	}
 
-	for i, v := range data {
-		output[i] = DBtoAPI(v)
+	for _, v := range data {
+		output = append(output, DBtoAPI(v))
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
@@ -235,8 +235,8 @@ func readTeam(c echo.Context) error {
 		return c.String(404, "No matching records found in the database.")
 	}
 
-	for i, v := range data {
-		output[i] = DBtoAPI(v)
+	for _, v := range data {
+		output = append(output, DBtoAPI(v))
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
@@ -285,8 +285,8 @@ func readMatch(c echo.Context) error {
 		return c.String(404, "No matching records found in the database.")
 	}
 
-	for i, v := range data {
-		output[i] = DBtoAPI(v)
+	for _, v := range data {
+		output = append(output, DBtoAPI(v))
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
@@ -335,8 +335,8 @@ func readTeamRuns(c echo.Context) error {
 		return c.String(404, "No matching records found in the database.")
 	}
 
-	for i, v := range data {
-		output[i] = DBtoAPI(v)
+	for _, v := range data {
+		output = append(output, DBtoAPI(v))
 	}
 
 	if c.Request().Header.Get("Accept") == "application/json" {
