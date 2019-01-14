@@ -2,18 +2,14 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/labstack/echo"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-
-	"github.com/gocarina/gocsv"
 )
 
 func submitRun(c echo.Context) error {
@@ -90,30 +86,8 @@ func readRun(c echo.Context) error {
 
 	output = DBtoAPI(data)
 
-	if c.Request().Header.Get("Accept") == "application/json" {
-		// encode as JSON and return
-		return c.JSON(200, output)
-	}
-
-	var records = []apiRun{output}
-	// create csv string from struct
-	csv, err := gocsv.MarshalString(records)
-	if err != nil {
-		return c.String(500, "Unable to convert response to CSV"+err.Error())
-	}
-
-	// get a timestamp
-	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
-
-	// set headers and return csv
-	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=event-"+c.Param("event")+"_team-"+c.Param("team")+"_match-"+c.Param("match")+"_"+time+".csv")
-	c.Response().WriteHeader(http.StatusOK)
-	c.Response().Write([]byte(csv))
-
-	// blank error for the return
-	var blankerr error
-	return blankerr
+	// encode as JSON and return
+	return c.JSON(200, output)
 }
 
 func dumpDB(c echo.Context) error {
@@ -140,29 +114,8 @@ func dumpDB(c echo.Context) error {
 		output = append(output, DBtoAPI(v))
 	}
 
-	if c.Request().Header.Get("Accept") == "application/json" {
-		// encode as JSON and return
-		return c.JSON(200, output)
-	}
-
-	// create csv string from struct
-	csv, err := gocsv.MarshalString(output)
-	if err != nil {
-		return c.String(500, "Unable to convert response to CSV"+err.Error())
-	}
-
-	// get a timestamp
-	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
-
-	// set headers and return csv
-	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=strangescout_"+time+".csv")
-	c.Response().WriteHeader(http.StatusOK)
-	c.Response().Write([]byte(csv))
-
-	// blank error for the return
-	var blankerr error
-	return blankerr
+	// encode as JSON and return
+	return c.JSON(200, output)
 }
 
 func readEvent(c echo.Context) error {
@@ -189,29 +142,8 @@ func readEvent(c echo.Context) error {
 		output = append(output, DBtoAPI(v))
 	}
 
-	if c.Request().Header.Get("Accept") == "application/json" {
-		// encode as JSON and return
-		return c.JSON(200, output)
-	}
-
-	// create csv string from struct
-	csv, err := gocsv.MarshalString(output)
-	if err != nil {
-		return c.String(500, "Unable to convert response to CSV"+err.Error())
-	}
-
-	// get a timestamp
-	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
-
-	// set headers and return csv
-	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=event-"+c.Param("event")+"_"+time+".csv")
-	c.Response().WriteHeader(http.StatusOK)
-	c.Response().Write([]byte(csv))
-
-	// blank error for the return
-	var blankerr error
-	return blankerr
+	// encode as JSON and return
+	return c.JSON(200, output)
 }
 
 func readTeam(c echo.Context) error {
@@ -239,29 +171,8 @@ func readTeam(c echo.Context) error {
 		output = append(output, DBtoAPI(v))
 	}
 
-	if c.Request().Header.Get("Accept") == "application/json" {
-		// encode as JSON and return
-		return c.JSON(200, output)
-	}
-
-	// create csv string from struct
-	csv, err := gocsv.MarshalString(output)
-	if err != nil {
-		return c.String(500, "Unable to convert response to CSV"+err.Error())
-	}
-
-	// get a timestamp
-	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
-
-	// set headers and return csv
-	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=team-"+c.Param("team")+"_"+time+".csv")
-	c.Response().WriteHeader(http.StatusOK)
-	c.Response().Write([]byte(csv))
-
-	// blank error for the return
-	var blankerr error
-	return blankerr
+	// encode as JSON and return
+	return c.JSON(200, output)
 }
 
 func readMatch(c echo.Context) error {
@@ -289,29 +200,8 @@ func readMatch(c echo.Context) error {
 		output = append(output, DBtoAPI(v))
 	}
 
-	if c.Request().Header.Get("Accept") == "application/json" {
-		// encode as JSON and return
-		return c.JSON(200, output)
-	}
-
-	// create csv string from struct
-	csv, err := gocsv.MarshalString(output)
-	if err != nil {
-		return c.String(500, "Unable to convert response to CSV"+err.Error())
-	}
-
-	// get a timestamp
-	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
-
-	// set headers and return csv
-	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=event-"+c.Param("event")+"_match-"+c.Param("match")+"_"+time+".csv")
-	c.Response().WriteHeader(http.StatusOK)
-	c.Response().Write([]byte(csv))
-
-	// blank error for the return
-	var blankerr error
-	return blankerr
+	// encode as JSON and return
+	return c.JSON(200, output)
 }
 
 func readTeamRuns(c echo.Context) error {
@@ -339,27 +229,6 @@ func readTeamRuns(c echo.Context) error {
 		output = append(output, DBtoAPI(v))
 	}
 
-	if c.Request().Header.Get("Accept") == "application/json" {
-		// encode as JSON and return
-		return c.JSON(200, output)
-	}
-
-	// create csv string from struct
-	csv, err := gocsv.MarshalString(output)
-	if err != nil {
-		return c.String(500, "Unable to convert response to CSV"+err.Error())
-	}
-
-	// get a timestamp
-	var time = time.Now().UTC().Format("2006-01-02_15-04-05")
-
-	// set headers and return csv
-	c.Response().Header().Set(echo.HeaderContentType, "text/csv")
-	c.Response().Header().Set(echo.HeaderContentDisposition, "attachment; filename=event-"+c.Param("event")+"_team-"+c.Param("team")+"_"+time+".csv")
-	c.Response().WriteHeader(http.StatusOK)
-	c.Response().Write([]byte(csv))
-
-	// blank error for the return
-	var blankerr error
-	return blankerr
+	// encode as JSON and return
+	return c.JSON(200, output)
 }
