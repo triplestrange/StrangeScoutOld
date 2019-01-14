@@ -21,7 +21,7 @@ func submitRun(c echo.Context) error {
 	data := dbRun{}
 
 	// set data from request body
-	if err := c.Bind(input); err != nil {
+	if err := c.Bind(&input); err != nil {
 		return err
 	}
 

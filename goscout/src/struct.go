@@ -37,7 +37,7 @@ type journalEntry struct {
 func APItoDB(run apiRun) dbRun {
 	var out dbRun
 
-	deepcopier.Copy(run).To(out)
+	deepcopier.Copy(&run).To(&out)
 
 	journal, _ := json.Marshal(run.Journal)
 	out.Journal = string(journal)
@@ -50,7 +50,7 @@ func DBtoAPI(run dbRun) apiRun {
 	var out apiRun
 	var journal []journalEntry
 
-	deepcopier.Copy(run).To(out)
+	deepcopier.Copy(&run).To(&out)
 
 	json.Unmarshal([]byte(run.Journal), journal)
 	out.Journal = journal
