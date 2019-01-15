@@ -52,7 +52,7 @@ func DBtoAPI(run dbRun) apiRun {
 
 	deepcopier.Copy(&run).To(&out)
 
-	json.Unmarshal([]byte(run.Journal), journal)
+	json.Unmarshal([]byte(run.Journal), &journal)
 	out.Journal = journal
 
 	return out
