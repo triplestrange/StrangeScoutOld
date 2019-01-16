@@ -6,7 +6,7 @@
 	</mat-card-header>
 	<label for="teamNumber">Team Number</label>
 	<div>
-		<mat-form-field>
+		<mat-form-field class="setup-field">
 			<input matInput name="teamNumber" id="teamNumber" type="number" min="0" max="9999" [(ngModel)]="team" #teamNumber=ngModel required>
 		</mat-form-field>
 	</div>
@@ -14,7 +14,7 @@
 
 	<label for="matchNumber">Match Number</label>
 	<div>
-		<mat-form-field>
+		<mat-form-field class="setup-field">
 			<input matInput name="matchNumber" id="matchNumber" type="number" min="0" max="999" [(ngModel)]="match" #matchNumber=ngModel required>
 		</mat-form-field>
 	</div>
@@ -22,7 +22,7 @@
 
 	<label>Starting Position</label>
 	<div>
-		<mat-form-field>
+		<mat-form-field class="setup-field">
 			<mat-select name="StartingPos" id="startingPos" [(ngModel)]="start" #startingPos=ngModel required>
 				<mat-option *ngFor="let opt of startingPositions" [value]="opt.Value">{{opt.Name}}</mat-option>
 			</mat-select>
@@ -32,7 +32,7 @@
 
 	<label>Starting Configuration</label>
 	<div>
-		<mat-form-field>
+		<mat-form-field class="setup-field">
 			<mat-select name="StartingConf" id="startingConf" [(ngModel)]="load" #startingConf=ngModel required>
 				<mat-option *ngFor="let opt of startingConfigs" [value]="opt.Value">{{opt.Name}}</mat-option>
 			</mat-select>
@@ -40,17 +40,16 @@
 	</div>
 	<div class="alert-required" *ngIf="startingConf.invalid && (startingConf.dirty || startingConf.touched)">Starting Configuration is required</div>
 
-	<button mat-raised-button *ngIf="!showForm" color="primary" class="submit-run" type="button" (click)="startMatch()" [disabled]="teamNumber.invalid || matchNumber.invalid || startingPos.invalid || startingConf.invalid">Start Match</button>
+	<div class="center-container">
+		<button mat-raised-button *ngIf="!showForm" color="primary" type="button" (click)="startMatch()" [disabled]="teamNumber.invalid || matchNumber.invalid || startingPos.invalid || startingConf.invalid">Next</button>
+	</div>
 </mat-card>
 
 <mat-card *ngIf="showForm" style="text-align: center;">
 	<ng-container [counter]="counter" [interval]="interval" (value)="time = $event">
-		<h3>Remaining Time: {{ displayTime }}</h3>
+		<h3 class="countdown">Remaining Time: {{ displayTime }}</h3>
+		Last Event: {{ lastEvent }}
 	</ng-container>
-</mat-card>
-
-<mat-card *ngIf="showForm" style="text-align: center;">
-	<h3>Last Event: {{ lastEvent }}</h3>
 </mat-card>
 
 <mat-card *ngIf="showForm" class="button-card">

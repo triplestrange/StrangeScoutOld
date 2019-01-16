@@ -42,3 +42,11 @@ button.element-button {
 	margin-bottom: 15px;
 	color: #ff0000;
 }
+
+.setup-field {
+	width: 100%;
+}
+
+.countdown {
+	padding-bottom: 10px;
+}
