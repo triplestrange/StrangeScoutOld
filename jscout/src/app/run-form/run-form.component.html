@@ -1,4 +1,4 @@
-<form class="center-container" name="runForm" id="runForm" (ngSubmit)="onSubmit()">
+<form class="center-container" name="runForm" id="runForm" (ngSubmit)="endMatch()">
 
 <mat-card *ngIf="!showForm">
 	<mat-card-header>
@@ -58,6 +58,6 @@
 	</div>
 </mat-card>
 
-<button mat-raised-button *ngIf="showForm" color="primary" class="submit-run" [disabled]="time > 0">Submit</button>
+<button mat-raised-button *ngIf="showForm" color="primary" class="submit-run" [disabled]="time > 0">Next</button>
 
 </form>

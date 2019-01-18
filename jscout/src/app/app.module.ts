@@ -40,6 +40,7 @@ import { DataComponent } from './data/data.component';
 import { CounterDirective } from './counter.directive';
 import { BeginMatchDialogComponent } from './begin-match-dialog/begin-match-dialog.component';
 import { ElementEventDialogComponent } from './element-event-dialog/element-event-dialog.component';
+import { EndMatchDialogComponent } from './end-match-dialog/end-match-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -50,7 +51,8 @@ import { ElementEventDialogComponent } from './element-event-dialog/element-even
 		DataComponent,
 		CounterDirective,
 		BeginMatchDialogComponent,
-		ElementEventDialogComponent
+		ElementEventDialogComponent,
+		EndMatchDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -76,6 +78,6 @@ import { ElementEventDialogComponent } from './element-event-dialog/element-even
 	],
 	providers: [ CookieService ],
 	bootstrap: [ AppComponent ],
-	entryComponents: [BeginMatchDialogComponent, ElementEventDialogComponent]
+	entryComponents: [BeginMatchDialogComponent, EndMatchDialogComponent, ElementEventDialogComponent]
 })
 export class AppModule { }

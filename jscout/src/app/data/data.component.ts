@@ -100,15 +100,10 @@ export class DataComponent implements OnInit {
 		return response;
 	}
 
-	// download query CSV
-	downloadQuery() {
-		window.open(this.query.getQueryPath(this.event, this.team, this.match));
-	}
-
 	// load query data into object
 	loadQueryData() {
 		const self = this;
-		this.query.getQuery(this.event, this.team, this.match, true, function(response) {
+		this.query.getQuery(this.event, this.team, this.match, function(response) {
 			self.queryData = JSON.parse(response);
 			self.keys = Object.keys(self.queryData[0]);
 			// set datasource values and sort

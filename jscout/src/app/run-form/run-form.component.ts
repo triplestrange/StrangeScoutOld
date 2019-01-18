@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material';
 // dialog components
 import { BeginMatchDialogComponent } from '../begin-match-dialog/begin-match-dialog.component'
 import { ElementEventDialogComponent } from '../element-event-dialog/element-event-dialog.component'
+import { EndMatchDialogComponent } from '../end-match-dialog/end-match-dialog.component'
 
 // toasts
 import { ToastrService } from 'ngx-toastr';
@@ -118,7 +119,9 @@ export class RunFormComponent implements OnInit {
 	// run after a getElement event
 	getElement(element) {
 		// creates a new journal entry for the event specified by the element
-		this.newJournalEntry(element.Event);
+		if (element.Event !== "") {
+			this.newJournalEntry(element.Event);
+		}
 		// opens a popup with sub events
 		const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: "250px", disableClose: true, autoFocus: false, data: element});
 		// after the popup is closed
@@ -184,13 +187,14 @@ export class RunFormComponent implements OnInit {
 		);
 	}
 
-	// removes nulls from object
-	removeFalsy = (obj) => {
-		const newObj = {};
-		Object.keys(obj).forEach((prop) => {
-			if (obj[prop]) { newObj[prop] = obj[prop]; }
+	endMatch() {
+		// popup before match start
+		const dialogRef = this.dialog.open(EndMatchDialogComponent, {disableClose: true});
+		// after closing popup
+		dialogRef.afterClosed().subscribe(result => {
+			this.notes = result;
+			this.onSubmit();
 		});
-		return newObj;
 	}
 
 	// submit function
@@ -231,6 +235,15 @@ export class RunFormComponent implements OnInit {
 		// debugging alerts
 			// alert(this.payload);
 			// alert(xhr.responseText);
+	}
+
+	// removes nulls from object
+	removeFalsy = (obj) => {
+		const newObj = {};
+		Object.keys(obj).forEach((prop) => {
+			if (obj[prop]) { newObj[prop] = obj[prop]; }
+		});
+		return newObj;
 	}
 
 }
