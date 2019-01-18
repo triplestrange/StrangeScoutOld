@@ -147,9 +147,12 @@ export class RunFormComponent implements OnInit {
 
 	get lastEvent() {
 		if (this.journal.length > 0) {
-			return this.journal[this.journal.length-1].Event;
+			var event = this.journal[this.journal.length-1].Event;
+			event = event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+			event = event.replace(/^./, function(str){ return str.toUpperCase(); });
+			return event;
 		} else {
-			return "None"
+			return "None";
 		}
 	}
 
