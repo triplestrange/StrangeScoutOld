@@ -8,9 +8,8 @@ export class PayloadStoreService {
 
 	// store a payload in cache
 	static storePayload(payload: string) {
-		for (let store = 1; store <= localStorage.length; store++) {
-			localStorage.setItem(store.toString(), payload);
-		}
+		let store = localStorage.length + 1;
+		localStorage.setItem(store.toString(), payload);
 	}
 
 	// iterate through cache and submit payloads

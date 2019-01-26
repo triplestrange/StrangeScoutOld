@@ -1,3 +1,13 @@
+export class Run {
+	TeamNumber: number;
+	MatchNumber: number;
+	StartPosition: string;
+	Journal: EventJournalEntry[];
+	Notes: string;
+	Scouter: string;
+	Timestamp: number;
+}
+
 export class EventJournalEntry {
 	Time: number;
 	Event: string;

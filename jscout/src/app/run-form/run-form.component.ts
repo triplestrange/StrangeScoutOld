@@ -8,9 +8,6 @@ import { BeginMatchDialogComponent } from '../begin-match-dialog/begin-match-dia
 import { ElementEventDialogComponent } from '../element-event-dialog/element-event-dialog.component'
 import { EndMatchDialogComponent } from '../end-match-dialog/end-match-dialog.component'
 
-// toasts
-import { ToastrService } from 'ngx-toastr';
-
 // cache service
 import { PayloadStoreService } from '../payload-store.service';
 
@@ -58,25 +55,9 @@ export class RunFormComponent implements OnInit {
 	// define change event
 	changeEvent = new Event('change');
 
-	constructor(private ss: ScouterService, private toastr: ToastrService, public dialog: MatDialog) {
-		// listeners to trigger notifications
-		window.addEventListener('submitcached', function (e) {
-			toastr.warning('Data cached', 'Unable to contact server');
-		});
-		window.addEventListener('submitsuccess', function (e) {
-			toastr.success('Data successfully submitted!');
-		});
-		window.addEventListener('submitduplicate', function (e) {
-			toastr.warning('Duplicate data not recorded');
-		});
-		window.addEventListener('submiterror', function (e) {
-			// @ts-ignore
-			toastr.error(e.detail, 'ERROR');
-		});
-	}
+	constructor(private ss: ScouterService, public dialog: MatDialog) {}
 
-	ngOnInit() {
-	}
+	ngOnInit() {}
 
 	// on start
 	startMatch() {
@@ -199,7 +180,7 @@ export class RunFormComponent implements OnInit {
 
 	// submit function
 	onSubmit() {
-		// we have to set a variable to payload because it's impossible to cal `this.payload` within the `onreadystatechange` function
+		// we have to set a variable to payload because it's impossible to call `this.payload` within the `onreadystatechange` function
 		// use this value for all operations, even if you can access `this.payload` (ex. `xhr.send`)
 		const payload = this.payload;
 

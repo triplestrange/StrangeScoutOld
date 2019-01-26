@@ -12,6 +12,9 @@ import { interval } from 'rxjs';
 // toasts
 import { ToastrService } from 'ngx-toastr';
 
+// notifications
+import { NotificationsService } from './notifications.service';
+
 // scouter id service
 import { ScouterService } from './scouter.service';
 
@@ -44,7 +47,10 @@ export class AppComponent implements OnInit {
 		navigator.serviceWorker.register('/ngsw-worker.js');
 	}
 
-	constructor(private ss: ScouterService, private toastr: ToastrService, private updates: SwUpdate) {
+	constructor(private ss: ScouterService, private toastr: ToastrService, private ns: NotificationsService, private updates: SwUpdate) {
+		ns.runFormListeners();
+		ns.cacheManagementListeners();
+
 		// notify of updates
 		this.updates.available.subscribe(event => {
 			console.log('current version is', event.current);
