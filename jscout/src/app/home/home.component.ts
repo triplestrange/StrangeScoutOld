@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 
 import { UserService } from '../user.service';
+import { PouchdbService } from '../pouchdb.service';
 
 @Component({
 	selector: 'app-home',
@@ -14,7 +15,7 @@ import { UserService } from '../user.service';
 })
 export class HomeComponent implements OnInit {
 
-	constructor(private us: UserService, private dialog: MatDialog) {
+	constructor(private us: UserService, private dialog: MatDialog, public dbs: PouchdbService) {
 		var self = this;
 		window.addEventListener('newScouterID', function(e) {
 			self.scouter = self.us.getID();
