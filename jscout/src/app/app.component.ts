@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 
+import { MatDialog } from '@angular/material';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+
+import { HomeComponent } from './home/home.component'
+
 // animations
 import {trigger, transition} from '@angular/animations';
 import { leftIn, rightIn } from './app-routing.animations';
@@ -12,26 +17,19 @@ import { interval } from 'rxjs';
 // toasts
 import { ToastrService } from 'ngx-toastr';
 
-// notifications
-import { NotificationsService } from './notifications.service';
-
-// scouter id service
-import { ScouterService } from './scouter.service';
+// user id service
+import { UserService } from './user.service';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	animations: [trigger('routerTransition', [
 		// set which animation to play on view change
-		transition('home => cache-management', leftIn),
-		transition('home => data', leftIn),
 		transition('home => run-form', rightIn),
-		transition('cache-management => home', rightIn),
-		transition('data => home', rightIn),
 		transition('run-form => home', leftIn)
 	])],
 	styleUrls: ['./app.component.css'],
-	providers: [ ScouterService ]
+	providers: [ UserService ]
 })
 
 export class AppComponent implements OnInit {
@@ -40,16 +38,13 @@ export class AppComponent implements OnInit {
 	year = '2019';
 	game = 'Deep Space';
 
-	// string for the scouter name
-	scouter: string;
+	ID = false;
 
 	ngOnInit() {
 		navigator.serviceWorker.register('/ngsw-worker.js');
 	}
 
-	constructor(private ss: ScouterService, private toastr: ToastrService, private ns: NotificationsService, private updates: SwUpdate) {
-		ns.runFormListeners();
-		ns.cacheManagementListeners();
+	constructor(private us: UserService, private toastr: ToastrService, private updates: SwUpdate, private dialog: MatDialog) {
 
 		// notify of updates
 		this.updates.available.subscribe(event => {
@@ -65,8 +60,15 @@ export class AppComponent implements OnInit {
 		// check for updates
 		interval(30000).subscribe(() => this.updates.checkForUpdate());
 
-		// check for and load scouter ID
-		ss.loadScouter();
+		if (us.checkID() != true) {
+			this.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
+				this.ID = true;
+				window.dispatchEvent(new CustomEvent('newScouterID'));
+			});
+		} else {
+			this.ID = true;
+		}
+
 	}
 
 	// get current view of a router outlet

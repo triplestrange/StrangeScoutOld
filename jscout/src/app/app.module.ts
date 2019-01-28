@@ -35,24 +35,22 @@ import {MatSliderModule} from '@angular/material/slider';
 import { AppComponent } from './app.component';
 import { RunFormComponent } from './run-form/run-form.component';
 import { HomeComponent } from './home/home.component';
-import { CacheManagementComponent } from './cache-management/cache-management.component';
-import { DataComponent } from './data/data.component';
 import { CounterDirective } from './counter.directive';
 import { BeginMatchDialogComponent } from './begin-match-dialog/begin-match-dialog.component';
 import { ElementEventDialogComponent } from './element-event-dialog/element-event-dialog.component';
 import { EndMatchDialogComponent } from './end-match-dialog/end-match-dialog.component';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		RunFormComponent,
 		HomeComponent,
-		CacheManagementComponent,
-		DataComponent,
 		CounterDirective,
 		BeginMatchDialogComponent,
 		ElementEventDialogComponent,
-		EndMatchDialogComponent
+		EndMatchDialogComponent,
+		LoginDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -78,6 +76,6 @@ import { EndMatchDialogComponent } from './end-match-dialog/end-match-dialog.com
 	],
 	providers: [ CookieService ],
 	bootstrap: [ AppComponent ],
-	entryComponents: [BeginMatchDialogComponent, EndMatchDialogComponent, ElementEventDialogComponent]
+	entryComponents: [LoginDialogComponent, BeginMatchDialogComponent, EndMatchDialogComponent, ElementEventDialogComponent]
 })
 export class AppModule { }

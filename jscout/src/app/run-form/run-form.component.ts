@@ -8,23 +8,23 @@ import { BeginMatchDialogComponent } from '../begin-match-dialog/begin-match-dia
 import { ElementEventDialogComponent } from '../element-event-dialog/element-event-dialog.component'
 import { EndMatchDialogComponent } from '../end-match-dialog/end-match-dialog.component'
 
-// cache service
-import { PayloadStoreService } from '../payload-store.service';
-
 // scouter id service
-import { ScouterService } from '../scouter.service';
-
-// custom classes
-import { EventJournalEntry, OptionEventChoice, GameElement } from '../run-classes'
+import { UserService } from '../user.service';
 
 // data for the form body
-import { RunFormDataService } from '../run-form-data.service'
+import { RunFormDataService } from '../run-form-data.service';
+
+// db service
+import { PouchdbService } from '../pouchdb.service';
+
+// custom classes
+import { EventJournalEntry, OptionEventChoice, GameElement } from '../run-classes';
 
 @Component({
 	selector: 'app-run-form',
 	templateUrl: './run-form.component.html',
 	styleUrls: ['./run-form.component.css'],
-	providers: [ ScouterService ]
+	providers: [ UserService ]
 })
 export class RunFormComponent implements OnInit {
 
@@ -33,7 +33,7 @@ export class RunFormComponent implements OnInit {
 
 	// countdown vars
 	time: number;
-	counter = 150;
+	counter = 5;
 	interval = 1000;
 
 	// data to collect
@@ -55,7 +55,7 @@ export class RunFormComponent implements OnInit {
 	// define change event
 	changeEvent = new Event('change');
 
-	constructor(private ss: ScouterService, public dialog: MatDialog) {}
+	constructor(private us: UserService, private dialog: MatDialog, private dbs: PouchdbService) {}
 
 	ngOnInit() {}
 
@@ -156,16 +156,14 @@ export class RunFormComponent implements OnInit {
 		// create timestamp object
 		const timestamp = { Timestamp: utc_timestamp };
 		// get scouter
-		const scouter = { Scouter: this.ss.getScouter() };
+		const scouter = { Scouter: this.us.getID() };
 		// general data objects
 		const setup = { TeamNumber: this.team, MatchNumber: this.match, StartPosition: this.start };
 		const end = { Notes: this.notes }
 		// create JSON payload from all form objects
-		return JSON.stringify(
-			this.removeFalsy(
-				Object.assign({}, setup, {"Journal": this.journal}, end, scouter, timestamp)
-			)
-		);
+		return this.removeFalsy(
+			Object.assign({}, {"_id":setup.TeamNumber.toString()+"_"+setup.MatchNumber.toString()}, setup, {"Journal": this.journal}, end, scouter, timestamp)
+			);
 	}
 
 	endMatch() {
@@ -180,42 +178,10 @@ export class RunFormComponent implements OnInit {
 
 	// submit function
 	onSubmit() {
-		// we have to set a variable to payload because it's impossible to call `this.payload` within the `onreadystatechange` function
-		// use this value for all operations, even if you can access `this.payload` (ex. `xhr.send`)
 		const payload = this.payload;
 
-		const xhr = new XMLHttpRequest();
-
-		// PUT asynchronously
-		xhr.open('PUT', '/api/team/' + this.team + '/match/' + this.match, true);
-		// Send the proper header information along with the request
-		xhr.setRequestHeader('Content-type', 'application/json');
-		xhr.onreadystatechange = function() {
-			// Call a function when the state changes.
-			if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 0) {
-				// cache if no contact
-				PayloadStoreService.storePayload(payload);
-				window.dispatchEvent(new CustomEvent('submitcached'));
-			} else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status <= 299) {
-				// success
-				window.dispatchEvent(new CustomEvent('submitsuccess'));
-			} else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 409) {
-				// duplicate
-				window.dispatchEvent(new CustomEvent('submitduplicate'));
-			} else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status >= 300) {
-				// set server response on error
-				const serverresponse = `${xhr.status} ${xhr.statusText} -- ${xhr.responseText}`;
-				window.dispatchEvent(new CustomEvent('submiterror', {detail: serverresponse}));
-				// also cache response
-				PayloadStoreService.storePayload(payload);
-				window.dispatchEvent(new CustomEvent('submitcached'));
-			}
-		};
-		// send POST request
-		xhr.send(payload);
-		// debugging alerts
-			// alert(this.payload);
-			// alert(xhr.responseText);
+		this.dbs.storeLocal(payload);
+		this.dbs.syncRemote();
 	}
 
 	// removes nulls from object
