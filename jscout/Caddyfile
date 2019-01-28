@@ -22,8 +22,8 @@
 	errors stdout
 	
 	## REVERSE PROXY CONFIG
-	proxy /api/ {$GOSCOUT_HOST}:15338 {
-		without /api
+	proxy /cdb/ {$COUCHDB_HOST}:5984 {
+		without /cdb
 	}
 
 

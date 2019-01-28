@@ -18,34 +18,20 @@ services:
                 ports:
                         - "80:80"
                         - "443:443"
-        goscout:
-                build: goscout/
-                restart: always
-                depends_on:
-                        - "strangedb"
-                environment:
-                        GOSCOUT_SQL_USER: "strangescout"
-                        GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD?did not set password}"
-                        GOSCOUT_SQL_HOST: "strangedb"
-                        GOSCOUT_EVENT_HARDCODE:
-                expose:
-                        - "15338"
         strangedb:
-                image: mariadb
+                image: couchdb
                 restart: always
                 volumes:
                         - type: volume
                           source: strangedb
-                          target: /var/lib/mysql
+                          target: /opt/couchdb
                 environment:
-                        MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-                        MYSQL_DATABASE: "strangescout"
-                        MYSQL_PASSWORD: "${STRANGESCOUT_SQL_PASSWD?did not set password!}"
-                        MYSQL_USER: "strangescout" 
+                        COUCHDB_PASSWORD: "${STRANGESCOUT_DB_PASSWD?did not set password!}"
+                        COUCHDB_USER: "strangescout"
                 expose:
-                        - "3306"
+                        - "5984"
                 ports:
-                        - "{$MYSQL_PUBLIC_PORT:-3306}:3306"
+                        - "{$COUCHDB_PUBLIC_PORT:-5984}:5984"
 
 volumes:
         strangedb:
