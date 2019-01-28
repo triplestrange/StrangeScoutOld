@@ -9,6 +9,7 @@ services:
                         - "strangedb"
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
+                        COUCHDB_HOST: "strangedb"
                 expose: # this container exports HTTP-as-a-service
                         - "80"
                 networks:
