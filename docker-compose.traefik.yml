@@ -6,10 +6,9 @@ services:
                         dockerfile: Dockerfile-traefik
                 restart: always
                 depends_on:
-                        - "goscout"
+                        - "strangedb"
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
-                        GOSCOUT_HOST: "goscout"
                 expose: # this container exports HTTP-as-a-service
                         - "80"
                 networks:
