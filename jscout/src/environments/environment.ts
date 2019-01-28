@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	domain: '127.0.0.1',
+	domain: 'localhost',
 	version: '0.0.0'
 };
 

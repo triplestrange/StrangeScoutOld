@@ -1,7 +1,7 @@
 FROM alpine AS builder
 ARG SS_VERSION
 WORKDIR /strangescout
-RUN apk add --update nodejs nodejs-npm
+RUN apk add --update python make g++ nodejs nodejs-npm
 COPY ./ ./
 RUN sed -i s/0.0.0/$SS_VERSION/ src/environments/environment.prod.ts
 RUN sed -i s/localhost/$JSCOUT_DOMAIN/ src/environments/environment.prod.ts
