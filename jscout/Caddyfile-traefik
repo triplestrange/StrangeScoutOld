@@ -31,7 +31,7 @@
 }
 
 couch.{$JSCOUT_DOMAIN} {
-	proxy {$COUCHDB_HOST}:5984
+	proxy / {$COUCHDB_HOST}:5984
 
 	tls off
 
