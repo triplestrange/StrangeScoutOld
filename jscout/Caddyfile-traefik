@@ -1,5 +1,5 @@
 # MAIN HOST CONFIG
-*:80 {
+{$JSCOUT_DOMAIN}, www.{$JSCOUT_DOMAIN} {
 	
 	ext .html .htm .php
 	# allow "clean" URLs without pesky extensions that might scare Windows users...
@@ -21,6 +21,7 @@
 		without /cdb
 	}
 
+	tls off
 
 	# A GoScout API server must be exposed to this container on port 15338.
 
@@ -31,6 +32,8 @@
 
 couch.{$JSCOUT_DOMAIN} {
 	proxy {$COUCHDB_HOST}:5984
+
+	tls off
 
 	# for Docker logs
 	log stdout
