@@ -1,5 +1,5 @@
 # MAIN HOST CONFIG
-{$JSCOUT_DOMAIN}, www.{$JSCOUT_DOMAIN} {
+{$JSCOUT_DOMAIN}:80, www.{$JSCOUT_DOMAIN}:80 {
 	
 	ext .html .htm .php
 	# allow "clean" URLs without pesky extensions that might scare Windows users...
@@ -30,7 +30,7 @@
 	errors stdout
 }
 
-couch.{$JSCOUT_DOMAIN} {
+couch.{$JSCOUT_DOMAIN}:80 {
 	proxy / {$COUCHDB_HOST}:5984
 
 	tls off
