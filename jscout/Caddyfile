@@ -26,10 +26,15 @@
 		without /cdb
 	}
 
-
-	# A GoScout API server must be exposed to this container on port 15338.
-
 	tls {$JSCOUT_LETS_ENCRYPT_EMAIL}
+
+	# for Docker logs
+	log stdout
+	errors stdout
+}
+
+couch.{$JSCOUT_DOMAIN} {
+	proxy {$COUCHDB_HOST}:5984
 
 	# for Docker logs
 	log stdout

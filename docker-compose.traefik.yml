@@ -25,7 +25,7 @@ services:
                         traefik.frontend.headers.STSPreload: "true"
 
         strangedb:
-                image: couchdb
+                image: treehouses/couchdb:2.2.0
                 restart: always
                 volumes:
                         - type: volume
