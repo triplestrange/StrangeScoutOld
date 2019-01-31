@@ -38,13 +38,11 @@ export class AppComponent implements OnInit {
 	year = '2019';
 	game = 'Deep Space';
 
-	Auth = false;
-
 	ngOnInit() {
 		navigator.serviceWorker.register('/ngsw-worker.js');
 	}
 
-	constructor(private us: UserService, private toastr: ToastrService, private updates: SwUpdate, private dialog: MatDialog) {
+	constructor(public us: UserService, private toastr: ToastrService, private updates: SwUpdate, private dialog: MatDialog) {
 
 		// notify of updates
 		this.updates.available.subscribe(event => {
@@ -60,13 +58,10 @@ export class AppComponent implements OnInit {
 		// check for updates
 		interval(30000).subscribe(() => this.updates.checkForUpdate());
 
-		if (us.checkID() != true) {
+		if (this.us.checkID() != true) {
 			this.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
-				this.Auth = true;
 				window.dispatchEvent(new CustomEvent('newLogin'));
 			});
-		} else {
-			this.Auth = true;
 		}
 
 	}
