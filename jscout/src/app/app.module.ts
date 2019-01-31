@@ -40,6 +40,7 @@ import { BeginMatchDialogComponent } from './begin-match-dialog/begin-match-dial
 import { ElementEventDialogComponent } from './element-event-dialog/element-event-dialog.component';
 import { EndMatchDialogComponent } from './end-match-dialog/end-match-dialog.component';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -50,7 +51,8 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 		BeginMatchDialogComponent,
 		ElementEventDialogComponent,
 		EndMatchDialogComponent,
-		LoginDialogComponent
+		LoginDialogComponent,
+		ConfirmDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -76,6 +78,6 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 	],
 	providers: [ CookieService ],
 	bootstrap: [ AppComponent ],
-	entryComponents: [LoginDialogComponent, BeginMatchDialogComponent, EndMatchDialogComponent, ElementEventDialogComponent]
+	entryComponents: [ConfirmDialogComponent, LoginDialogComponent, BeginMatchDialogComponent, EndMatchDialogComponent, ElementEventDialogComponent]
 })
 export class AppModule { }

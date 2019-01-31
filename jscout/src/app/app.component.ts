@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
 	year = '2019';
 	game = 'Deep Space';
 
-	ID = false;
+	Auth = false;
 
 	ngOnInit() {
 		navigator.serviceWorker.register('/ngsw-worker.js');
@@ -60,13 +60,13 @@ export class AppComponent implements OnInit {
 		// check for updates
 		interval(30000).subscribe(() => this.updates.checkForUpdate());
 
-		if (us.checkID() != true) {
+		if (us.checkAuth() != true) {
 			this.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
-				this.ID = true;
-				window.dispatchEvent(new CustomEvent('newScouterID'));
+				this.Auth = true;
+				window.dispatchEvent(new CustomEvent('newLogin'));
 			});
 		} else {
-			this.ID = true;
+			this.Auth = true;
 		}
 
 	}

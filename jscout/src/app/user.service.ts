@@ -30,4 +30,17 @@ export class UserService {
 		return this.cs.get('scouter')
 	}
 
+	checkAuth() {
+		if (this.cs.get('AuthSession') === '') {
+			return false
+		} else {
+			return true
+		}
+	}
+
+	clear() {
+		this.cs.delete('AuthSession');
+		this.cs.delete('scouter');
+	}
+
 }
