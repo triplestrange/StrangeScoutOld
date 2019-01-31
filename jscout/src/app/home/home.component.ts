@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
 	constructor(private us: UserService, private dialog: MatDialog, public dbs: PouchdbService) {
 		var self = this;
-		window.addEventListener('newAuth', function(e) {
+		window.addEventListener('newLogin', function(e) {
 			self.scouter = self.us.getID();
 		})
 	}
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
 			if ( result ) {
 				this.us.clear();
 				this.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
-					window.dispatchEvent(new CustomEvent('newAuth'));
+					window.dispatchEvent(new CustomEvent('newLogin'));
 				});
 			}
 		});
