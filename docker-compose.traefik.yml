@@ -34,6 +34,7 @@ services:
                         - type: volume
                           source: strangedb_data
                           target: /opt/couchdb/data
+                        - ./strangescout_couch.ini:/opt/couchdb/etc/default.d/strangescout_couch.ini:ro
                 environment:
                         COUCHDB_PASSWORD: "${STRANGESCOUT_DB_PASSWD?did not set password!}"
                         COUCHDB_USER: "strangescout"
