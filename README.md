@@ -2,8 +2,6 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/uses-js.svg)](https://forthebadge.com)
-
 **The world's first free software [FIRST Robotics Competition](https://firstinspires.org) scouting system powered by Docker, CouchDB, and the modern web (Angular)!**
 
 _Brought to you by your friends at **[Triple Strange #1533](http://ecgrobotics.org)!**_
