@@ -4,7 +4,7 @@
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/uses-js.svg)](https://forthebadge.com)
 
-**The world's first free software [FIRST Robotics Competition](https://firstinspires.org) scouting system powered by Docker, Go, and the modern web (Angular)!** Outputs data to a MariaDB database for easy access from commerical and free/libre/open-source tools such as LibreOffice Base, Tableau, Google Data Studio, and more!
+**The world's first free software [FIRST Robotics Competition](https://firstinspires.org) scouting system powered by Docker, CouchDB, and the modern web (Angular)!**
 
 _Brought to you by your friends at **[Triple Strange #1533](http://ecgrobotics.org)!**_
 
@@ -24,25 +24,26 @@ _Excerpted from our [Deployment Guide](https://github.com/triplestrange/StrangeS
 >5. **Create your `.env` file with the following vars:**
 >	```
 >		JSCOUT_DOMAIN=<your_domain.tld> # set the domain you're hosting your scouting service on
->		STRANGESCOUT_SQL_PASSWD=<secret_password1533> # password to access the MySQL database
->		GOSCOUT_EVENT_HARDCODE=<event_currently_scouting> # what event you're currently scouting
+>		STRANGESCOUT_DB_PASSWD=<secret_password1533> # password to access the CouchDB database
 >	```
 >	- Optional vars:
 >	```
->		MYSQL_PUBLIC_PORT=<1533> # set if you'd like to use a SQL port other than the default of 3306
 >		PREFIX=<dev> # set if you'd like to set a prefix for the docker images (defaults to prod if not set)
 >	```
 >	- If you're using `traefik`, also set the `TRAEFIK_NETWORK` var
 >	- If you're using a standalone install, also set the `JSCOUT_LETS_ENCRYPT_EMAIL` var
 >		- This specifies the email used to get Lets Encrypt certificates for HTTPS support
 >6. **Run `./build.sh`**
->7. **Do `docker-compose up -d`** 
+>7. **Do `docker-compose up -d`**
+>8. **Go to `<your_domain.tld>/cdb/_utils/index.html` and login with the username `strangescout` and password you set**
+>9. **Go to `Setup` in the sidebar and select `Configure Single Node`**
+>10. **Enter the same credentials you used above and click `Configure Node`**
 
 You're ready to scout! HTTPS certs from Let's Encrypt (if you're using the standalone install) and your SQL database are safely stored in Docker volumes, so you're free to start and stop containers at will, or even delete them!
 
-**Point DNS for `<your_domain.tld>` to the IP of your server. Ensure that firewalls, AWS security groups, etc. have ports 80 and 443 open, as well as 3306 (or whatever you've manually set it to) for SQL. Enjoy!**
+**Point DNS for `<your_domain.tld>` to the IP of your server. Ensure that firewalls, AWS security groups, etc. have ports 80 and 443 open, as well as 5984 if you want direct access to CouchDB. Enjoy!**
 
 ## Usage
 
-### SQL Access
-Use an off-the-shelf program like [DBeaver](https://dbeaver.io) to access your data. Choose the MariaDB database type and use `<your_domain.tld>`, port 3306 (default), username `strangescout`, password `<secret_password1533>`, and database `strangescout`. **StrangeScout** works great with [Tableau](https://tableau.com) which is free for students and first teams!
+### CouchDB Access
+CouchDB comes with the very user friendly Fauxton Web UI. Just point your browser to `<your_domain.tld>/cdb/_utils/index.html` and sign in with username `strangescout` and the password `<secret_password1533>` you set in your .env file.
