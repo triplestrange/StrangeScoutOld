@@ -1,0 +1,15 @@
+#.travis.yml
+
+language: node_js
+
+before_script:
+  - cd jscout/
+  - npm install
+
+script:
+  - ./node_modules/.bin/ng build --prod
+
+notifications:
+  email:
+    on_failure: change
+    on_success: change
