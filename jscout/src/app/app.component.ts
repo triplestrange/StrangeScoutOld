@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
 		// check for updates
 		interval(30000).subscribe(() => this.updates.checkForUpdate());
 
-		if (us.checkAuth() != true) {
+		if (us.checkID() != true) {
 			this.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
 				this.Auth = true;
 				window.dispatchEvent(new CustomEvent('newLogin'));
