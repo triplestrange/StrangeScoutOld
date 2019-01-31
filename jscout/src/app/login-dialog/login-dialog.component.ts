@@ -30,8 +30,10 @@ export class LoginDialogComponent {
 				self.toastr.success('Logged In');
 			} else if (response === 401) {
 				self.toastr.error('Invalid Credentials');
+			} else if (response === 0) {
+				self.toastr.error('No connection to server');
 			} else {
-
+				self.toastr.error(`Status Code: ${response}`,'Unknown Error');
 			}
 		});
 	}

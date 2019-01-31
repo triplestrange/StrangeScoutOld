@@ -31,19 +31,24 @@ services:
                         - type: volume
                           source: strangedb
                           target: /opt/couchdb
+                        - type: volume
+                          source: strangedb_data
+                          target: /opt/couchdb/data
                 environment:
                         COUCHDB_PASSWORD: "${STRANGESCOUT_DB_PASSWD?did not set password!}"
                         COUCHDB_USER: "strangescout"
                 expose:
                         - "5984"
                 ports:
-                        - "5984:5984"
+                        - "{$COUCHDB_PUBLIC_PORT:-5984}:5984"
                 labels:
                         traefik.enable: "false"
 
 volumes:
         strangedb:
                 name: ${PREFIX-prod}_strangedb
+        strangedb_data:
+                name: ${PREFIX-prod}_strangedb_data
 networks:
         traefik:
                 external: true

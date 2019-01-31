@@ -29,13 +29,3 @@
 	log stdout
 	errors stdout
 }
-
-couch.{$JSCOUT_DOMAIN}:80 {
-	proxy / {$COUCHDB_HOST}:5984
-
-	tls off
-
-	# for Docker logs
-	log stdout
-	errors stdout
-}

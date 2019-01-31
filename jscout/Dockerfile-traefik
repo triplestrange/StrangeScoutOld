@@ -1,12 +1,15 @@
 FROM alpine AS builder
 ARG SS_VERSION
+ARG JSCOUT_DOMAIN
 WORKDIR /strangescout
 RUN apk add --update python make g++ nodejs nodejs-npm
+RUN npm install -g @angular/cli
+COPY ./package-lock.json ./
+COPY ./package.json ./
+RUN npm install
 COPY ./ ./
 RUN sed -i s/0.0.0/$SS_VERSION/ src/environments/environment.prod.ts
 RUN sed -i s/localhost/$JSCOUT_DOMAIN/ src/environments/environment.prod.ts
-RUN npm install -g @angular/cli
-RUN npm install
 RUN ng build --prod
 
 FROM joshix/caddy:latest

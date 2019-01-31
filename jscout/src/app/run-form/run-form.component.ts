@@ -33,7 +33,7 @@ export class RunFormComponent implements OnInit {
 
 	// countdown vars
 	time: number;
-	counter = 5;
+	counter = 150;
 	interval = 1000;
 
 	// data to collect

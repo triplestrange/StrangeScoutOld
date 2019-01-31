@@ -25,6 +25,9 @@ services:
                         - type: volume
                           source: strangedb
                           target: /opt/couchdb
+                        - type: volume
+                          source: strangedb_data
+                          target: /opt/couchdb/data
                 environment:
                         COUCHDB_PASSWORD: "${STRANGESCOUT_DB_PASSWD?did not set password!}"
                         COUCHDB_USER: "strangescout"
@@ -36,5 +39,7 @@ services:
 volumes:
         strangedb:
                 name: {$PREFIX-prod}_strangedb
+        strangedb_data:
+                name: ${PREFIX-prod}_strangedb_data
         jscout_caddydir: # stores certs--if you don't persist these you will QUICKLY hit a Let's Encrypt ratelimit!
                 name: ${PREFIX-prod}_jscout_caddydir
