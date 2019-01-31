@@ -31,8 +31,8 @@ export class UserService {
 	}
 
 	clear() {
-		this.cs.delete('AuthSession');
-		this.cs.delete('scouter');
+		this.cs.delete('scouter', '/', environment.domain);
+		this.cs.delete('AuthSession', '/', environment.domain);
 	}
 
 }
