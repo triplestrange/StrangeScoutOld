@@ -4,7 +4,7 @@ services:
                 build: jscout/
                 restart: always
                 depends_on:
-                        - "goscout"
+                        - "strangedb"
                 volumes:
                         - type: volume
                           source: jscout_caddydir
@@ -14,41 +14,33 @@ services:
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
                         JSCOUT_LETS_ENCRYPT_EMAIL: ${JSCOUT_LETS_ENCRYPT_EMAIL?did not set the Lets Encrylt email}
-                        GOSCOUT_HOST: "goscout"
+                        COUCHDB_HOST: "strangedb"
                 ports:
                         - "80:80"
                         - "443:443"
-        goscout:
-                build: goscout/
-                restart: always
-                depends_on:
-                        - "strangedb"
-                environment:
-                        GOSCOUT_SQL_USER: "strangescout"
-                        GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD?did not set password}"
-                        GOSCOUT_SQL_HOST: "strangedb"
-                        GOSCOUT_EVENT_HARDCODE:
-                expose:
-                        - "15338"
         strangedb:
-                image: mariadb
+                image: treehouses/couchdb:2.2.0
                 restart: always
                 volumes:
                         - type: volume
                           source: strangedb
-                          target: /var/lib/mysql
+                          target: /opt/couchdb
+                        - type: volume
+                          source: strangedb_data
+                          target: /opt/couchdb/data
+                        - ./strangescout_couch.ini:/opt/couchdb/etc/default.d/strangescout_couch.ini:ro
                 environment:
-                        MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-                        MYSQL_DATABASE: "strangescout"
-                        MYSQL_PASSWORD: "${STRANGESCOUT_SQL_PASSWD?did not set password!}"
-                        MYSQL_USER: "strangescout" 
+                        COUCHDB_PASSWORD: "${STRANGESCOUT_DB_PASSWD?did not set password!}"
+                        COUCHDB_USER: "strangescout"
                 expose:
-                        - "3306"
+                        - "5984"
                 ports:
-                        - "{$MYSQL_PUBLIC_PORT:-3306}:3306"
+                        - "5984:5984"
 
 volumes:
         strangedb:
                 name: {$PREFIX-prod}_strangedb
+        strangedb_data:
+                name: ${PREFIX-prod}_strangedb_data
         jscout_caddydir: # stores certs--if you don't persist these you will QUICKLY hit a Let's Encrypt ratelimit!
                 name: ${PREFIX-prod}_jscout_caddydir

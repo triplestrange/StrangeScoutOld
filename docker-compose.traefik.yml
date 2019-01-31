@@ -6,10 +6,10 @@ services:
                         dockerfile: Dockerfile-traefik
                 restart: always
                 depends_on:
-                        - "goscout"
+                        - "strangedb"
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
-                        GOSCOUT_HOST: "goscout"
+                        COUCHDB_HOST: "strangedb"
                 expose: # this container exports HTTP-as-a-service
                         - "80"
                 networks:
@@ -19,49 +19,37 @@ services:
                         traefik.enable: "true"
                         traefik.docker.network: "${TRAEFIK_NETWORK?did not setup network to reach traefik on}"
                         traefik.port: "80"
-                        traefik.frontend.rule: "Host:${JSCOUT_DOMAIN?did not set domain},www.$JSCOUT_DOMAIN"
+                        traefik.frontend.rule: "Host:${JSCOUT_DOMAIN?did not set domain},*.$JSCOUT_DOMAIN"
                         traefik.frontend.headers.STSSeconds: "31536000"
                         traefik.frontend.headers.STSIncludeSubdomains: "true"
                         traefik.frontend.headers.STSPreload: "true"
 
-        goscout:
-                build: goscout/
-                restart: always
-                depends_on:
-                        - "strangedb"
-                environment:
-                        GOSCOUT_SQL_USER: "strangescout"
-                        GOSCOUT_SQL_PASSWD: "${STRANGESCOUT_SQL_PASSWD?did not set password}"
-                        GOSCOUT_SQL_HOST: "strangedb"
-                        GOSCOUT_EVENT_HARDCODE:
-                expose: # for internal use, proxied by jscout container
-                        - "15338"
-                labels:
-                        traefik.enable: "false"
-        
         strangedb:
-                image: mariadb
+                image: treehouses/couchdb:2.2.0
                 restart: always
                 volumes:
                         - type: volume
                           source: strangedb
-                          target: /var/lib/mysql
+                          target: /opt/couchdb
+                        - type: volume
+                          source: strangedb_data
+                          target: /opt/couchdb/data
+                        - ./strangescout_couch.ini:/opt/couchdb/etc/default.d/strangescout_couch.ini:ro
                 environment:
-                        MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-                        MYSQL_DATABASE: "strangescout"
-                        MYSQL_PASSWORD: "${STRANGESCOUT_SQL_PASSWD?did not set password}"
-                        MYSQL_USER: "strangescout" 
+                        COUCHDB_PASSWORD: "${STRANGESCOUT_DB_PASSWD?did not set password!}"
+                        COUCHDB_USER: "strangescout"
                 expose:
-                        - "3306"
-                ports: # should probably not leave this open in production
-                        - "${MYSQL_PUBLIC_PORT:-3306}:3306"
-
+                        - "5984"
+                ports:
+                        - "5984:5984"
                 labels:
                         traefik.enable: "false"
 
 volumes:
         strangedb:
                 name: ${PREFIX-prod}_strangedb
+        strangedb_data:
+                name: ${PREFIX-prod}_strangedb_data
 networks:
         traefik:
                 external: true

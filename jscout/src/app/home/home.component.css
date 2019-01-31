@@ -26,8 +26,8 @@ mat-card.splash-card mat-card-header mat-card-subtitle {
 }
 
 #edit-scouter {
-	transform: scale(0.65);
-	padding-bottom: 6px;
+	transform: scale(0.8);
+	padding-bottom: 3px;
 
 }
 

@@ -23,28 +23,36 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material';
+import {MatPaginatorModule} from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
 // Material Form elements
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
+import {MatSliderModule} from '@angular/material/slider';
 
 // Components
 import { AppComponent } from './app.component';
 import { RunFormComponent } from './run-form/run-form.component';
-import { FormBlockComponent } from './form-block/form-block.component';
 import { HomeComponent } from './home/home.component';
-import { CacheManagementComponent } from './cache-management/cache-management.component';
-import { DataComponent } from './data/data.component';
+import { CounterDirective } from './counter.directive';
+import { BeginMatchDialogComponent } from './begin-match-dialog/begin-match-dialog.component';
+import { ElementEventDialogComponent } from './element-event-dialog/element-event-dialog.component';
+import { EndMatchDialogComponent } from './end-match-dialog/end-match-dialog.component';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		RunFormComponent,
-		FormBlockComponent,
 		HomeComponent,
-		CacheManagementComponent,
-		DataComponent
+		CounterDirective,
+		BeginMatchDialogComponent,
+		ElementEventDialogComponent,
+		EndMatchDialogComponent,
+		LoginDialogComponent,
+		ConfirmDialogComponent
 	],
 	imports: [
 		BrowserModule,
@@ -55,6 +63,7 @@ import { DataComponent } from './data/data.component';
 		MatToolbarModule,
 		MatMenuModule,
 		MatButtonModule,
+		MatSliderModule,
 		MatIconModule,
 		MatCardModule,
 		MatInputModule,
@@ -63,10 +72,12 @@ import { DataComponent } from './data/data.component';
 		MatTableModule,
 		MatSortModule,
 		MatPaginatorModule,
+		MatDialogModule,
 		ToastrModule.forRoot(),
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
 	],
 	providers: [ CookieService ],
-	bootstrap: [ AppComponent ]
+	bootstrap: [ AppComponent ],
+	entryComponents: [ConfirmDialogComponent, LoginDialogComponent, BeginMatchDialogComponent, EndMatchDialogComponent, ElementEventDialogComponent]
 })
 export class AppModule { }

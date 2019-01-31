@@ -1,43 +1,63 @@
-<form class="center-container" id="runForm" (ngSubmit)="onSubmit()">
+<form class="center-container" name="runForm" id="runForm" (ngSubmit)="endMatch()">
 
-<mat-card>
+<mat-card *ngIf="!showForm">
 	<mat-card-header>
 		<mat-card-title>Setup</mat-card-title>
 	</mat-card-header>
-	<div *ngFor="let question of setupQuestions" class="form-group">
-		<app-form-block [question]="question" [form]="setupForm"></app-form-block>
+	<label for="teamNumber">Team Number</label>
+	<div>
+		<mat-form-field class="setup-field">
+			<input matInput name="teamNumber" id="teamNumber" type="number" min="0" max="9999" [(ngModel)]="team" #teamNumber=ngModel required>
+		</mat-form-field>
+	</div>
+	<div class="alert-required" *ngIf="teamNumber.invalid && (teamNumber.dirty || teamNumber.touched)">Team Number is required</div>
+
+	<label for="matchNumber">Match Number</label>
+	<div>
+		<mat-form-field class="setup-field">
+			<input matInput name="matchNumber" id="matchNumber" type="number" min="0" max="999" [(ngModel)]="match" #matchNumber=ngModel required>
+		</mat-form-field>
+	</div>
+	<div class="alert-required" *ngIf="matchNumber.invalid && (matchNumber.dirty || matchNumber.touched)">Match Number is required</div>
+
+	<label>Starting Position</label>
+	<div>
+		<mat-form-field class="setup-field">
+			<mat-select name="StartingPos" id="startingPos" [(ngModel)]="start" #startingPos=ngModel required>
+				<mat-option *ngFor="let opt of startingPositions" [value]="opt.Value">{{opt.Name}}</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<div class="alert-required" *ngIf="startingPos.invalid && (startingPos.dirty || startingPos.touched)">Starting Position is required</div>
+
+	<label>Starting Configuration</label>
+	<div>
+		<mat-form-field class="setup-field">
+			<mat-select name="StartingConf" id="startingConf" [(ngModel)]="load" #startingConf=ngModel required>
+				<mat-option *ngFor="let opt of startingConfigs" [value]="opt.Value">{{opt.Name}}</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<div class="alert-required" *ngIf="startingConf.invalid && (startingConf.dirty || startingConf.touched)">Starting Configuration is required</div>
+
+	<div class="center-container">
+		<button mat-raised-button *ngIf="!showForm" color="primary" type="button" (click)="startMatch()" [disabled]="teamNumber.invalid || matchNumber.invalid || startingPos.invalid || startingConf.invalid">Next</button>
 	</div>
 </mat-card>
 
-<mat-card>
-	<mat-card-header>
-		<mat-card-title>Autonomous Period</mat-card-title>
-	</mat-card-header>
-	<div *ngFor="let question of autoQuestions" class="form-group">
-		<app-form-block [question]="question" [form]="autoForm"></app-form-block>
+<mat-card *ngIf="showForm" style="text-align: center;">
+	<ng-container [counter]="counter" [interval]="interval" (value)="time = $event">
+		<h3 class="countdown">Remaining Time: {{ displayTime }}</h3>
+		Last Event: {{ lastEvent }}
+	</ng-container>
+</mat-card>
+
+<mat-card *ngIf="showForm" class="button-card">
+	<div *ngFor="let element of gameElements">
+		<button mat-raised-button *ngIf="showForm" class="element-button" type="button" color="primary" [disabled]="(counter - time) < (element.RevealTime + 1) || time < 1" (click)="getElement(element)">{{element.Name}}</button>
 	</div>
 </mat-card>
 
-<mat-card>
-	<mat-card-header>
-		<mat-card-title>Teleop Period</mat-card-title>
-	</mat-card-header>
-	<div *ngFor="let question of teleopQuestions" class="form-group">
-		<app-form-block [question]="question" [form]="teleopForm"></app-form-block>
-	</div>
-</mat-card>
-
-<mat-card>
-	<mat-card-header>
-		<mat-card-title>End Game</mat-card-title>
-	</mat-card-header>
-	<div *ngFor="let question of endgameQuestions" class="form-group">
-		<app-form-block [question]="question" [form]="endgameForm"></app-form-block>
-	</div>
-</mat-card>
-
-<div class="form-group">
-	<button mat-raised-button color="primary" type="submit" class="submit-run" [disabled]="!setupForm.valid || !autoForm.valid || !teleopForm.valid || !endgameForm.valid">Submit</button>
-</div>
+<button mat-raised-button *ngIf="showForm" color="primary" class="submit-run" [disabled]="time > 0">Next</button>
 
 </form>

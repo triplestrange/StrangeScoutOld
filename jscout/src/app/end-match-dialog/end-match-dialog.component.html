@@ -1,0 +1,9 @@
+<div mat-dialog-content>
+	<label>Notes</label>
+	<div>
+		<mat-form-field class="textarea-field">
+			<textarea matInput [(ngModel)]="notes"></textarea>
+		</mat-form-field>
+	</div>
+	<button mat-raised-button class="submit-run" color="primary" type="button" routerLink="/" (click)="submit()">Submit</button>
+</div>

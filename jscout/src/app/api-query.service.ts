@@ -113,7 +113,7 @@ export class ApiQueryService {
 		return requestPath;
 	}
 
-	getQuery(event: string, team: string, match: string, json: boolean, callback) {
+	getQuery(event: string, team: string, match: string, callback) {
 		const xhr = new XMLHttpRequest();
 		let requestPath: string;
 		let response: string;
@@ -122,30 +122,20 @@ export class ApiQueryService {
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
 					response = xhr.responseText;
-					if (json) {
-						if (!response.startsWith('[')) {
-							response = '[' + response;
-						}
-						if (!response.endsWith(']')) {
-							response = response + ']';
-						}
+					if (!response.startsWith('[')) {
+						response = '[' + response;
 					}
-					callback(response);
-				} else {
-					if (json) {
-						callback('[]');
-					} else {
-						callback('');
+					if (!response.endsWith(']')) {
+						response = response + ']';
 					}
-					return;
 				}
+				callback(response);
+			} else {
+				callback('[]');
+				return;
 			}
 		};
-		xhr.open('GET', requestPath, true);
-		// need this to get JSON back
-		if (json) {
-			xhr.setRequestHeader('Accept', 'application/json');
-		}
+		xhr.open('GET', requestPath, true);	
 		xhr.send();
 	}
 

@@ -1,5 +1,5 @@
 # MAIN HOST CONFIG
-*:80 {
+{$JSCOUT_DOMAIN}:80, www.{$JSCOUT_DOMAIN}:80 {
 	
 	ext .html .htm .php
 	# allow "clean" URLs without pesky extensions that might scare Windows users...
@@ -17,10 +17,11 @@
 	errors stdout
 	
 	## REVERSE PROXY CONFIG
-	proxy /api/ {$GOSCOUT_HOST}:15338 {
-		without /api
+	proxy /cdb/ {$COUCHDB_HOST}:5984 {
+		without /cdb
 	}
 
+	tls off
 
 	# A GoScout API server must be exposed to this container on port 15338.
 

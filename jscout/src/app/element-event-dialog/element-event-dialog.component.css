@@ -1,0 +1,12 @@
+div.event-dialog {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+button.event-button {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 180px;
+}
