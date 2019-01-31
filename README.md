@@ -35,9 +35,16 @@ _Excerpted from our [Deployment Guide](https://github.com/triplestrange/StrangeS
 >		- This specifies the email used to get Lets Encrypt certificates for HTTPS support
 >6. **Run `./build.sh`**
 >7. **Do `docker-compose up -d`**
->8. **Go to `<your_domain.tld>/cdb/_utils/index.html` and login with the username `strangescout` and password you set**
->9. **Go to `Setup` in the sidebar and select `Configure Single Node`**
->10. **Enter the same credentials you used above and click `Configure Node`**
+>8. **Configure CouchDB**
+>	- Go to `<your_domain.tld>/cdb/_utils/index.html` and login with the username `strangescout` and password you set
+>	- Go to `Setup` in the sidebar and select `Configure Single Node`
+>	- Enter the same credentials you used above and click `Configure Node`
+>9. **Create the scouting database**
+>	- Still logged in to the database, create a new database with the name `ssdb`
+>	- Go to the database permissions and add a member role `scouter`
+>10. **Add scouter users**
+>	- A good explanation for adding users can be found at [https://stackoverflow.com/a/6418670](https://stackoverflow.com/a/6418670)
+>	- Don't forget to set the `scouter` role so the users can interact with the database!
 
 You're ready to scout! HTTPS certs from Let's Encrypt (if you're using the standalone install) and your SQL database are safely stored in Docker volumes, so you're free to start and stop containers at will, or even delete them!
 
