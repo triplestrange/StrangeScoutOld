@@ -5,7 +5,7 @@ node_js:
   - "11"
 
 before_script:
-  - cd jscout/
+  - cd frontend/web/
   - npm install
 
 script:
