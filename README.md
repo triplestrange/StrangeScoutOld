@@ -1,7 +1,7 @@
 # StrangeScout
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-![version](https://img.shields.io/github/tag-date/triplestrange/strangescout.svg?label=version&style=flat)
+[![version](https://img.shields.io/github/tag-date/triplestrange/strangescout.svg?label=version&style=flat)](https://github.com/triplestrange/StrangeScout/releases/)
 [![Build Status](https://travis-ci.com/triplestrange/StrangeScout.svg?branch=master)](https://travis-ci.com/triplestrange/StrangeScout)
 
 **The world's first free software [FIRST Robotics Competition](https://firstinspires.org) scouting system powered by Docker, CouchDB, and the modern web (Angular)!**

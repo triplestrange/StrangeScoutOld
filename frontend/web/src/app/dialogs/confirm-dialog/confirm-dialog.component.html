@@ -1,7 +1,8 @@
+<h2 mat-dialog-title>Logout</h2>
 <div mat-dialog-content>
-		Are you sure?
+	All data will be cleared from this device and internet is required to log in.
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions align="end">
 		<button mat-button cdkFocusInitial type="button" (click)="dialogRef.close(false)">Cancel</button>
 		<button mat-button color="warn" type="button" (click)="dialogRef.close(true)">Logout</button>
 </div>

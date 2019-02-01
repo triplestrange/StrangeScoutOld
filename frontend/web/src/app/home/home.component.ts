@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 import { MatDialog } from '@angular/material';
-import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.component';
+import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
 
-import { UserService } from '../user.service';
-import { PouchdbService } from '../pouchdb.service';
+import { UserService } from '../services/user.service';
+import { PouchdbService } from '../services/pouchdb.service';
 
 @Component({
 	selector: 'app-home',
@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
 		this.dialog.open(ConfirmDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
 			if ( result ) {
 				this.us.clear();
+				this.dbs.deleteLocal();
 				this.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
 					window.dispatchEvent(new CustomEvent('newLogin'));
 				});

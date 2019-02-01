@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 // toasts
 import { ToastrService } from 'ngx-toastr';
@@ -63,10 +63,15 @@ export class PouchdbService {
 
 		localDB.sync(remoteDB).on('complete', function () {
 			self.toastr.success('Data synced');
-			console.log(localDB.info())
+			console.log(localDB.info());
 		}).on('error', function (err) {
 			self.toastr.error('Error syncing data!');
-			console.log(err)
+			console.log(err);
 		});
+	}
+
+	deleteLocal() {
+		const localDB = new PouchDB('ssdb');
+		localDB.destroy();
 	}
 }

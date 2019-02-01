@@ -4,8 +4,8 @@ import { MatDialogRef } from '@angular/material';
 // toasts
 import { ToastrService } from 'ngx-toastr';
 
-import { PouchdbService } from '../pouchdb.service';
-import { UserService } from '../user.service'
+import { PouchdbService } from '../../services/pouchdb.service';
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-login-dialog',

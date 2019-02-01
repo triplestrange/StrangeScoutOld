@@ -36,11 +36,13 @@ import { AppComponent } from './app.component';
 import { RunFormComponent } from './run-form/run-form.component';
 import { HomeComponent } from './home/home.component';
 import { CounterDirective } from './counter.directive';
-import { BeginMatchDialogComponent } from './begin-match-dialog/begin-match-dialog.component';
-import { ElementEventDialogComponent } from './element-event-dialog/element-event-dialog.component';
-import { EndMatchDialogComponent } from './end-match-dialog/end-match-dialog.component';
-import { LoginDialogComponent } from './login-dialog/login-dialog.component';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+
+// Dialogs
+import { BeginMatchDialogComponent } from './dialogs/begin-match-dialog/begin-match-dialog.component';
+import { ElementEventDialogComponent } from './dialogs/element-event-dialog/element-event-dialog.component';
+import { EndMatchDialogComponent } from './dialogs/end-match-dialog/end-match-dialog.component';
+import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.component';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
 	declarations: [

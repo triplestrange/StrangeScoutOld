@@ -4,18 +4,18 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 // dialog components
-import { BeginMatchDialogComponent } from '../begin-match-dialog/begin-match-dialog.component'
-import { ElementEventDialogComponent } from '../element-event-dialog/element-event-dialog.component'
-import { EndMatchDialogComponent } from '../end-match-dialog/end-match-dialog.component'
+import { BeginMatchDialogComponent } from '../dialogs/begin-match-dialog/begin-match-dialog.component'
+import { ElementEventDialogComponent } from '../dialogs/element-event-dialog/element-event-dialog.component'
+import { EndMatchDialogComponent } from '../dialogs/end-match-dialog/end-match-dialog.component'
 
 // scouter id service
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 
 // data for the form body
 import { RunFormDataService } from '../run-form-data.service';
 
 // db service
-import { PouchdbService } from '../pouchdb.service';
+import { PouchdbService } from '../services/pouchdb.service';
 
 // custom classes
 import { EventJournalEntry, OptionEventChoice, GameElement } from '../run-classes';
