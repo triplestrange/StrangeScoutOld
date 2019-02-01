@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
 		this.dialog.open(ConfirmDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
 			if ( result ) {
 				this.us.clear();
+				this.dbs.deleteLocal();
 				this.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
 					window.dispatchEvent(new CustomEvent('newLogin'));
 				});
