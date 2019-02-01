@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 
 import { MatDialog } from '@angular/material';
-import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.component';
 
 import { HomeComponent } from './home/home.component'
 
@@ -18,7 +18,7 @@ import { interval } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 // user id service
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 
 @Component({
 	selector: 'app-root',
