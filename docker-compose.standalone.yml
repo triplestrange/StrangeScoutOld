@@ -35,7 +35,7 @@ services:
                 expose:
                         - "5984"
                 ports:
-                        - "5984:5984"
+                        - "${DB_PORT:-5984}:5984"
 
 volumes:
         strangedb:
