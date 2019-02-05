@@ -1,0 +1,22 @@
+{
+	"name": "strangescout",
+	"version": "1.0.0",
+	"description": "StrangeScout server application",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"FRC",
+		"strangescout",
+		"server"
+	],
+	"author": "Noah Piraino",
+	"license": "AGPL-3.0",
+	"dependencies": {
+		"express": "^4.16.4",
+		"express-http-proxy": "^1.5.1",
+		"express-pouchdb": "^4.1.0",
+		"pouchdb": "^7.0.0"
+	}
+}
