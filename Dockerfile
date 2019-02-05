@@ -1,19 +1,21 @@
 FROM alpine AS builder
 WORKDIR /strangescout
 RUN apk add --update python make g++ nodejs nodejs-npm
-COPY ./package-lock.json ./
-COPY ./package.json ./
+COPY ./frontend/web/package-lock.json ./
+COPY ./frontend/web/package.json ./
 RUN npm install
-COPY ./ ./
+COPY ./frontend/web/ ./
 ARG SS_VERSION
 ARG JSCOUT_DOMAIN
 RUN sed -i s/0.0.0/$SS_VERSION/ src/environments/environment.prod.ts
 RUN sed -i s/localhost/$JSCOUT_DOMAIN/ src/environments/environment.prod.ts
 RUN node_modules/.bin/ng build --prod --aot --source-map=false
 
-FROM joshix/caddy:latest
-COPY Caddyfile-traefik /var/www/html/Caddyfile
-COPY --from=builder /strangescout/dist/jscout /srv
+FROM alpine
+WORKDIR /server
+RUN apk add --update python make g++ nodejs nodejs-npm
+COPY ./server/ ./
+RUN npm install
+COPY --from=builder /strangescout/dist/jscout /server/static
 EXPOSE 80 443
-VOLUME /.caddy/
-ENTRYPOINT ["caddy", "-agree"]
+ENTRYPOINT ["node", "index.js"]

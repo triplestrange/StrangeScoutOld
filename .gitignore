@@ -4,6 +4,3 @@
 .tgz
 .txz
 .tbz
-
-# let the user create this as a symlink
-docker-compose.yml

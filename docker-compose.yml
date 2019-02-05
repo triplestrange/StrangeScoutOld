@@ -2,14 +2,15 @@ version: '3.5'
 services:
         jscout:
                 build:
-                        context: ./frontend/web/
-                        dockerfile: Dockerfile-traefik
+                        context: ./
+                        dockerfile: Dockerfile
                 restart: always
-                depends_on:
-                        - "strangedb"
+                volumes:
+                        - type: volume
+                          source: strangedb
+                          target: /server/dbs
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
-                        COUCHDB_HOST: "strangedb"
                 expose: # this container exports HTTP-as-a-service
                         - "80"
                 networks:
@@ -24,32 +25,9 @@ services:
                         traefik.frontend.headers.STSIncludeSubdomains: "true"
                         traefik.frontend.headers.STSPreload: "true"
 
-        strangedb:
-                image: treehouses/couchdb:2.2.0
-                restart: always
-                volumes:
-                        - type: volume
-                          source: strangedb
-                          target: /opt/couchdb
-                        - type: volume
-                          source: strangedb_data
-                          target: /opt/couchdb/data
-                        - ./strangescout_couch.ini:/opt/couchdb/etc/default.d/strangescout_couch.ini:ro
-                environment:
-                        COUCHDB_PASSWORD: "${STRANGESCOUT_DB_PASSWD?did not set password!}"
-                        COUCHDB_USER: "strangescout"
-                expose:
-                        - "5984"
-                ports:
-                        - "${DB_PORT:-5984}:5984"
-                labels:
-                        traefik.enable: "false"
-
 volumes:
         strangedb:
                 name: ${PREFIX-prod}_strangedb
-        strangedb_data:
-                name: ${PREFIX-prod}_strangedb_data
 networks:
         traefik:
                 external: true
