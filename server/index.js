@@ -10,7 +10,7 @@ const expressWinston = require('express-winston');
 const db = PouchDB.defaults({prefix: path.join(__dirname, 'dbs/')})
 
 const app = express();
-const port = 3000;
+const port = 80;
 
 // listener
 app.listen(port, () => console.log(`listening on port ${port}`));
