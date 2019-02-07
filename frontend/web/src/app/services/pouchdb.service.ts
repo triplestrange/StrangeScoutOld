@@ -20,7 +20,7 @@ export class PouchdbService {
 
 	authenticateRemote(user: string, pass: string, callback) {
 		const xhr = new XMLHttpRequest;
-		const url = '/cdb/_session'
+		const url = '/db/_session'
 		xhr.open('POST', url)
 		xhr.withCredentials = true;
 		xhr.setRequestHeader('Content-type', 'application/json');
@@ -35,7 +35,7 @@ export class PouchdbService {
 
 	deauthenticateRemote() {
 		const xhr = new XMLHttpRequest;
-		const url = '/cdb/_session'
+		const url = '/db/_session'
 		xhr.withCredentials = true;
 		xhr.open('DELETE', url)
 		xhr.send()
@@ -51,7 +51,7 @@ export class PouchdbService {
 	// sync with remote db
 	syncRemote() {
 		const self = this;
-		const remoteURL = 'https://'+environment.domain+'/cdb/ssdb'
+		const remoteURL = 'https://'+environment.domain+'/db/ssdb'
 		const localDB = new PouchDB('ssdb')
 		const remoteDB = new PouchDB(remoteURL, {
 			adapter: "http",
