@@ -10,4 +10,6 @@ fi
 
 echo "Build version" $VERSION "on domain" $JSCOUT_DOMAIN
 
+cd build
+
 docker-compose build --build-arg JSCOUT_DOMAIN=$JSCOUT_DOMAIN --build-arg SS_VERSION=$VERSION

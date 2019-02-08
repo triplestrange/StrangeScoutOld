@@ -2,8 +2,8 @@ version: '3.5'
 services:
         strangescout:
                 build:
-                        context: ./
-                        dockerfile: Dockerfile
+                        context: ../
+                        dockerfile: build/Dockerfile
                 restart: always
                 volumes:
                         - type: volume
@@ -11,7 +11,7 @@ services:
                           target: /server/dbs
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
-                expose: # this container exports HTTP-as-a-service
+                expose:
                         - "80"
                 networks:
                         - "traefik"
