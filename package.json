@@ -1,0 +1,27 @@
+{
+	"name": "strangescout",
+	"version": "0.0.0",
+	"description": "StrangeScout Scouting System",
+	"main": "build/index.js",
+	"scripts": {},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/triplestrange/StrangeScout.git"
+	},
+	"keywords": [
+		"scouting",
+		"FRC",
+		"strangescout",
+		"1533",
+		"triplestrange"
+	],
+	"author": "Triple Strange",
+	"license": "AGPL-3.0",
+	"bugs": {
+		"url": "https://github.com/triplestrange/StrangeScout/issues"
+	},
+	"homepage": "https://github.com/triplestrange/StrangeScout#readme",
+	"dependencies": {
+		"inquirer": "^6.2.2"
+	}
+}

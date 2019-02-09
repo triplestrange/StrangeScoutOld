@@ -1,6 +1,6 @@
 {
-	"name": "strangescout",
-	"version": "1.0.0",
+	"name": "strangescout-server",
+	"version": "0.0.0",
 	"description": "StrangeScout server application",
 	"main": "index.js",
 	"scripts": {
