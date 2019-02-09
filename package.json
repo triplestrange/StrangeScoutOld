@@ -22,6 +22,7 @@
 	},
 	"homepage": "https://github.com/triplestrange/StrangeScout#readme",
 	"dependencies": {
-		"inquirer": "^6.2.2"
+		"inquirer": "^6.2.2",
+		"node-cmd": "^3.0.0"
 	}
 }

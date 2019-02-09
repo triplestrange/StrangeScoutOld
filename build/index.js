@@ -1,9 +1,9 @@
 const fs = require('fs');
+const cmd = require('node-cmd');
 const path = require('path');
 const inquirer = require('inquirer');
 
 const conffile = path.join(__dirname, 'config.json');
-var conf = {};
 
 /**
  * Main Menu
@@ -35,8 +35,11 @@ function checkConfig() {
 	}
 }
 
-function loadConfig() {
-	conf = JSON.parse(fs.readFileSync(conffile))
+/**
+ * Returns config options in an object
+ */
+function readConfig() {
+	return JSON.parse(fs.readFileSync(conffile))
 }
 
 /**
@@ -70,6 +73,26 @@ function newConfig() {
 		});
 	})
 	
+}
+
+async function build() {
+	conf = readConfig();
+	console.log('Building StrangeScout - This may take a while...')
+	promise = new Promise(resolve => {
+		cmd.get(
+		`
+		cd ${__dirname}
+		ls
+		docker-compose down
+		docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain} -e TRAEFIK_NETWORK=${conf.network} -e PREFIX=${conf.prefix}
+		docker-compose up -d
+		`,
+		function(err, data, stderr) {
+			console.log(data);
+			resolve();
+		})
+	});
+	promise.then(() => {console.log('done')})
 }
 
 /**************************************/
@@ -108,7 +131,7 @@ mainMenu(function(answers) {
 		});
 		// run the promise
 		promise.then(() => {
-			console.log('done')
+			build();
 		})
 	}
 });
