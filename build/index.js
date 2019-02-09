@@ -5,6 +5,8 @@ const inquirer = require('inquirer');
 
 const conffile = path.join(__dirname, 'config.json');
 
+const wd = process.cwd();
+
 /**
  * Main Menu
  */
@@ -14,7 +16,7 @@ function mainMenu(callback) {
 		{
 			type: 'list',
 			name: "selection",
-			message: "StrangeScout",
+			message: `StrangeScout: ${(status()) ? "Running" : "Stopped"}`,
 			choices: [ "Build", "Start", "Stop" ],
 			filter: function( val ) { return val.toLowerCase(); }
 		}
@@ -72,9 +74,35 @@ function newConfig() {
 			});
 		});
 	})
-	
 }
 
+/**
+ * Returns true if StrangeScout is running, else false
+ */
+function status() {
+	promise = new Promise(resolve => {
+		cmd.get(
+		`
+		cd ${__dirname}
+		 docker-compose ps | sed '3q;d' | awk '{print $4}'
+		cd ${wd}
+		`,
+		function(err, data, stderr) {
+			resolve(data);
+		})
+	});
+	promise.then(response => {
+		if (response === 'Up') {
+			return true;
+		} else {
+			return false;
+		}
+	})
+}
+
+/**
+ * Builds StrangeScout
+ */
 async function build() {
 	conf = readConfig();
 	console.log('Building StrangeScout - This may take a while...')
@@ -82,17 +110,59 @@ async function build() {
 		cmd.get(
 		`
 		cd ${__dirname}
-		ls
-		docker-compose down
-		docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain} -e TRAEFIK_NETWORK=${conf.network} -e PREFIX=${conf.prefix}
-		docker-compose up -d
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose down
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain}
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose up -d
+		cd ${wd}
 		`,
 		function(err, data, stderr) {
 			console.log(data);
 			resolve();
 		})
 	});
-	promise.then(() => {console.log('done')})
+	promise.then(() => {console.log('done!')})
+}
+
+/**
+ * Starts StrangeScout
+ */
+async function start() {
+	conf = readConfig();
+	console.log('Starting StrangeScout...')
+	promise = new Promise(resolve => {
+		cmd.get(
+		`
+		cd ${__dirname}
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose up -d
+		cd ${wd}
+		`,
+		function(err, data, stderr) {
+			console.log(data);
+			resolve();
+		})
+	});
+	promise.then(() => {console.log('done!')})
+}
+
+/**
+ * Stops StrangeScout
+ */
+async function stop() {
+	conf = readConfig();
+	console.log('Stopping StrangeScout...')
+	promise = new Promise(resolve => {
+		cmd.get(
+		`
+		cd ${__dirname}
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose down
+		cd ${wd}
+		`,
+		function(err, data, stderr) {
+			console.log(data);
+			resolve();
+		})
+	});
+	promise.then(() => {console.log('done!')})
 }
 
 /**************************************/
@@ -133,5 +203,9 @@ mainMenu(function(answers) {
 		promise.then(() => {
 			build();
 		})
+	} else if (answers.selection === "start") {
+		start();
+	} else if (answers.selection === "stop") {
+		stop();
 	}
 });
