@@ -10,13 +10,14 @@ const wd = process.cwd();
 /**
  * Main Menu
  */
-function mainMenu(callback) {
+async function mainMenu(callback) {
+	stat = await status()
 	inquirer
 	.prompt([
 		{
 			type: 'list',
 			name: "selection",
-			message: `StrangeScout: ${(status()) ? "Running" : "Stopped"}`,
+			message: `StrangeScout: ${(stat) ? "Running" : "Stopped"}`,
 			choices: [ "Build", "Start", "Stop" ],
 			filter: function( val ) { return val.toLowerCase(); }
 		}
@@ -77,29 +78,30 @@ function newConfig() {
 }
 
 /**
- * Returns true if StrangeScout is running, else false
+ * Resolves true if StrangeScout is running, else false
  */
 function status() {
-	conf = readConfig();
-	promise = new Promise(resolve => {
-		cmd.get(
-		`
-		cd ${__dirname}
-		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose ps | sed '3q;d' | awk '{print $4}'
-		cd ${wd}
-		`,
-		function(err, data, stderr) {
-			resolve(data);
-		})
+	return new Promise(resolve => {
+		conf = readConfig();
+		promise = new Promise(resolve => {
+			cmd.get(
+			`
+			cd ${__dirname}
+			COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose ps | sed '3q;d' | awk '{print $4}'
+			cd ${wd}
+			`,
+			function(err, data, stderr) {
+				resolve(data);
+			})
+		});
+		promise.then(result => {
+			if (result.includes("Up")) {
+				resolve(true);
+			} else {
+				resolve(false);
+			}
+		});
 	});
-	promise.then(result => {
-		if (result.includes("Up")) {
-			return true;
-		} else {
-			return false;
-		}
-	});
-	
 }
 
 /**
