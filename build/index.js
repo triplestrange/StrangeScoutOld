@@ -84,15 +84,15 @@ function status() {
 		cmd.get(
 		`
 		cd ${__dirname}
-		 docker-compose ps | sed '3q;d' | awk '{print $4}'
+		docker-compose ps | sed '3q;d' | awk '{print $4}'
 		cd ${wd}
 		`,
 		function(err, data, stderr) {
 			resolve(data);
 		})
 	});
-	promise.then(response => {
-		if (response === 'Up') {
+	promise.then(result => {
+		if (result === "Up") {
 			return true;
 		} else {
 			return false;
