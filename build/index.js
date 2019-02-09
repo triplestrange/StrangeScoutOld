@@ -1,0 +1,114 @@
+const fs = require('fs');
+const path = require('path');
+const inquirer = require('inquirer');
+
+const conffile = path.join(__dirname, 'config.json');
+var conf = {};
+
+/**
+ * Main Menu
+ */
+function mainMenu(callback) {
+	inquirer
+	.prompt([
+		{
+			type: 'list',
+			name: "selection",
+			message: "StrangeScout",
+			choices: [ "Build", "Start", "Stop" ],
+			filter: function( val ) { return val.toLowerCase(); }
+		}
+	])
+	.then(answers => {
+		callback(answers);
+	});
+}
+
+/**
+ * True if config file exists, else false
+ */
+function checkConfig() {
+	if (fs.existsSync(conffile)) {
+		return true
+	} else {
+		return false
+	}
+}
+
+function loadConfig() {
+	conf = JSON.parse(fs.readFileSync(conffile))
+}
+
+/**
+ * Gets new config options and writes a config file
+ */
+function newConfig() {
+	return new Promise(resolve => {
+		inquirer
+		.prompt([
+			{
+				type : 'input',
+				name : 'domain',
+				message : 'Enter your domain ...'
+			},
+			{
+				type : 'input',
+				name : 'network',
+				message : 'Enter docker/traefik network ...'
+			},
+			{
+				type : 'input',
+				name : 'prefix',
+				message : 'Enter image prefix ...'
+			}
+		])
+		.then(answers => {
+			fs.writeFile(conffile, JSON.stringify(answers, null, "\t"), 'utf8', function() {
+				console.log('Config file written!');
+				resolve();
+			});
+		});
+	})
+	
+}
+
+/**************************************/
+
+mainMenu(function(answers) {
+	// if we chose to build
+	if (answers.selection === "build") {
+		// new promise
+		promise = new Promise(resolve => {
+			// check if a config exists
+			if (checkConfig()) {
+				// prompt to use existing config or create new one
+				inquirer
+				.prompt([
+					{
+						type: "list",
+						name: "conf",
+						message: "Config File",
+						choices: [ "Use existing config", "Create new config" ],
+						filter: function( val ) { return val.toLowerCase(); }
+					}
+				])
+				.then(answers => {
+					if (answers.conf === "create new config") {
+						// if we chose to create a new config
+						newConfig().then(() => resolve());
+					} else {
+						// else resolve and use existing
+						resolve();
+					}
+				});
+			} else {
+				// if no config exists make a new one
+				newConfig().then(() => resolve());
+			}
+		});
+		// run the promise
+		promise.then(() => {
+			console.log('done')
+		})
+	}
+});
