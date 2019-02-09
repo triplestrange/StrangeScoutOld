@@ -80,11 +80,12 @@ function newConfig() {
  * Returns true if StrangeScout is running, else false
  */
 function status() {
+	conf = readConfig();
 	promise = new Promise(resolve => {
 		cmd.get(
 		`
 		cd ${__dirname}
-		docker-compose ps | sed '3q;d' | awk '{print $4}'
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose ps | sed '3q;d' | awk '{print $4}'
 		cd ${wd}
 		`,
 		function(err, data, stderr) {
@@ -92,12 +93,13 @@ function status() {
 		})
 	});
 	promise.then(result => {
-		if (result === "Up") {
+		if (result.includes("Up")) {
 			return true;
 		} else {
 			return false;
 		}
-	})
+	});
+	
 }
 
 /**
