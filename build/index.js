@@ -4,26 +4,28 @@ const path = require('path');
 const inquirer = require('inquirer');
 
 const conffile = path.join(__dirname, 'config.json');
-
 const wd = process.cwd();
 
 /**
  * Main Menu
  */
-async function mainMenu(callback) {
-	stat = await status()
-	inquirer
-	.prompt([
-		{
-			type: 'list',
-			name: "selection",
-			message: `StrangeScout: ${(stat) ? "Running" : "Stopped"}`,
-			choices: [ "Build", "Start", "Stop" ],
-			filter: function( val ) { return val.toLowerCase(); }
-		}
-	])
-	.then(answers => {
-		callback(answers);
+async function mainMenu() {
+	return new Promise(resolve => {
+		status().then(stat => {
+			inquirer
+			.prompt([
+				{
+						type: 'list',
+					name: "selection",
+					message: `StrangeScout: ${(stat) ? "Running" : "Stopped"}`,
+					choices: [ "Build", "Start", "Stop" ],
+					filter: function( val ) { return val.toLowerCase(); }
+				}
+			])
+			.then(answers => {
+				resolve(answers);
+			});
+		});
 	});
 }
 
@@ -171,7 +173,7 @@ async function stop() {
 
 /**************************************/
 
-mainMenu(function(answers) {
+mainMenu().then(answers => {
 	// if we chose to build
 	if (answers.selection === "build") {
 		// new promise
