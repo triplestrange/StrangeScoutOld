@@ -2,8 +2,8 @@
   "index": "/index.html",
   "dataGroups": [
     {
-      "name": "couchdb",
-      "urls": ["/cdb"],
+      "name": "database",
+      "urls": ["/db"],
       "cacheConfig": {
         "maxSize": 0,
         "maxAge": "0u",
