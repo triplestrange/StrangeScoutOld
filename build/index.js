@@ -10,22 +10,63 @@ const wd = process.cwd();
  * Main Menu
  */
 async function mainMenu() {
-	return new Promise(resolve => {
-		status().then(stat => {
-			inquirer
-			.prompt([
-				{
-						type: 'list',
-					name: "selection",
-					message: `StrangeScout: ${(stat) ? "Running" : "Stopped"}`,
-					choices: [ "Build", "Start", "Stop" ],
-					filter: function( val ) { return val.toLowerCase(); }
-				}
-			])
-			.then(answers => {
-				resolve(answers);
-			});
+	return new Promise(async resolve => {
+		stat = await status();
+		ver = await version();
+		inquirer
+		.prompt([
+			{
+				type: 'list',
+				name: "selection",
+				message: `StrangeScout v${ver}: ${(stat) ? "Running" : "Stopped"}`,
+				choices: [ "Build", "Start", "Stop" ],
+				filter: function( val ) { return val.toLowerCase(); }
+			}
+		])
+		.then(answers => {
+			resolve(answers);
 		});
+	});
+}
+
+/**
+ * Resolves the commit tag if exists, else the commit hash
+ */
+function version() {
+	return new Promise(async resolve => {
+		hashprom = new Promise(resolve => {
+			cmd.get(
+			`
+			cd ${__dirname}
+			git show --oneline -s | awk '{print $1;}'
+			cd ${wd}
+			`,
+			function(err, data, stderr) {
+				resolve(data);
+			})
+		});
+		tagprom = new Promise(resolve => {
+			cmd.get(
+				`
+				cd ${__dirname}
+				git describe --tags --exact-match
+				cd ${wd}
+				`,
+				function(err, data, stderr) {
+					resolve(data);
+				})
+		});
+
+		hash = await hashprom
+		tag = await tagprom
+
+		hash = hash.replace(/(\r\n|\n|\r)/gm,"");
+		tag = tag.replace(/(\r\n|\n|\r)/gm,"");
+		if (tag === undefined) {
+			resolve(tag);
+		} else {
+			resolve(hash);
+		}
 	});
 }
 
@@ -173,45 +214,49 @@ async function stop() {
 
 /**************************************/
 
-mainMenu().then(answers => {
-	// if we chose to build
-	if (answers.selection === "build") {
-		// new promise
-		promise = new Promise(resolve => {
-			// check if a config exists
-			if (checkConfig()) {
-				// prompt to use existing config or create new one
-				inquirer
-				.prompt([
-					{
-						type: "list",
-						name: "conf",
-						message: "Config File",
-						choices: [ "Use existing config", "Create new config" ],
-						filter: function( val ) { return val.toLowerCase(); }
-					}
-				])
-				.then(answers => {
-					if (answers.conf === "create new config") {
-						// if we chose to create a new config
-						newConfig().then(() => resolve());
-					} else {
-						// else resolve and use existing
-						resolve();
-					}
-				});
-			} else {
-				// if no config exists make a new one
-				newConfig().then(() => resolve());
-			}
-		});
-		// run the promise
-		promise.then(() => {
-			build();
-		})
-	} else if (answers.selection === "start") {
-		start();
-	} else if (answers.selection === "stop") {
-		stop();
-	}
-});
+async function main() {
+	mainMenu().then(answers => {
+		// if we chose to build
+		if (answers.selection === "build") {
+			// new promise
+			promise = new Promise(resolve => {
+				// check if a config exists
+				if (checkConfig()) {
+					// prompt to use existing config or create new one
+					inquirer
+					.prompt([
+						{
+							type: "list",
+							name: "conf",
+							message: "Config File",
+							choices: [ "Use existing config", "Create new config" ],
+							filter: function( val ) { return val.toLowerCase(); }
+						}
+					])
+					.then(answers => {
+						if (answers.conf === "create new config") {
+							// if we chose to create a new config
+							newConfig().then(() => resolve());
+						} else {
+							// else resolve and use existing
+							resolve();
+						}
+					});
+				} else {
+					// if no config exists make a new one
+					newConfig().then(() => resolve());
+				}
+			});
+			// run the promise
+			promise.then(() => {
+				build();
+			})
+		} else if (answers.selection === "start") {
+			start();
+		} else if (answers.selection === "stop") {
+			stop();
+		}
+	});
+}
+
+main();
