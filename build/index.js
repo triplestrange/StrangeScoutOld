@@ -215,6 +215,9 @@ async function stop() {
 /**************************************/
 
 async function main() {
+	if (checkConfig() === false) {
+		await newConfig();
+	}
 	mainMenu().then(answers => {
 		// if we chose to build
 		if (answers.selection === "build") {
