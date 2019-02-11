@@ -9,6 +9,9 @@ services:
                         - type: volume
                           source: strangedb
                           target: /server/dbs
+                          - type: volume
+                          source: strangeconf
+                          target: /server/config.json
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
                 expose:
@@ -20,14 +23,17 @@ services:
                         traefik.enable: "true"
                         traefik.docker.network: "${TRAEFIK_NETWORK?did not setup network to reach traefik on}"
                         traefik.port: "80"
-                        traefik.frontend.rule: "Host:${JSCOUT_DOMAIN?did not set domain},*.$JSCOUT_DOMAIN"
+                        traefik.frontend.rule: "Host:${JSCOUT_DOMAIN?did not set domain}"
                         traefik.frontend.headers.STSSeconds: "31536000"
                         traefik.frontend.headers.STSIncludeSubdomains: "true"
                         traefik.frontend.headers.STSPreload: "true"
+                        traefik.db.rule: "Host:db.$JSCOUT_DOMAIN"
 
 volumes:
         strangedb:
                 name: ${PREFIX-prod}_strangedb
+        strangeconf:
+                name: ${PREFIX-prod}_strangeconf
 networks:
         traefik:
                 external: true
