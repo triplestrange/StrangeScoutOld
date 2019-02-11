@@ -17,6 +17,7 @@
 		"express": "^4.16.4",
 		"express-http-proxy": "^1.5.1",
 		"express-pouchdb": "4.0.1",
+		"express-subdomain": "^1.0.5",
 		"express-winston": "^3.1.0",
 		"pouchdb": "^7.0.0",
 		"winston": "^3.2.1"

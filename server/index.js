@@ -1,4 +1,5 @@
 const express = require('express');
+const subdomain = require('express-subdomain');
 const PouchDB = require('pouchdb');
 const path = require('path');
 
@@ -31,4 +32,4 @@ app.use(expressWinston.logger({
 // static files at root
 app.use('/', express.static(path.join(__dirname, 'static')));
 // pouchdb-server
-app.use('/db', require('express-pouchdb')(db));
+app.use(subdomain('db', require('express-pouchdb')(db)));
