@@ -29,7 +29,11 @@ app.use(expressWinston.logger({
 	expressFormat: false
 }));
 
+const router = express.Router();
+router.get('/', require('express-pouchdb')(db))
+
 // static files at root
 app.use('/', express.static(path.join(__dirname, 'static')));
 // pouchdb-server
-app.use(subdomain('db', require('express-pouchdb')(db)));
+app.use(subdomain('db', router));
+
