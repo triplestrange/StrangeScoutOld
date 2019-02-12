@@ -130,7 +130,7 @@ function status() {
 			cmd.get(
 			`
 			cd ${__dirname}
-			COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose ps | sed '3q;d' | awk '{print $4}'
+			COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose ps | sed '3q;d' | awk '{print $4}'
 			cd ${wd}
 			`,
 			function(err, data, stderr) {
@@ -157,9 +157,9 @@ async function build() {
 		cmd.get(
 		`
 		cd ${__dirname}
-		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose down
-		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain}
-		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose up -d
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose down
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain}
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose up -d
 		cd ${wd}
 		`,
 		function(err, data, stderr) {
@@ -180,11 +180,12 @@ async function start() {
 		cmd.get(
 		`
 		cd ${__dirname}
-		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose up -d
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose up -d
 		cd ${wd}
 		`,
 		function(err, data, stderr) {
 			console.log(data);
+			console.log(stderr);
 			resolve();
 		})
 	});
@@ -201,11 +202,12 @@ async function stop() {
 		cmd.get(
 		`
 		cd ${__dirname}
-		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} docker-compose down
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose down
 		cd ${wd}
 		`,
 		function(err, data, stderr) {
 			console.log(data);
+			console.log(stderr);
 			resolve();
 		})
 	});
