@@ -19,7 +19,7 @@ async function mainMenu() {
 				type: 'list',
 				name: "selection",
 				message: `StrangeScout v${ver}: ${(stat) ? "Running" : "Stopped"}`,
-				choices: [ "Build", "Start", "Stop" ],
+				choices: [ "Build", "Start", "Stop", "Logs" ],
 				filter: function( val ) { return val.toLowerCase(); }
 			}
 		])
@@ -214,6 +214,24 @@ async function stop() {
 	promise.then(() => {console.log('done!')})
 }
 
+async function logs() {
+	conf = readConfig();
+	promise = new Promise(resolve => {
+		cmd.get(
+		`
+		cd ${__dirname}
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose logs
+		cd ${wd}
+		`,
+		function(err, data, stderr) {
+			console.log(data);
+			console.log(stderr);
+			resolve();
+		})
+	});
+	await promise
+}
+
 /**************************************/
 
 async function main() {
@@ -260,6 +278,8 @@ async function main() {
 			start();
 		} else if (answers.selection === "stop") {
 			stop();
+		} else if (answers.selection === "logs") {
+			logs();
 		}
 	});
 }
