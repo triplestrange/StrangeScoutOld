@@ -1,4 +1,5 @@
 const express = require('express');
+const evh = require('express-vhost');
 const PouchDB = require('pouchdb');
 const path = require('path');
 
@@ -27,9 +28,9 @@ app.use(expressWinston.logger({
 	expressFormat: false
 }));
 
-app.use(express.vhost(`${domain}`, express.static(path.join(__dirname, 'static'))));
+app.use(evh.vhost(`${domain}`, express.static(path.join(__dirname, 'static'))));
 // pouchdb-server
-app.use(express.vhost(`db.${domain}`, require('express-pouchdb')(db)));
+app.use(evh.vhost(`db.${domain}`, require('express-pouchdb')(db)));
 
 // listener
 app.listen(port, () => console.log(`listening on port ${port}`));
