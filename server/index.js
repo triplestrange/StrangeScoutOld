@@ -1,5 +1,4 @@
 const express = require('express');
-const subdomain = require('express-subdomain');
 const PouchDB = require('pouchdb');
 const path = require('path');
 
@@ -12,6 +11,8 @@ const db = PouchDB.defaults({prefix: path.join(__dirname, 'dbs/')})
 
 const app = express();
 const port = 80;
+
+const domain = process.env.JSCOUT_DOMAIN;
 
 // logging (https://github.com/bithavoc/express-winston#request-logging)
 app.use(expressWinston.logger({
@@ -26,13 +27,9 @@ app.use(expressWinston.logger({
 	expressFormat: false
 }));
 
-const dbrouter = express.Router();
-dbrouter.get('/', require('express-pouchdb')(db))
-
-// static files at root
-app.get('/', express.static(path.join(__dirname, 'static')))
+app.use(express.vhost(`${domain}`, express.static(path.join(__dirname, 'static'))));
 // pouchdb-server
-app.use(subdomain('db', dbrouter));
+app.use(express.vhost(`db.${domain}`, require('express-pouchdb')(db)));
 
 // listener
 app.listen(port, () => console.log(`listening on port ${port}`));
