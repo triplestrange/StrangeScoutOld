@@ -13,9 +13,6 @@ const db = PouchDB.defaults({prefix: path.join(__dirname, 'dbs/')})
 const app = express();
 const port = 80;
 
-// listener
-app.listen(port, () => console.log(`listening on port ${port}`));
-
 // logging (https://github.com/bithavoc/express-winston#request-logging)
 app.use(expressWinston.logger({
 	transports: [
@@ -29,11 +26,13 @@ app.use(expressWinston.logger({
 	expressFormat: false
 }));
 
-const router = express.Router();
-router.get('/', require('express-pouchdb')(db))
+const dbrouter = express.Router();
+dbrouter.get('/', require('express-pouchdb')(db))
 
 // static files at root
-app.use('/', express.static(path.join(__dirname, 'static')));
+app.get('/', express.static(path.join(__dirname, 'static')))
 // pouchdb-server
-app.use(subdomain('db', router));
+app.use(subdomain('db', dbrouter));
 
+// listener
+app.listen(port, () => console.log(`listening on port ${port}`));
