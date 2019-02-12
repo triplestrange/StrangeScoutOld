@@ -14,8 +14,10 @@ RUN node_modules/.bin/ng build --prod --aot --source-map=false
 FROM alpine
 WORKDIR /server
 RUN apk add --update python make g++ nodejs nodejs-npm
-COPY ./server/ ./
+COPY ./server/package-lock.json ./
+COPY ./server/package.json ./
 RUN npm install
+COPY ./server/ ./
 COPY --from=builder /strangescout/dist/jscout /server/static
 EXPOSE 80 443
 ENTRYPOINT ["node", "index.js"]
