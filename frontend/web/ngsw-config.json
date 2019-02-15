@@ -1,16 +1,6 @@
 {
   "index": "/index.html",
-  "dataGroups": [
-    {
-      "name": "database",
-      "urls": ["/db"],
-      "cacheConfig": {
-        "maxSize": 0,
-        "maxAge": "0u",
-        "strategy": "freshness"
-      }
-    }
-  ],
+  "dataGroups": [],
   "assetGroups": [
     {
       "name": "app",
