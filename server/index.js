@@ -1,5 +1,5 @@
 const express = require('express');
-const evh = require('express-vhost');
+const vhost = require('vhost');
 const PouchDB = require('pouchdb');
 const path = require('path');
 
@@ -14,6 +14,10 @@ const app = express();
 const port = 80;
 
 const domain = process.env.JSCOUT_DOMAIN;
+if (domain === undefined || domain === '') {
+	console.log('ERROR: No domain set!');
+	process.exit(1);
+}
 
 // logging (https://github.com/bithavoc/express-winston#request-logging)
 app.use(expressWinston.logger({
@@ -28,9 +32,16 @@ app.use(expressWinston.logger({
 	expressFormat: false
 }));
 
-app.use(evh.vhost(`${domain}`, express.static(path.join(__dirname, 'static'))));
-// pouchdb-server
-app.use(evh.vhost(`db.${domain}`, require('express-pouchdb')(db)));
+// static files
+const static = express();
+static.use(express.static(path.join(__dirname, 'static')));
+
+// pouchdb
+const pouch = express();
+pouch.use(require('express-pouchdb')(db))
+
+app.use(vhost(`${domain}`, static));
+app.use(vhost(`db.${domain}`, pouch));
 
 // listener
 app.listen(port, () => console.log(`listening on port ${port}`));
