@@ -2,6 +2,7 @@ const express = require('express');
 const vhost = require('vhost');
 const PouchDB = require('pouchdb');
 const path = require('path');
+const cors = require('cors');
 
 // winston for logging
 const winston = require('winston');
@@ -42,6 +43,8 @@ pouch.use(require('express-pouchdb')(db))
 
 app.use(vhost(`${domain}`, static));
 app.use(vhost(`db.${domain}`, pouch));
+
+app.use(cors());
 
 // listener
 app.listen(port, () => console.log(`listening on port ${port}`));
