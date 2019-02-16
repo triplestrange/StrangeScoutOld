@@ -20,6 +20,7 @@ export class UserService {
 	}
 
 	setID(name) {
+		console.log(`setting ${name}`)
 		// set cookie and expire after 3 days (typical competition length)
 		const expiredDate = new Date();
 		expiredDate.setDate( expiredDate.getDate() + 3 );
