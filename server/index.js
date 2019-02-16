@@ -33,6 +33,13 @@ app.use(expressWinston.logger({
 	expressFormat: false
 }));
 
+app.use((req, res, next) => {
+	res.set("Access-Control-Allow-Origin", "*");
+	res.set("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
+	res.set("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+	next();
+});
+
 // static files
 const static = express();
 static.use(express.static(path.join(__dirname, 'static')));
@@ -43,13 +50,6 @@ pouch.use(require('express-pouchdb')(db))
 
 app.use(vhost(`${domain}`, static));
 app.use(vhost(`db.${domain}`, pouch));
-
-app.use((req, res, next) => {
-	res.set("Access-Control-Allow-Origin", "*");
-	res.set("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
-	res.set("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-	next();
-});
 
 // listener
 app.listen(port, () => console.log(`listening on port ${port}`));
