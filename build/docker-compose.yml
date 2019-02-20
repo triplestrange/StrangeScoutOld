@@ -8,7 +8,8 @@ services:
                 volumes:
                         - type: volume
                           source: strangedb
-                          target: /server/db
+                          target: /server/dbs
+                        - ./build/pouchdb_config.json:/server/config.json
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
                 expose:
