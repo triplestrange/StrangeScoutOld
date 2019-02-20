@@ -22,7 +22,7 @@ export class PouchdbService {
 		const xhr = new XMLHttpRequest;
 		const url = 'https://db.'+environment.domain+'/_session'
 		xhr.open('POST', url)
-		//xhr.withCredentials = true;
+		xhr.withCredentials = true;
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.onreadystatechange = function() {
 			// Call a function when the state changes.

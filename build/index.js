@@ -152,13 +152,14 @@ function status() {
  */
 async function build() {
 	conf = readConfig();
+	version = await version();
 	console.log('Building StrangeScout - This may take a while...')
 	promise = new Promise(resolve => {
 		cmd.get(
 		`
 		cd ${__dirname}
 		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose down
-		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain}
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} SS_VERSION=${version} docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain}
 		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose up -d
 		cd ${wd}
 		`,
