@@ -1,0 +1,6 @@
+{
+  "couch_httpd_auth": {
+    "allow_persistent_cookies": true,
+    "timeout": 29200
+  }
+}

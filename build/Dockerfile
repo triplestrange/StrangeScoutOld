@@ -18,6 +18,7 @@ COPY ./server/package-lock.json ./
 COPY ./server/package.json ./
 RUN npm install
 COPY ./server/ ./
-COPY --from=builder /strangescout/dist/jscout /server/static
+COPY ./server/config_template.json ./db/config.json
+COPY --from=builder /strangescout/dist/jscout ./static
 EXPOSE 80 443
 ENTRYPOINT ["node", "index.js"]

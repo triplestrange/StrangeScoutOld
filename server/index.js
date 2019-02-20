@@ -2,14 +2,13 @@ const express = require('express');
 const vhost = require('vhost');
 const PouchDB = require('pouchdb');
 const path = require('path');
-const cors = require('cors');
 
 // winston for logging
 const winston = require('winston');
 const expressWinston = require('express-winston');
 
 // define database prefix
-const db = PouchDB.defaults({prefix: path.join(__dirname, 'dbs/')})
+const db = PouchDB.defaults({configPath: './db/config.json', prefix: path.join(__dirname, 'db/')})
 
 const app = express();
 const port = 80;
