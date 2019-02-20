@@ -158,6 +158,7 @@ async function build() {
 		cmd.get(
 		`
 		cd ${__dirname}
+		touch pouchdb_config.json
 		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose down
 		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} SS_VERSION=${version} docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain}
 		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose up -d
@@ -181,6 +182,7 @@ async function start() {
 		cmd.get(
 		`
 		cd ${__dirname}
+		touch pouchdb_config.json
 		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose up -d
 		cd ${wd}
 		`,
