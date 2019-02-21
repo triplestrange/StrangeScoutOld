@@ -7,8 +7,8 @@ services:
                 restart: always
                 volumes:
                         - type: volume
-                          source: strangedb
-                          target: /server/dbs
+                          source: strange
+                          target: /server
                 environment:
                         JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
                 expose:
@@ -26,8 +26,9 @@ services:
                         traefik.frontend.headers.STSPreload: "true"
 
 volumes:
-        strangedb:
-                name: ${PREFIX-prod}_strangedb
+        strange:
+                name: ${PREFIX-prod}_strange
+
 networks:
         traefik:
                 external: true
