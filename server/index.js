@@ -33,6 +33,13 @@ app.use(expressWinston.logger({
 }));
 
 app.use((req, res, next) => {
+	if (req.url === '//')
+		res.redirect(301, '/');
+	else
+		next();
+});
+
+app.use((req, res, next) => {
 	res.set("Access-Control-Allow-Origin", `https://${domain}`);
 	res.set("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 	res.set("Access-Control-Allow-Credentials", "true");
