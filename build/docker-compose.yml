@@ -1,0 +1,35 @@
+version: '3.5'
+services:
+        strangescout:
+                build:
+                        context: ../
+                        dockerfile: build/Dockerfile
+                restart: always
+                volumes:
+                        - type: volume
+                          source: strange
+                          target: /server
+                environment:
+                        JSCOUT_DOMAIN: ${JSCOUT_DOMAIN?did not set the domain name}
+                expose:
+                        - "80"
+                networks:
+                        - "traefik"
+                        - "default"
+                labels:
+                        traefik.enable: "true"
+                        traefik.docker.network: "${TRAEFIK_NETWORK?did not setup network to reach traefik on}"
+                        traefik.port: "80"
+                        traefik.frontend.rule: "Host:${JSCOUT_DOMAIN},db.${JSCOUT_DOMAIN}"
+                        traefik.frontend.headers.STSSeconds: "31536000"
+                        traefik.frontend.headers.STSIncludeSubdomains: "true"
+                        traefik.frontend.headers.STSPreload: "true"
+
+volumes:
+        strange:
+                name: ${PREFIX-prod}_strange
+
+networks:
+        traefik:
+                external: true
+                name: ${TRAEFIK_NETWORK?did not set a network to reach traefik on}
