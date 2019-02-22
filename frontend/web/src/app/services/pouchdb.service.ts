@@ -54,7 +54,7 @@ export class PouchdbService {
 	// sync with remote db
 	syncRemote() {
 		const self = this;
-		const remoteURL = 'https://db.'+environment.domain
+		const remoteURL = 'https://db.'+environment.domain+'/ssdb'
 		const localDB = new PouchDB('ssdb')
 		const remoteDB = new PouchDB(remoteURL, {
 			adapter: "http",
