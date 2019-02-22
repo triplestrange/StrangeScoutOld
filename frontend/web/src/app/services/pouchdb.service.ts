@@ -61,7 +61,7 @@ export class PouchdbService {
 			fetch: (url, opts) => {
 				opts.credentials = 'include';
 				return PouchDB.fetch(url, opts);
-			},
+			}
 		})
 
 		localDB.sync(remoteDB).on('complete', function () {
@@ -76,5 +76,31 @@ export class PouchdbService {
 	deleteLocal() {
 		const localDB = new PouchDB('ssdb');
 		localDB.destroy();
+	}
+
+	/**
+	 * Returns a promise that resolves true if the current user is an admin, else false
+	 */
+	isAdmin(): Promise<boolean> {
+		return new Promise(resolve => {
+			const xhr = new XMLHttpRequest;
+			const url = 'https://db.'+environment.domain+'/_session'
+			xhr.open('GET', url)
+			xhr.withCredentials = true;
+			xhr.onreadystatechange = function() {
+				// Call a function when the state changes.
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					const res = JSON.parse(xhr.responseText);
+					if (res.userCtx.roles.includes('_admin')) {
+						console.log('admin')
+						resolve(true);
+					} else {
+						console.log('notadmin')
+						resolve(false);
+					}
+				}
+			}
+			xhr.send();
+		});
 	}
 }

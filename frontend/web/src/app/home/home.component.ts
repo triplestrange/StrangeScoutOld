@@ -16,11 +16,19 @@ import { PouchdbService } from '../services/pouchdb.service';
 })
 export class HomeComponent implements OnInit {
 
+	isAdmin: boolean;
+
 	constructor(private us: UserService, private dialog: MatDialog, public dbs: PouchdbService) {
 		var self = this;
 		window.addEventListener('newLogin', function(e) {
 			self.scouter = self.us.getID();
+			self.dbs.isAdmin().then(result => {
+				self.isAdmin = result;
+			});
 		})
+		this.dbs.isAdmin().then(result => {
+			self.isAdmin = result;
+		});
 	}
 
 	scouter = this.us.getID();
