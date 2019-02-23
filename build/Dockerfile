@@ -13,7 +13,7 @@ RUN node_modules/.bin/ng build --prod --aot --source-map=false
 
 FROM alpine
 WORKDIR /server
-RUN apk add --update python make g++ nodejs nodejs-npm
+RUN apk add --update bash python make g++ nodejs nodejs-npm
 COPY ./server/package-lock.json ./
 COPY ./server/package.json ./
 RUN npm install
