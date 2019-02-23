@@ -3,6 +3,9 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import { PouchdbService } from '../../services/pouchdb.service';
 
+// toasts
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
 	selector: 'app-admin-dialog',
 	templateUrl: './admin-dialog.component.html',
@@ -20,7 +23,7 @@ export class AdminDialogComponent {
 	hide = true
 	// ---------------------------
 
-	constructor(public dbs: PouchdbService, public dialogRef: MatDialogRef<AdminDialogComponent>) {
+	constructor(public dbs: PouchdbService, private toastr: ToastrService, public dialogRef: MatDialogRef<AdminDialogComponent>) {
 		// state defaults to the main page
 		this.state = 'main';
 	}
@@ -40,7 +43,15 @@ export class AdminDialogComponent {
 		const self = this;
 		if (document.getElementById('createForm').classList.contains('ng-valid')) {
 			self.dbs.newUser(self.username, self.password, self.admin).then(resolve => {
-				
+				console.log(resolve)
+				if (resolve === 200 || 201) {
+					self.toastr.success('User Created');
+				} else if (resolve === 409) {
+					self.toastr.error('User already exists')
+				} else {
+					self.toastr.error(resolve.toString(), 'ERROR')
+				}
+				self.dialogRef.close();
 			});
 		}
 	}

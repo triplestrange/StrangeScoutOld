@@ -127,7 +127,7 @@ export class PouchdbService {
 	 * @param pass New user password
 	 * @param admin Is the new user an admin
 	 */
-	newUser(user: string, pass: string, admin: boolean): Promise<string> {
+	newUser(user: string, pass: string, admin: boolean): Promise<number> {
 		if (admin) {
 			// create a new admin user
 			return new Promise(resolve => {
@@ -138,7 +138,7 @@ export class PouchdbService {
 				xhr.onreadystatechange = function() {
 					// Call a function when the state changes.
 					if (xhr.readyState === XMLHttpRequest.DONE) {
-						resolve(xhr.responseText)
+						resolve(xhr.status)
 					}
 				}
 				xhr.send(`"${pass}"`);
@@ -161,7 +161,7 @@ export class PouchdbService {
 				xhr.onreadystatechange = function() {
 					// Call a function when the state changes.
 					if (xhr.readyState === XMLHttpRequest.DONE) {
-						resolve(xhr.responseText)
+						resolve(xhr.status)
 					}
 				}
 				xhr.send(JSON.stringify(newuser));
