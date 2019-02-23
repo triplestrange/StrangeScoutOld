@@ -11,7 +11,11 @@ export class UserService {
 
 	constructor(private cs: CookieService) { }
 
-	checkID() {
+	/**
+	 * Checks if a user ID is set
+	 * @returns boolean
+	 */
+	checkID(): boolean {
 		if (this.cs.get('scouter') === '') {
 			return false
 		} else {
@@ -19,7 +23,11 @@ export class UserService {
 		}
 	}
 
-	setID(name) {
+	/**
+	 * Sets the user ID cookie to `name`
+	 * @param name 
+	 */
+	setID(name: string) {
 		console.log(`setting ${name}`)
 		// set cookie and expire after 3 days (typical competition length)
 		const expiredDate = new Date();
@@ -27,13 +35,19 @@ export class UserService {
 		this.cs.set('scouter', name, expiredDate, '/', environment.domain);
 	}
 
-	getID() {
+	/**
+	 * Returns the user ID
+	 * @returns string
+	 */
+	getID(): string {
 		return this.cs.get('scouter')
 	}
 
+	/**
+	 * Deletes the user ID
+	 */
 	clear() {
 		this.cs.delete('scouter', '/', environment.domain);
-		this.cs.delete('AuthSession', '/', environment.domain);
 	}
 
 }

@@ -18,6 +18,12 @@ export class PouchdbService {
 
 	constructor(private us: UserService, private toastr: ToastrService, private cs: CookieService) { }
 
+	/**
+	 * Authenticates with the remote database
+	 * @param user Username of the user to authenticate
+	 * @param pass Password of the user to authenticate
+	 * @param callback Function to run after authentication is complete
+	 */
 	authenticateRemote(user: string, pass: string, callback) {
 		const xhr = new XMLHttpRequest;
 		const url = 'https://db.'+environment.domain+'/_session'
@@ -36,6 +42,9 @@ export class PouchdbService {
 		xhr.send(URIdata);
 	}
 
+	/**
+	 * Deauthenticates with the remote database
+	 */
 	deauthenticateRemote() {
 		const xhr = new XMLHttpRequest;
 		const url = 'https://db.'+environment.domain+'/_session'
@@ -44,14 +53,19 @@ export class PouchdbService {
 		xhr.send()
 	}
 
-	// store doc in local db
-	storeLocal(doc) {
+	/**
+	 * Stores a document in the local database
+	 * @param doc Object to be stored
+	 */
+	storeLocal(doc: {}) {
 		const localDB = new PouchDB('ssdb')
 		localDB.put(doc)
 		console.log(localDB.info())
 	}
 
-	// sync with remote db
+	/**
+	 * Syncs the local database with the remote database
+	 */
 	syncRemote() {
 		const self = this;
 		const remoteURL = 'https://db.'+environment.domain+'/ssdb'
@@ -73,6 +87,9 @@ export class PouchdbService {
 		});
 	}
 
+	/**
+	 * Deletes the local database
+	 */
 	deleteLocal() {
 		const localDB = new PouchDB('ssdb');
 		localDB.destroy();
@@ -103,4 +120,52 @@ export class PouchdbService {
 			xhr.send();
 		});
 	}
+
+	/**
+	 * Creates a new database user
+	 * @param user New user username
+	 * @param pass New user password
+	 * @param admin Is the new user an admin
+	 */
+	newUser(user: string, pass: string, admin: boolean): Promise<string> {
+		if (admin) {
+			// create a new admin user
+			return new Promise(resolve => {
+				const xhr = new XMLHttpRequest;
+				const url = `https://db.${environment.domain}/_node/node1@127.0.0.1/_config/admins/${user}`
+				xhr.open('PUT', url)
+				xhr.withCredentials = true;
+				xhr.onreadystatechange = function() {
+					// Call a function when the state changes.
+					if (xhr.readyState === XMLHttpRequest.DONE) {
+						resolve(xhr.responseText)
+					}
+				}
+				xhr.send(`"${pass}"`);
+			});
+		} else {
+			// create a regular user
+			return new Promise(resolve => {
+				const xhr = new XMLHttpRequest;
+				const url = `https://db.${environment.domain}/_users/org.couchdb.user:${user}`
+				const newuser = {
+					_id: `org.couchdb.user:${user}`,
+					name: user,
+					type: 'user',
+					roles: ['scouter'],
+					password: pass
+				}
+				xhr.open('PUT', url)
+				xhr.withCredentials = true;
+				xhr.onreadystatechange = function() {
+					// Call a function when the state changes.
+					if (xhr.readyState === XMLHttpRequest.DONE) {
+						resolve(xhr.responseText)
+					}
+				}
+				xhr.send(JSON.stringify(newuser));
+			});
+		}
+	}
+
 }
