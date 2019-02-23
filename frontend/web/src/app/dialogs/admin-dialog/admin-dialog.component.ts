@@ -39,7 +39,9 @@ export class AdminDialogComponent {
 	newUser() {
 		const self = this;
 		if (document.getElementById('createForm').classList.contains('ng-valid')) {
-			self.dbs.newUser(self.username, self.password, self.admin);
+			self.dbs.newUser(self.username, self.password, self.admin).then(resolve => {
+				
+			});
 		}
 	}
 

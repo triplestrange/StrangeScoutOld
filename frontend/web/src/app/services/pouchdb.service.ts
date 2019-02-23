@@ -149,14 +149,15 @@ export class PouchdbService {
 				const xhr = new XMLHttpRequest;
 				const url = `https://db.${environment.domain}/_users/org.couchdb.user:${user}`
 				const newuser = {
-					_id: `org.couchdb.user:${user}`,
-					name: user,
-					type: 'user',
-					roles: ['scouter'],
-					password: pass
+					_id:`org.couchdb.user:${user}`,
+					name:user,
+					password:pass,
+					roles:["scouter"],
+					type:"user"
 				}
 				xhr.open('PUT', url)
 				xhr.withCredentials = true;
+				xhr.setRequestHeader('Content-type', 'application/json')
 				xhr.onreadystatechange = function() {
 					// Call a function when the state changes.
 					if (xhr.readyState === XMLHttpRequest.DONE) {
