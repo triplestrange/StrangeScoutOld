@@ -159,7 +159,7 @@ async function build() {
 		`
 		cd ${__dirname}
 		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose down
-		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} SS_VERSION=${version} docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain}
+		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} SS_VERSION=${version} docker-compose build --build-arg JSCOUT_DOMAIN=${conf.domain} --build-arg SS_VERSION=${version}
 		COMPOSE_PROJECT_NAME=${conf.prefix} TRAEFIK_NETWORK=${conf.network} PREFIX=${conf.prefix} JSCOUT_DOMAIN=${conf.domain} docker-compose up -d
 		cd ${wd}
 		`,
