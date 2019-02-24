@@ -23,9 +23,15 @@ export class AdminDialogComponent {
 	hide = true
 	// ---------------------------
 
+	timeout: string
+
 	constructor(public dbs: PouchdbService, private toastr: ToastrService, public dialogRef: MatDialogRef<AdminDialogComponent>) {
 		// state defaults to the main page
 		this.state = 'main';
+
+		this.dbs.getConfig('couch_httpd_auth', 'timeout').then(resolve => {
+			this.timeout = JSON.parse(resolve);
+		});
 	}
 
 	/**
@@ -48,6 +54,24 @@ export class AdminDialogComponent {
 					self.toastr.success('User Created');
 				} else if (resolve === 409) {
 					self.toastr.error('User already exists')
+				} else {
+					self.toastr.error(resolve.toString(), 'ERROR')
+				}
+				self.dialogRef.close();
+			});
+		}
+	}
+
+	/**
+	 * Sets the auth cookie timeout value
+	 */
+	setTimeout() {
+		const self = this;
+		if (document.getElementById('timeout').classList.contains('ng-valid')) {
+			self.dbs.setConfig('couch_httpd_auth', 'timeout', self.timeout).then(resolve => {
+				console.log(resolve)
+				if (resolve === 200) {
+					self.toastr.success('Timeout Set');
 				} else {
 					self.toastr.error(resolve.toString(), 'ERROR')
 				}

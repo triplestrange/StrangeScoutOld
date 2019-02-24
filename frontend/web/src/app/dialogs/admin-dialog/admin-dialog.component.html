@@ -31,6 +31,12 @@
 	</div>
 
 	<div *ngIf="state === 'timeout'">
+		<div>
+			<mat-form-field class="user-field">
+				<input matInput name="timeout" id="timeout" type="number" placeholder="Timeout (seconds)" [(ngModel)]="timeout" #time=ngModel required>
+				<mat-error *ngIf="time.invalid">Invalid Timeout</mat-error>
+			</mat-form-field>
+		</div>
 	</div>
 
 </div>
@@ -39,4 +45,5 @@
 	<button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
 	<span class="spacer"></span>
 	<button mat-raised-button *ngIf="state ==='create'" type="button" color="primary" (click)="newUser()">Create</button>
+	<button mat-raised-button *ngIf="state ==='timeout'" type="button" color="primary" (click)="setTimeout()">Set</button>
 </div>

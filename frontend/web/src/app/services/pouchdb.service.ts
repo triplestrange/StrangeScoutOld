@@ -169,4 +169,47 @@ export class PouchdbService {
 		}
 	}
 
+	/**
+	 * Sets a database configuration value
+	 * @param section Config section
+	 * @param option Config option
+	 * @param value Option value
+	 */
+	setConfig(section: string, option: string, value: string): Promise<number> {
+		return new Promise(resolve => {
+			const xhr = new XMLHttpRequest;
+			const url = `https://db.${environment.domain}/_node/node1@127.0.0.1/_config/${section}/${option}`
+			xhr.open('PUT', url)
+			xhr.withCredentials = true;
+			xhr.onreadystatechange = function() {
+				// Call a function when the state changes.
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					resolve(xhr.status)
+				}
+			}
+			xhr.send(`"${value}"`);
+		});
+	}
+
+	/**
+	 * Gets a database configuration value
+	 * @param section Config section
+	 * @param option Config option
+	 */
+	getConfig(section: string, option: string): Promise<string> {
+		return new Promise(resolve => {
+			const xhr = new XMLHttpRequest;
+			const url = `https://db.${environment.domain}/_node/node1@127.0.0.1/_config/${section}/${option}`
+			xhr.open('GET', url)
+			xhr.withCredentials = true;
+			xhr.onreadystatechange = function() {
+				// Call a function when the state changes.
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					resolve(xhr.responseText)
+				}
+			}
+			xhr.send();
+		});
+	}
+
 }
