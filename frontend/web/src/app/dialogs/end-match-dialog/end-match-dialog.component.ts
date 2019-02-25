@@ -7,8 +7,14 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 	styleUrls: ['./end-match-dialog.component.css']
 })
 export class EndMatchDialogComponent {
+
 	constructor(public dialogRef: MatDialogRef<EndMatchDialogComponent>, @Inject(MAT_DIALOG_DATA) data) {}
+
 	notes: string;
+
+	/**
+	 * Closes the dialog, returning the notes value
+	 */
 	submit() {
 		this.dialogRef.close(this.notes);
 	}

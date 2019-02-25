@@ -1,0 +1,25 @@
+div.center-align {
+	display: flex;
+	align-items: center;
+	text-align: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.left-align {
+	display: flex;
+	align-items: left;
+	text-align: left;
+	justify-content: left;
+	flex-wrap: wrap;
+}
+
+button.admin-button {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 180px;
+}
+
+.user-field {
+	width: 100%;
+}

@@ -59,7 +59,11 @@ export class RunFormComponent implements OnInit {
 
 	ngOnInit() {}
 
-	// on start
+	/**
+	 * Used to start the match
+	 * 
+	 * Opens begin dialog, on close unhides form, starts counter, and opens initial event dialog
+	 */
 	startMatch() {
 		// popup before match start
 		const dialogRef = this.dialog.open(BeginMatchDialogComponent);
@@ -97,7 +101,10 @@ export class RunFormComponent implements OnInit {
 		});
 	}
 
-	// run after a getElement event
+	/**
+	 * Opens the element dialog - used after a get event
+	 * @param element Name of the game element
+	 */
 	getElement(element) {
 		// creates a new journal entry for the event specified by the element
 		if (element.Event !== "") {
@@ -117,7 +124,10 @@ export class RunFormComponent implements OnInit {
 		});
 	}
 
-	// add a new event to the journal
+	/**
+	 * Adds an event to the journal
+	 * @param Event Event name
+	 */
 	newJournalEntry(Event: string) {
 		// new entry of class EventJournalEntry
 		var entry = new EventJournalEntry;
@@ -129,7 +139,10 @@ export class RunFormComponent implements OnInit {
 		this.journal.push(entry);
 	}
 
-	get lastEvent() {
+	/**
+	 * returns a beautified string of the last event
+	 */
+	get lastEvent(): string {
 		if (this.journal.length > 0) {
 			var event = this.journal[this.journal.length-1].Event;
 			event = event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
@@ -140,7 +153,10 @@ export class RunFormComponent implements OnInit {
 		}
 	}
 
-	get displayTime() {
+	/**
+	 * returns a human readable remaining time count
+	 */
+	get displayTime(): string {
 		// get minutes from countdown
 		var minutes = Math.floor(this.time / 60);
 		// get seconds from countdown
@@ -149,7 +165,10 @@ export class RunFormComponent implements OnInit {
 		return minutes + ":" + ("0" + seconds).slice(-2);
 	}
 
-	get payload() {
+	/**
+	 * returns the match payload
+	 */
+	get payload(): {} {
 		// get timestamp data
 		var now = new Date;
 		var utc_timestamp = Date.UTC(now.getFullYear(),now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
@@ -163,9 +182,14 @@ export class RunFormComponent implements OnInit {
 		// create JSON payload from all form objects
 		return this.removeFalsy(
 			Object.assign({}, {"_id":setup.TeamNumber.toString()+"_"+setup.MatchNumber.toString()}, setup, {"Journal": this.journal}, end, scouter, timestamp)
-			);
+		);
 	}
 
+	/**
+	 * Used to end the match
+	 * 
+	 * Opens end match dialog containing notes - on close submits the payload
+	 */
 	endMatch() {
 		// popup before match start
 		const dialogRef = this.dialog.open(EndMatchDialogComponent, {disableClose: true});
@@ -176,7 +200,11 @@ export class RunFormComponent implements OnInit {
 		});
 	}
 
-	// submit function
+	/**
+	 * Submits payload
+	 * 
+	 * Stores payload in local database then syncs with remote
+	 */
 	onSubmit() {
 		const payload = this.payload;
 
@@ -184,8 +212,11 @@ export class RunFormComponent implements OnInit {
 		this.dbs.syncRemote();
 	}
 
-	// removes nulls from object
-	removeFalsy = (obj) => {
+	/**
+	 * Removes nulls from an object
+	 * @param obj Object to remove nulls from
+	 */
+	removeFalsy(obj: {}): {} {
 		const newObj = {};
 		Object.keys(obj).forEach((prop) => {
 			if (obj[prop]) { newObj[prop] = obj[prop]; }

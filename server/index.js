@@ -81,7 +81,7 @@ app.use(expressWinston.logger({
 }));
 
 // CORS Headers
-app.use((req, res, next) => {
+function cors(req, res, next) {
 	res.set("Access-Control-Allow-Origin", `https://${domain}`);
 	res.set("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 	res.set("Access-Control-Allow-Credentials", "true");
@@ -91,7 +91,14 @@ app.use((req, res, next) => {
 	} else {
 		next();
 	}
-});
+}
+
+function noCache(req, res, next) {
+	res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+	res.header('Expires', '-1');
+	res.header('Pragma', 'no-cache');
+	next();
+}
 
 // static files
 const static = express();
@@ -99,6 +106,8 @@ static.use(express.static(path.join(__dirname, 'static')));
 
 // pouchdb
 const pouch = express();
+pouch.use(cors);
+pouch.use(noCache);
 pouch.use(require('express-pouchdb')(db));
 
 app.use(vhost(`${domain}`, static));

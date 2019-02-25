@@ -21,6 +21,9 @@ export class LoginDialogComponent {
 
 	hide = true;
 	
+	/**
+	 * Authenticates with the remote database and gives a status notification
+	 */
 	login() {
 		var self = this;
 		this.dbs.authenticateRemote(this.username, this.password, function(response) {

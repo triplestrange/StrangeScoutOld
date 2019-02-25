@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.component';
 import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
+import { AdminDialogComponent } from '../dialogs/admin-dialog/admin-dialog.component';
 
 import { UserService } from '../services/user.service';
 import { PouchdbService } from '../services/pouchdb.service';
@@ -16,16 +17,29 @@ import { PouchdbService } from '../services/pouchdb.service';
 })
 export class HomeComponent implements OnInit {
 
+	isAdmin: boolean;
+
 	constructor(private us: UserService, private dialog: MatDialog, public dbs: PouchdbService) {
 		var self = this;
 		window.addEventListener('newLogin', function(e) {
 			self.scouter = self.us.getID();
+			self.dbs.isAdmin().then(result => {
+				self.isAdmin = result;
+			});
 		})
+		this.dbs.isAdmin().then(result => {
+			self.isAdmin = result;
+		});
 	}
 
 	scouter = this.us.getID();
 	version = environment.version;
 
+	/**
+	 * Opens the logout confirm dialog
+	 * 
+	 * On confirm deletes local database and clears the user ID cookie
+	 */
 	logout() {
 		this.dialog.open(ConfirmDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
 			if ( result ) {
@@ -36,6 +50,13 @@ export class HomeComponent implements OnInit {
 				});
 			}
 		});
+	}
+
+	/**
+	 * Opens the admin panel
+	 */
+	adminMenu() {
+		this.dialog.open(AdminDialogComponent, {width: "250px", autoFocus: false}).afterClosed().subscribe(result => {});
 	}
 
 	ngOnInit() {}
