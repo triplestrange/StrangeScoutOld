@@ -23,6 +23,7 @@ export class AdminDialogComponent {
 	hide = true
 	// ---------------------------
 
+	// auth cookie timeout
 	timeout: string
 
 	constructor(public dbs: PouchdbService, private toastr: ToastrService, public dialogRef: MatDialogRef<AdminDialogComponent>) {
