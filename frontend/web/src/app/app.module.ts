@@ -44,6 +44,7 @@ import { EndMatchDialogComponent } from './dialogs/end-match-dialog/end-match-di
 import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { AdminDialogComponent } from './dialogs/admin-dialog/admin-dialog.component';
+import { AnalysisComponent } from './analysis/analysis.component';
 
 @NgModule({
 	declarations: [
@@ -56,7 +57,8 @@ import { AdminDialogComponent } from './dialogs/admin-dialog/admin-dialog.compon
 		EndMatchDialogComponent,
 		LoginDialogComponent,
 		ConfirmDialogComponent,
-		AdminDialogComponent
+		AdminDialogComponent,
+		AnalysisComponent
 	],
 	imports: [
 		BrowserModule,

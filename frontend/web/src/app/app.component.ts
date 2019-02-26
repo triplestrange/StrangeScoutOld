@@ -26,7 +26,9 @@ import { UserService } from './services/user.service';
 	animations: [trigger('routerTransition', [
 		// set which animation to play on view change
 		transition('home => run-form', rightIn),
-		transition('run-form => home', leftIn)
+		transition('run-form => home', leftIn),
+		transition('home => analysis', leftIn),
+		transition('analysis => home', rightIn)
 	])],
 	styleUrls: ['./app.component.css'],
 	providers: [ UserService ]

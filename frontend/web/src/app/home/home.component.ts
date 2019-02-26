@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 
 	/**
 	 * Opens the logout confirm dialog
-	 * 
+	 *
 	 * On confirm deletes local database and clears the user ID cookie
 	 */
 	logout() {

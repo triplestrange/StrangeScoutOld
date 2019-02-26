@@ -22,9 +22,9 @@ export class StrangeparseService {
 		return new Promise(resolve => {
 			this.db.createIndex({
 				index: {
-					fields: ['TeamNumber', 'MatchNumber']
+					fields: ['MatchNumber', 'TeamNumber']
 				}
-			}).then(result => {
+			}).then(() => {
 				resolve(true);
 			}).catch(error => {
 				console.log(`Error creating index: ${error}`);
@@ -43,7 +43,11 @@ export class StrangeparseService {
 			teams = [];
 
 			this.db.find({
-				selector: {},
+				selector: {
+					$and: [
+						{TeamNumber: {$gt: true}}
+					]
+				},
 				fields: ['TeamNumber'],
 				sort: ['TeamNumber']
 			}).then(result => {
@@ -72,7 +76,11 @@ export class StrangeparseService {
 			matches = [];
 
 			this.db.find({
-				selector: {},
+				selector: {
+					$and: [
+						{MatchNumber: {$gt: true}}
+					]
+				},
 				fields: ['MatchNumber'],
 				sort: ['MatchNumber']
 			}).then(result => {
