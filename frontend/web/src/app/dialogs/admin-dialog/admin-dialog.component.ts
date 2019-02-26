@@ -14,17 +14,17 @@ import { ToastrService } from 'ngx-toastr';
 export class AdminDialogComponent {
 
 	// panel state
-	state: string
+	state: string;
 
 	// Create User data ----------
-	username = ""
-	password = ""
-	admin = false
-	hide = true
+	username = '';
+	password = '';
+	admin = false;
+	hide = true;
 	// ---------------------------
 
 	// auth cookie timeout
-	timeout: string
+	timeout: string;
 
 	constructor(public dbs: PouchdbService, private toastr: ToastrService, public dialogRef: MatDialogRef<AdminDialogComponent>) {
 		// state defaults to the main page
@@ -50,13 +50,13 @@ export class AdminDialogComponent {
 		const self = this;
 		if (document.getElementById('createForm').classList.contains('ng-valid')) {
 			self.dbs.newUser(self.username, self.password, self.admin).then(resolve => {
-				console.log(resolve)
+				console.log(resolve);
 				if (resolve === 200 || 201) {
 					self.toastr.success('User Created');
 				} else if (resolve === 409) {
-					self.toastr.error('User already exists')
+					self.toastr.error('User already exists');
 				} else {
-					self.toastr.error(resolve.toString(), 'ERROR')
+					self.toastr.error(resolve.toString(), 'ERROR');
 				}
 				self.dialogRef.close();
 			});
@@ -70,11 +70,11 @@ export class AdminDialogComponent {
 		const self = this;
 		if (document.getElementById('timeout').classList.contains('ng-valid')) {
 			self.dbs.setConfig('couch_httpd_auth', 'timeout', self.timeout).then(resolve => {
-				console.log(resolve)
+				console.log(resolve);
 				if (resolve === 200) {
 					self.toastr.success('Timeout Set');
 				} else {
-					self.toastr.error(resolve.toString(), 'ERROR')
+					self.toastr.error(resolve.toString(), 'ERROR');
 				}
 				self.dialogRef.close();
 			});

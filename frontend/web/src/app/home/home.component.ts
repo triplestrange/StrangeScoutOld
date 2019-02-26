@@ -19,14 +19,15 @@ export class HomeComponent implements OnInit {
 
 	isAdmin: boolean;
 
-	constructor(private us: UserService, private dialog: MatDialog, public dbs: PouchdbService) {
-		var self = this;
+		const self = this;
+
 		window.addEventListener('newLogin', function(e) {
 			self.scouter = self.us.getID();
 			self.dbs.isAdmin().then(result => {
 				self.isAdmin = result;
 			});
-		})
+		});
+
 		this.dbs.isAdmin().then(result => {
 			self.isAdmin = result;
 		});
@@ -56,7 +57,7 @@ export class HomeComponent implements OnInit {
 	 * Opens the admin panel
 	 */
 	adminMenu() {
-		this.dialog.open(AdminDialogComponent, {width: "250px", autoFocus: false}).afterClosed().subscribe(result => {});
+		this.dialog.open(AdminDialogComponent, {width: '250px', autoFocus: false}).afterClosed().subscribe(result => {});
 	}
 
 	ngOnInit() {}

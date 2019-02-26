@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 
 import { PouchdbService } from '../../services/pouchdb.service';
-import { UserService } from '../../services/user.service'
+import { UserService } from '../../services/user.service';
 
 @Component({
 	selector: 'app-login-dialog',
@@ -14,18 +14,23 @@ import { UserService } from '../../services/user.service'
 })
 export class LoginDialogComponent {
 
-	constructor (public dialogRef: MatDialogRef<LoginDialogComponent>, private dbs: PouchdbService, private us: UserService, private toastr: ToastrService) {}
-	
-	username = "";
-	password = "";
+	constructor (
+		public dialogRef: MatDialogRef<LoginDialogComponent>,
+		private dbs: PouchdbService,
+		private us: UserService,
+		private toastr: ToastrService
+	) {}
+
+	username = '';
+	password = '';
 
 	hide = true;
-	
+
 	/**
 	 * Authenticates with the remote database and gives a status notification
 	 */
 	login() {
-		var self = this;
+		const self = this;
 		this.dbs.authenticateRemote(this.username, this.password, function(response) {
 			if (response === 200) {
 				self.us.setID(self.username);
@@ -36,7 +41,7 @@ export class LoginDialogComponent {
 			} else if (response === 0) {
 				self.toastr.error('No connection to server');
 			} else {
-				self.toastr.error(`Status Code: ${response}`,'Unknown Error');
+				self.toastr.error(`Status Code: ${response}`, 'Unknown Error');
 			}
 		});
 	}

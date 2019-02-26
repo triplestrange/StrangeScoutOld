@@ -4,9 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 // dialog components
-import { BeginMatchDialogComponent } from '../dialogs/begin-match-dialog/begin-match-dialog.component'
-import { ElementEventDialogComponent } from '../dialogs/element-event-dialog/element-event-dialog.component'
-import { EndMatchDialogComponent } from '../dialogs/end-match-dialog/end-match-dialog.component'
+import { BeginMatchDialogComponent } from '../dialogs/begin-match-dialog/begin-match-dialog.component';
+import { ElementEventDialogComponent } from '../dialogs/element-event-dialog/element-event-dialog.component';
+import { EndMatchDialogComponent } from '../dialogs/end-match-dialog/end-match-dialog.component';
 
 // scouter id service
 import { UserService } from '../services/user.service';
@@ -41,7 +41,7 @@ export class RunFormComponent implements OnInit {
 	match: number;
 	start: string;
 	load: string;
-	notes = "";
+	notes = '';
 	// empty journal array
 	journal: EventJournalEntry[] = [];
 
@@ -73,23 +73,25 @@ export class RunFormComponent implements OnInit {
 			this.showForm = true;
 
 			// if the starting load is not "none"
-			if (this.load !== "none") {
+			if (this.load !== 'none') {
 				// local var of load
-				var load = this.load
+				const load = this.load;
 
 				// loadout journal entry
-				var entry = new EventJournalEntry;
+				let entry = new EventJournalEntry;
 				entry.Time = 0;
 				entry.Event = this.load;
 				this.journal.push(entry);
 				
 				// find the gameElement with a matching top level event to the load value
-				var element = this.gameElements.find(function(item){return item.Event === load})
+				const element = this.gameElements.find(item => {
+					return item.Event === load;
+				});
 				// opens a popup with sub events
-				const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: "250px", disableClose: true, autoFocus: false, data: element});
+				const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: '250px', disableClose: true, autoFocus: false, data: element});
 				// after the popup is closed
 				dialogRef.afterClosed().subscribe(result => {
-					if (result === "cancel") {
+					if (result === 'cancel') {
 						// remove last event if canceled
 						this.journal.pop();
 					} else {
@@ -107,14 +109,14 @@ export class RunFormComponent implements OnInit {
 	 */
 	getElement(element) {
 		// creates a new journal entry for the event specified by the element
-		if (element.Event !== "") {
+		if (element.Event !== '') {
 			this.newJournalEntry(element.Event);
 		}
 		// opens a popup with sub events
-		const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: "250px", disableClose: true, autoFocus: false, data: element});
+		const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: '250px', disableClose: true, autoFocus: false, data: element});
 		// after the popup is closed
 		dialogRef.afterClosed().subscribe(result => {
-			if (result === "cancel") {
+			if (result === 'cancel') {
 				// remove the last event if canceled
 				this.journal.pop();
 			} else {
@@ -130,7 +132,7 @@ export class RunFormComponent implements OnInit {
 	 */
 	newJournalEntry(Event: string) {
 		// new entry of class EventJournalEntry
-		var entry = new EventJournalEntry;
+		let entry = new EventJournalEntry;
 		// set elapsed time of event
 		entry.Time = this.counter - this.time;
 		// set event name
@@ -144,12 +146,14 @@ export class RunFormComponent implements OnInit {
 	 */
 	get lastEvent(): string {
 		if (this.journal.length > 0) {
-			var event = this.journal[this.journal.length-1].Event;
+			let event = this.journal[this.journal.length - 1].Event;
 			event = event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
-			event = event.replace(/^./, function(str){ return str.toUpperCase(); });
+			event = event.replace(/^./, str => {
+				return str.toUpperCase();
+			});
 			return event;
 		} else {
-			return "None";
+			return 'None';
 		}
 	}
 
@@ -158,11 +162,11 @@ export class RunFormComponent implements OnInit {
 	 */
 	get displayTime(): string {
 		// get minutes from countdown
-		var minutes = Math.floor(this.time / 60);
+		const minutes = Math.floor(this.time / 60);
 		// get seconds from countdown
-		var seconds = this.time - (minutes * 60);
+		const seconds = this.time - (minutes * 60);
 		// format countdown to display
-		return minutes + ":" + ("0" + seconds).slice(-2);
+		return minutes + ':' + ('0' + seconds).slice(-2);
 	}
 
 	/**
@@ -170,18 +174,34 @@ export class RunFormComponent implements OnInit {
 	 */
 	get payload(): {} {
 		// get timestamp data
-		var now = new Date;
-		var utc_timestamp = Date.UTC(now.getFullYear(),now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+		const now = new Date;
+		const utc_timestamp = Date.UTC(
+			now.getFullYear(),
+			now.getMonth(),
+			now.getDate(),
+			now.getHours(),
+			now.getMinutes(),
+			now.getSeconds(),
+			now.getMilliseconds()
+		);
 		// create timestamp object
 		const timestamp = { Timestamp: utc_timestamp };
 		// get scouter
 		const scouter = { Scouter: this.us.getID() };
 		// general data objects
 		const setup = { TeamNumber: this.team, MatchNumber: this.match, StartPosition: this.start };
-		const end = { Notes: this.notes }
+		const end = { Notes: this.notes };
 		// create JSON payload from all form objects
 		return this.removeFalsy(
-			Object.assign({}, {"_id":setup.TeamNumber.toString()+"_"+setup.MatchNumber.toString()}, setup, {"Journal": this.journal}, end, scouter, timestamp)
+			Object.assign(
+				{},
+				{'_id': setup.TeamNumber.toString() + '_' + setup.MatchNumber.toString()},
+				setup,
+				{'Journal': this.journal},
+				end,
+				scouter,
+				timestamp
+			)
 		);
 	}
 

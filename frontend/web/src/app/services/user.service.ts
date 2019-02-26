@@ -17,18 +17,18 @@ export class UserService {
 	 */
 	checkID(): boolean {
 		if (this.cs.get('scouter') === '') {
-			return false
+			return false;
 		} else {
-			return true
+			return true;
 		}
 	}
 
 	/**
 	 * Sets the user ID cookie to `name`
-	 * @param name 
+	 * @param name value of the user ID
 	 */
 	setID(name: string) {
-		console.log(`setting ${name}`)
+		console.log(`setting ${name}`);
 		// set cookie and expire after 3 days (typical competition length)
 		const expiredDate = new Date();
 		expiredDate.setDate( expiredDate.getDate() + 3 );
@@ -40,7 +40,7 @@ export class UserService {
 	 * @returns string
 	 */
 	getID(): string {
-		return this.cs.get('scouter')
+		return this.cs.get('scouter');
 	}
 
 	/**

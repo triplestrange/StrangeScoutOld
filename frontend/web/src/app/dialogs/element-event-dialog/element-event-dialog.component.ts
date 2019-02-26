@@ -16,10 +16,10 @@ export class ElementEventDialogComponent {
 
 	/**
 	 * Cancels the event
-	 * 
+	 *
 	 * Closes the dialog, returning the string `cancel`
 	 */
 	cancelEvent() {
-		this.dialogRef.close("cancel");
+		this.dialogRef.close('cancel');
 	}
 }
