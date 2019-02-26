@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
 
 	isAdmin: boolean;
 
+	constructor(private us: UserService, private dialog: MatDialog, public dbs: PouchdbService) {
 		const self = this;
 
 		window.addEventListener('newLogin', function(e) {

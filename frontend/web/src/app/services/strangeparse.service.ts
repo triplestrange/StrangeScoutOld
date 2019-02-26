@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 
-// @ts-ignore
 import PouchDB from 'pouchdb';
 import PouchFind from 'pouchdb-find';
-import { resolve } from 'dns';
 PouchDB.plugin(PouchFind);
 
 @Injectable({
