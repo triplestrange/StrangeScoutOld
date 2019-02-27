@@ -59,7 +59,6 @@ export class StrangeparseService {
 					teams.push(entry.TeamNumber);
 				});
 				var dedupteams = this.removeDuplicate(teams);
-				console.log(dedupteams);
 				resolve(dedupteams);
 			}).catch(error => {
 				console.log(`Error getting teams: ${error}`);
@@ -92,7 +91,6 @@ export class StrangeparseService {
 				});
 				let dedupmatches = this.removeDuplicate(matches);
 				let sorted = dedupmatches.sort();
-				console.log(sorted);
 				resolve(sorted);
 			}).catch(error => {
 				console.log(`Error getting matches: ${error}`);
@@ -113,7 +111,6 @@ export class StrangeparseService {
 					TeamNumber: team
 				}
 			}).then(result => {
-				console.log(result.docs);
 				resolve(result.docs);
 			});
 		});
@@ -132,7 +129,6 @@ export class StrangeparseService {
 				result.rows.forEach(row => {
 					out.push(row.doc)
 				})
-				console.log(out);
 				resolve(out)
 			})
 		})
@@ -146,16 +142,127 @@ export class StrangeparseService {
 		return new Promise(async resolve => {
 			let concatjournal = [];
 			let teamdata = await this.getTeam(team);
+
 			teamdata.forEach(doc => {
 				let tmp = concatjournal;
 				// @ts-ignore
 				// doesn't know `Journal` exists in the returned objects
 				concatjournal = tmp.concat(doc.Journal)
 			});
-			console.log(concatjournal)
-			let average = (concatjournal.length / 2) / teamdata.length;
+			
+			let droplessjournal = this.removeDrops(concatjournal);
+			let average = (droplessjournal.length / 2) / teamdata.length;
+
+			resolve(average);
+		});
+	}
+
+	/**
+	 * Resolves the average dropped cycles/match of a team
+	 * @param team team number to get dropped cycle count for
+	 */
+	averageDrops(team: number): Promise<number> {
+		return new Promise(async resolve => {
+			let concatjournal = [];
+			let teamdata = await this.getTeam(team);
+
+			teamdata.forEach(doc => {
+				let tmp = concatjournal;
+				// @ts-ignore
+				// doesn't know `Journal` exists in the returned objects
+				concatjournal = tmp.concat(doc.Journal)
+			});
+
+			let dropjournal = this.onlyDrops(concatjournal);
+			let average = (dropjournal.length / 2) / teamdata.length;
+			
 			resolve(average);
 		})
+	}
+
+	/**
+	 * Resolves the average single element cycles/match of a team
+	 * @param team team number to get cycle count for
+	 */
+	averageElementCycles(team: number, element: string): Promise<number> {
+		return new Promise(async resolve => {
+			let concatjournal = [];
+			let teamdata = await this.getTeam(team);
+
+			teamdata.forEach(doc => {
+				let tmp = concatjournal;
+				// @ts-ignore
+				// doesn't know `Journal` exists in the returned objects
+				concatjournal = tmp.concat(doc.Journal)
+			});
+			
+			let elementjournal = this.singleElement(concatjournal, element);
+			let average = (elementjournal.length / 2) / teamdata.length;
+
+			resolve(average);
+		})
+	}
+
+	/**
+	 * removes cycles resulting in a drop from a journal
+	 * @param journal journal to remove drops from
+	 */
+	removeDrops(journal: any[]): any[] {
+		let newjournal = [];
+
+		journal.forEach(event => {
+			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+			let word = eventname.replace(/^./, str => {
+				return str.toLowerCase();
+			}).split(' ')[0];
+			if (word === 'drop') {
+				newjournal.pop();
+			} else {
+				newjournal.push(event);
+			}
+		});
+
+		return newjournal;
+	}
+
+	/**
+	 * returns cycles only of a specific type
+	 * @param journal journal to parse
+	 * @param element element to pull
+	 */
+	singleElement(journal: any[], element: string): any[] {
+		let newjournal = [];
+
+		journal.forEach(event => {
+			let word: string;
+			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+
+			let words = eventname.replace(/^./, str => {
+				return str.toLowerCase();
+			}).split(' ');
+
+			word = words[words.length - 1];
+
+			if (word.toLowerCase() === element.toLowerCase()) {
+				newjournal.push(event);
+			}
+		});
+
+		return newjournal;
+	}
+
+	/**
+	 * removes all non-dropped cycles from a journal
+	 * @param journal journal to return drops of
+	 */
+	onlyDrops(journal: any[]): any[] {
+		let filterjournal = this.removeDrops(journal);
+		
+		let newjournal = journal.filter(item => {
+			return filterjournal.indexOf(item) < 0;
+		});
+
+		return newjournal;
 	}
 
 	// from `https://gist.github.com/telekosmos/3b62a31a5c43f40849bb`

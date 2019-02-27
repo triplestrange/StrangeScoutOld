@@ -29,11 +29,34 @@ export class AnalysisComponent implements OnInit {
 				this.sp.averageCycles(entry.team).then(result => {
 					this.data[index].averageCycles = result;
 				});
+				// calculate average dropped cycles/match and set property
+				this.sp.averageDrops(entry.team).then(result => {
+					this.data[index].averageDrops = result;
+				});
 				// get match tally and set property
 				this.sp.getMatches(entry.team).then(result => {
 					this.data[index].matchCount = result.length;
 				});
+				this.sp.averageElementCycles(entry.team, 'hatch').then(result => {
+					this.data[index].averageHatch = result;
+				});
 			});
+		});
+	}
+
+	/**
+	 * Sort the data cards ascending by average cycle count
+	 * @param descending sort in descending order
+	 */
+	cycleSort(descending?: boolean) {
+		this.data.sort((a, b) => {
+			if (a.averageCycles > b.averageCycles) {
+				if (descending) return -1; else return 1;
+			} else if (b.averageCycles > a.averageCycles) {
+				if (descending) return 1; else return -1;
+			} else {
+				return 0;
+			}
 		});
 	}
 
