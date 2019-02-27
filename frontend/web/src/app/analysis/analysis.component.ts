@@ -9,18 +9,30 @@ import {StrangeparseService} from '../services/strangeparse.service';
 })
 export class AnalysisComponent implements OnInit {
 
-	teams: number[];
-	matches: number[];
+	data: any[];
 
 	constructor(public sp: StrangeparseService) {
-		this.teams = [];
-		this.matches = [];
-		this.sp.createIndexes().then(() => {
-			this.sp.getTeams().then(result => {
-				this.teams = result;
+		this.data = [];
+		// creates indexes if not exists
+		this.sp.createIndexes().then(async () => {
+			// gets list of teams from index
+			// creates items in the data array for each
+			// (executes synchronously)
+			await this.sp.getTeams().then(result => {
+				result.forEach(team => {
+					this.data.push({team: team});
+				});
 			});
-			this.sp.getMatches().then(result => {
-				this.matches = result;
+			// for each item in the data array (each team)
+			this.data.forEach((entry, index) => {
+				// calculate average cycles/match and set property
+				this.sp.averageCycles(entry.team).then(result => {
+					this.data[index].averageCycles = result;
+				});
+				// get match tally and set property
+				this.sp.getMatches(entry.team).then(result => {
+					this.data[index].matchCount = result.length;
+				});
 			});
 		});
 	}

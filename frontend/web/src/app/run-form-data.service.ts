@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 // custom classes
-import { OptionEventChoice, GameElement } from './run-classes';
+import { OptionEventChoice, GameElement } from './classes';
 
 @Injectable({
 	providedIn: 'root'

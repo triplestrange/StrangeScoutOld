@@ -18,7 +18,7 @@ import { RunFormDataService } from '../run-form-data.service';
 import { PouchdbService } from '../services/pouchdb.service';
 
 // custom classes
-import { EventJournalEntry, OptionEventChoice, GameElement } from '../run-classes';
+import { EventJournalEntry, OptionEventChoice, GameElement, Run } from '../classes';
 
 @Component({
 	selector: 'app-run-form',
@@ -184,25 +184,18 @@ export class RunFormComponent implements OnInit {
 			now.getSeconds(),
 			now.getMilliseconds()
 		);
-		// create timestamp object
-		const timestamp = { Timestamp: utc_timestamp };
-		// get scouter
-		const scouter = { Scouter: this.us.getID() };
-		// general data objects
-		const setup = { TeamNumber: this.team, MatchNumber: this.match, StartPosition: this.start };
-		const end = { Notes: this.notes };
 		// create JSON payload from all form objects
-		return this.removeFalsy(
-			Object.assign(
-				{},
-				{'_id': setup.TeamNumber.toString() + '_' + setup.MatchNumber.toString()},
-				setup,
-				{'Journal': this.journal},
-				end,
-				scouter,
-				timestamp
-			)
-		);
+		const load: Run = {
+			_id: this.team.toString() + '_' + this.match.toString(),
+			TeamNumber: this.team,
+			MatchNumber: this.match,
+			StartPosition: this.start,
+			Journal: this.journal,
+			Notes: this.notes,
+			Scouter: this.us.getID(),
+			Timestamp: utc_timestamp
+		}
+		return this.removeFalsy(load);
 	}
 
 	/**
