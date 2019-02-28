@@ -187,6 +187,7 @@ export class RunFormComponent implements OnInit {
 		// create JSON payload from all form objects
 		const load: Run = {
 			_id: this.team.toString() + '_' + this.match.toString(),
+			type: 'run',
 			TeamNumber: this.team,
 			MatchNumber: this.match,
 			StartPosition: this.start,
