@@ -24,15 +24,15 @@ export class AdminDialogComponent {
 	// ---------------------------
 
 	// auth cookie timeout
-	timeout: string;
+//	timeout: string;
 
 	constructor(public dbs: PouchdbService, private toastr: ToastrService, public dialogRef: MatDialogRef<AdminDialogComponent>) {
 		// state defaults to the main page
 		this.state = 'main';
 
-		this.dbs.getConfig('couch_httpd_auth', 'timeout').then(resolve => {
-			this.timeout = JSON.parse(resolve);
-		});
+//		this.dbs.getConfig('couch_httpd_auth', 'timeout').then(resolve => {
+//			this.timeout = JSON.parse(resolve);
+//		});
 	}
 
 	/**
@@ -66,19 +66,19 @@ export class AdminDialogComponent {
 	/**
 	 * Sets the auth cookie timeout value
 	 */
-	setTimeout() {
-		const self = this;
-		if (document.getElementById('timeout').classList.contains('ng-valid')) {
-			self.dbs.setConfig('couch_httpd_auth', 'timeout', self.timeout).then(resolve => {
-				console.log(resolve);
-				if (resolve === 200) {
-					self.toastr.success('Timeout Set');
-				} else {
-					self.toastr.error(resolve.toString(), 'ERROR');
-				}
-				self.dialogRef.close();
-			});
-		}
-	}
+//	setTimeout() {
+//		const self = this;
+//		if (document.getElementById('timeout').classList.contains('ng-valid')) {
+//			self.dbs.setConfig('couch_httpd_auth', 'timeout', self.timeout).then(resolve => {
+//				console.log(resolve);
+//				if (resolve === 200) {
+//					self.toastr.success('Timeout Set');
+//				} else {
+//					self.toastr.error(resolve.toString(), 'ERROR');
+//				}
+//				self.dialogRef.close();
+//			});
+//		}
+//	}
 
 }

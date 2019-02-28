@@ -1,12 +1,12 @@
 <h2 mat-dialog-title *ngIf="state === 'main'">Admin Panel</h2>
 <h2 mat-dialog-title *ngIf="state === 'create'">Create User</h2>
-<h2 mat-dialog-title *ngIf="state === 'timeout'">Auth Timeout</h2>
+<!--<h2 mat-dialog-title *ngIf="state === 'timeout'">Auth Timeout</h2>-->
 
 <div class="center-align">
 
 	<div *ngIf="state === 'main'">
 		<button mat-raised-button class="admin-button" type="button" (click)="show('create')">Create User</button>
-		<button mat-raised-button class="admin-button" type="button" (click)="show('timeout')">Auth Timeout</button>
+		<!--<button mat-raised-button class="admin-button" type="button" (click)="show('timeout')">Auth Timeout</button>-->
 	</div>
 
 	<div *ngIf="state === 'create'">
@@ -30,6 +30,7 @@
 		</form>
 	</div>
 
+	<!--
 	<div *ngIf="state === 'timeout'">
 		<div>
 			<mat-form-field class="user-field">
@@ -38,6 +39,7 @@
 			</mat-form-field>
 		</div>
 	</div>
+	-->
 
 </div>
 
@@ -45,5 +47,5 @@
 	<button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
 	<span class="spacer"></span>
 	<button mat-raised-button *ngIf="state ==='create'" type="button" color="primary" (click)="newUser()">Create</button>
-	<button mat-raised-button *ngIf="state ==='timeout'" type="button" color="primary" (click)="setTimeout()">Set</button>
+	<!--<button mat-raised-button *ngIf="state ==='timeout'" type="button" color="primary" (click)="setTimeout()">Set</button>-->
 </div>
