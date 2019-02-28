@@ -1,5 +1,6 @@
 export class Run {
 	_id: string;
+	type: 'run';
 	TeamNumber: number;
 	MatchNumber: number;
 	StartPosition: string;

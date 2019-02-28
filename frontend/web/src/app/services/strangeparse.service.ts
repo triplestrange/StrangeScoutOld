@@ -45,7 +45,9 @@ export class StrangeparseService {
 			teams = [];
 
 			this.db.find({
-				selector: {},
+				selector: {
+					type: 'run'
+				},
 				fields: ['TeamNumber']
 			}).then(result => {
 				result.docs.forEach(entry => {
@@ -76,6 +78,7 @@ export class StrangeparseService {
 
 			this.db.find({
 				selector: {
+					type: 'run',
 					TeamNumber: {$eq: team}
 				},
 				fields: ['MatchNumber']
@@ -104,6 +107,7 @@ export class StrangeparseService {
 		return new Promise(resolve => {
 			this.db.find({
 				selector: {
+					type: 'run',
 					TeamNumber: team
 				}
 			}).then(result => {
