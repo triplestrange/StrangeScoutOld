@@ -8,21 +8,26 @@
 			<mat-card-subtitle>{{ entry.matchCount }} match<ng-container *ngIf="entry.matchCount !== 1">es</ng-container></mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<!-- New list -->
-			<mat-list role="list">
-				<mat-list-item role="listitem">
-					<!-- Average cycle count from entry -->
-					Average Cycles: {{ entry.averageCycles }}
-				</mat-list-item>
-				<mat-list-item role="listitem">
-					<!-- Average drop count from entry -->
-					Average Drops: {{ entry.averageDrops }}
-				</mat-list-item>
-				<mat-list-item role="listitem">
-					<!-- Average hatch count from entry -->
-					Average Hatch Panels: {{ entry.averageHatch }}
-				</mat-list-item>
-			</mat-list>
+			<div class="center-container">
+				<mat-spinner *ngIf="!entry.visible"></mat-spinner>
+			</div>
+			<ng-container *ngIf="entry.visible">
+				<!-- New list -->
+				<mat-list role="list">
+					<mat-list-item role="listitem">
+						<!-- Average cycle count from entry -->
+						Average Cycles: {{ entry.averageCycles }}
+					</mat-list-item>
+					<mat-list-item role="listitem">
+						<!-- Average drop count from entry -->
+						Average Drops: {{ entry.averageDrops }}
+					</mat-list-item>
+					<mat-list-item role="listitem">
+						<!-- Average hatch count from entry -->
+						Average Hatch Panels: {{ entry.averageHatch }}
+					</mat-list-item>
+				</mat-list>
+			</ng-container>
 		</mat-card-content>
 	</mat-card>
 </div>

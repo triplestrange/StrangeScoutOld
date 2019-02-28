@@ -24,22 +24,24 @@ export class AnalysisComponent implements OnInit {
 				});
 			});
 			// for each item in the data array (each team)
-			this.data.forEach((entry, index) => {
+			this.data.forEach(async (entry, index) => {
+				this.data[index].visible = false;
 				// calculate average cycles/match and set property
-				this.sp.averageCycles(entry.team).then(result => {
+				await this.sp.averageCycles(entry.team).then(result => {
 					this.data[index].averageCycles = result;
 				});
 				// calculate average dropped cycles/match and set property
-				this.sp.averageDrops(entry.team).then(result => {
+				await this.sp.averageDrops(entry.team).then(result => {
 					this.data[index].averageDrops = result;
 				});
 				// get match tally and set property
-				this.sp.getMatches(entry.team).then(result => {
+				await this.sp.getMatches(entry.team).then(result => {
 					this.data[index].matchCount = result.length;
 				});
-				this.sp.averageElementCycles(entry.team, 'hatch').then(result => {
+				await this.sp.averageElementCycles(entry.team, 'hatch').then(result => {
 					this.data[index].averageHatch = result;
 				});
+				this.data[index].visible = true;
 			});
 		});
 	}
