@@ -45,21 +45,17 @@ export class StrangeparseService {
 			teams = [];
 
 			this.db.find({
-				selector: {
-					$and: [
-						{TeamNumber: {$gt: true}}
-					]
-				},
-				fields: ['TeamNumber'],
-				sort: ['TeamNumber']
+				selector: {},
+				fields: ['TeamNumber']
 			}).then(result => {
 				result.docs.forEach(entry => {
 					// @ts-ignore
 					// doesn't know `TeamNumber` exists in the returned objects
 					teams.push(entry.TeamNumber);
 				});
-				var dedupteams = this.removeDuplicate(teams);
-				resolve(dedupteams);
+				let dedupteams = this.removeDuplicate(teams);
+				let sorted = dedupteams.sort(function(a, b){return a-b});
+				resolve(sorted);
 			}).catch(error => {
 				console.log(`Error getting teams: ${error}`);
 				resolve([]);
@@ -90,7 +86,7 @@ export class StrangeparseService {
 					matches.push(entry.MatchNumber);
 				});
 				let dedupmatches = this.removeDuplicate(matches);
-				let sorted = dedupmatches.sort();
+				let sorted = dedupmatches.sort(function(a, b){return a-b});
 				resolve(sorted);
 			}).catch(error => {
 				console.log(`Error getting matches: ${error}`);
