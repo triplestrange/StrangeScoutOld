@@ -8,7 +8,3 @@ mat-card.team-card mat-card-header {
 	display: block;
 	text-align: center;
 }
-
-mat-card.team-card mat-card-header mat-card-subtitle {
-	margin-top: -15px;
-}
