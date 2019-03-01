@@ -61,6 +61,28 @@ export class HomeComponent implements OnInit {
 		this.dialog.open(AdminDialogComponent, {width: '250px', autoFocus: false}).afterClosed().subscribe(result => {});
 	}
 
+	syncData() {
+		const self = this;
+		const xhr = new XMLHttpRequest;
+		const url = 'https://db.' + environment.domain + '/_session';
+		xhr.open('GET', url);
+		xhr.withCredentials = true;
+		xhr.onreadystatechange = function() {
+			// Call a function when the state changes.
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				if (JSON.parse(xhr.responseText).userCtx.name === null) {
+					self.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
+						window.dispatchEvent(new CustomEvent('newLogin'));
+						self.dbs.syncRemote();
+					});
+				} else {
+					self.dbs.syncRemote();
+				}
+			}
+		}
+		xhr.send();
+	}
+
 	ngOnInit() {}
 
 }

@@ -12,7 +12,7 @@
 			<a routerLink="data" routerLinkActive="active"><button mat-raised-button color="primary">View Scouting Data</button></a>
 		</div>
 		<div class="splash-button">
-			<button mat-raised-button color="warn" (click)="dbs.syncRemote()">Sync Data</button>
+			<button mat-raised-button color="warn" (click)="syncData()">Sync Data</button>
 		</div>
 		<div *ngIf="isAdmin" class="splash-button">
 			<button mat-button color="warn" (click)="adminMenu()">Admin Settings</button>
