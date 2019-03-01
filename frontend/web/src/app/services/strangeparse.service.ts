@@ -15,6 +15,8 @@ export class StrangeparseService {
 
 	db = new PouchDB('ssdb');
 
+// INDEXING ----------------------------
+
 	/**
 	 * Creates indexes for team number and match number
 	 *
@@ -99,6 +101,8 @@ export class StrangeparseService {
 
 	}
 
+// GET DATA ----------------------------
+
 	/**
 	 * Resolves an array of objects for all runs by a specified team
 	 * @param team team to get runs of
@@ -133,6 +137,8 @@ export class StrangeparseService {
 			})
 		})
 	}
+
+// AVERAGES ----------------------------
 
 	/**
 	 * Resolves the average cycles/match of a team
@@ -183,6 +189,7 @@ export class StrangeparseService {
 	/**
 	 * Resolves the average single element cycles/match of a team
 	 * @param team team number to get cycle count for
+	 * @param element lowercase name of element as seen in journal event
 	 */
 	averageElementCycles(team: number, element: string): Promise<number> {
 		return new Promise(async resolve => {
@@ -197,33 +204,39 @@ export class StrangeparseService {
 			});
 			
 			let elementjournal = this.singleElement(concatjournal, element);
-			let average = (elementjournal.length / 2) / teamdata.length;
+			let droplessjournal = this.removeDrops(elementjournal);
+			let average = (droplessjournal.length / 2) / teamdata.length;
 
 			resolve(average);
 		})
 	}
 
 	/**
-	 * removes cycles resulting in a drop from a journal
-	 * @param journal journal to remove drops from
+	 * Resolves the average single element dropped cycles/match of a team
+	 * @param team team number to get dropped cycle count for
+	 * @param element lowercase name of element as seen in journal event
 	 */
-	removeDrops(journal: any[]): any[] {
-		let newjournal = [];
+	averageElementDrops(team: number, element: string): Promise<number> {
+		return new Promise(async resolve => {
+			let concatjournal = [];
+			let teamdata = await this.getTeam(team);
 
-		journal.forEach(event => {
-			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
-			let word = eventname.replace(/^./, str => {
-				return str.toLowerCase();
-			}).split(' ')[0];
-			if (word === 'drop') {
-				newjournal.pop();
-			} else {
-				newjournal.push(event);
-			}
-		});
+			teamdata.forEach(doc => {
+				let tmp = concatjournal;
+				// @ts-ignore
+				// doesn't know `Journal` exists in the returned objects
+				concatjournal = tmp.concat(doc.Journal)
+			});
+			
+			let elementjournal = this.singleElement(concatjournal, element);
+			let dropjournal = this.onlyDrops(elementjournal);
+			let average = (dropjournal.length / 2) / teamdata.length;
 
-		return newjournal;
+			resolve(average);
+		})
 	}
+
+// JOURNAL MUTATIONS -------------------
 
 	/**
 	 * returns cycles only of a specific type
@@ -252,6 +265,28 @@ export class StrangeparseService {
 	}
 
 	/**
+	 * removes cycles resulting in a drop from a journal
+	 * @param journal journal to remove drops from
+	 */
+	removeDrops(journal: any[]): any[] {
+		let newjournal = [];
+
+		journal.forEach(event => {
+			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+			let word = eventname.replace(/^./, str => {
+				return str.toLowerCase();
+			}).split(' ')[0];
+			if (word === 'drop') {
+				newjournal.pop();
+			} else {
+				newjournal.push(event);
+			}
+		});
+
+		return newjournal;
+	}
+
+	/**
 	 * removes all non-dropped cycles from a journal
 	 * @param journal journal to return drops of
 	 */
@@ -264,6 +299,8 @@ export class StrangeparseService {
 
 		return newjournal;
 	}
+
+// EXTRA -------------------------------
 
 	// from `https://gist.github.com/telekosmos/3b62a31a5c43f40849bb`
 	/**

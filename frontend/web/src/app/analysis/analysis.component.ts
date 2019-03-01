@@ -35,6 +35,7 @@ export class AnalysisComponent implements OnInit {
 				await this.sp.getMatches(entry.team).then(result => {
 					this.data[index].matchCount = result.length;
 				});
+
 				// calculate average cycles/match and set property
 				await this.sp.averageCycles(entry.team).then(result => {
 					this.data[index].averages.cycles = result;
@@ -43,13 +44,28 @@ export class AnalysisComponent implements OnInit {
 				await this.sp.averageDrops(entry.team).then(result => {
 					this.data[index].averages.drops = result;
 				});
+
+				// calculate average hatch panel cycles/match and set property
 				await this.sp.averageElementCycles(entry.team, 'hatch').then(result => {
 					this.data[index].averages.hatch.cycles = result;
 				});
+				// calculate average hatch panel dropped cycles/match and set property
+				await this.sp.averageElementDrops(entry.team, 'hatch').then(result => {
+					this.data[index].averages.hatch.drops = result;
+				});
+				
+				// calculate average cargo cycles/match and set property
 				await this.sp.averageElementCycles(entry.team, 'cargo').then(result => {
 					this.data[index].averages.cargo.cycles = result;
 				});
+				// calculate average cargo dropped cycles/match and set property
+				await this.sp.averageElementDrops(entry.team, 'cargo').then(result => {
+					this.data[index].averages.cargo.drops = result;
+				});
+
+				// set to display processed data
 				this.data[index].visible = true;
+				console.log(this.data[index]);
 			});
 		});
 	}
