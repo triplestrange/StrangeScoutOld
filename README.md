@@ -14,7 +14,7 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 _Excerpted from our [Deployment Guide](https://github.com/triplestrange/StrangeScout/wiki/Deployment-Guide#deploying-the-server)_
 
 >1. **Install** [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/)
->2. **Install and setup** [Traefik](https://traefik.io/)
+>2. **Install and setup** [Traefik](https://docs.traefik.io/#the-traefik-quickstart-using-docker)
 >3. **Clone this repository**
 >4. **Checkout your preferred branch**
 >	- `prod` for a stable and production ready system (recommended)
