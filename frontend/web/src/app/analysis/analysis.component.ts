@@ -36,32 +36,64 @@ export class AnalysisComponent implements OnInit {
 					this.data[index].matchCount = result.length;
 				});
 
+// OVERALL -----------------------------
+
 				// calculate average cycles/match and set property
 				await this.sp.averageCycles(entry.team).then(result => {
-					this.data[index].averages.cycles = result;
+					this.data[index].averages.cycles = Math.ceil(result*100)/100;
 				});
 				// calculate average dropped cycles/match and set property
 				await this.sp.averageDrops(entry.team).then(result => {
-					this.data[index].averages.drops = result;
+					this.data[index].averages.drops = Math.ceil(result*100)/100;
 				});
+
+// HATCH -------------------------------
 
 				// calculate average hatch panel cycles/match and set property
 				await this.sp.averageElementCycles(entry.team, 'hatch').then(result => {
-					this.data[index].averages.hatch.cycles = result;
+					this.data[index].averages.hatch.cycles = Math.ceil(result*100)/100;
 				});
 				// calculate average hatch panel dropped cycles/match and set property
 				await this.sp.averageElementDrops(entry.team, 'hatch').then(result => {
-					this.data[index].averages.hatch.drops = result;
+					this.data[index].averages.hatch.drops = Math.ceil(result*100)/100;
 				});
-				
+				await this.sp.averageDestinationCycles(entry.team, 'hatch', 'top').then(result =>{
+					this.data[index].averages.hatch.top = Math.ceil(result*100)/100;
+				});
+				await this.sp.averageDestinationCycles(entry.team, 'hatch', 'middle').then(result =>{
+					this.data[index].averages.hatch.middle = Math.ceil(result*100)/100;
+				});
+				await this.sp.averageDestinationCycles(entry.team, 'hatch', 'bottom').then(result =>{
+					this.data[index].averages.hatch.bottom = Math.ceil(result*100)/100;
+				});
+				await this.sp.averageDestinationCycles(entry.team, 'hatch', 'cargo').then(result =>{
+					this.data[index].averages.hatch.cargo = Math.ceil(result*100)/100;
+				});
+
+// CARGO -------------------------------
+
 				// calculate average cargo cycles/match and set property
 				await this.sp.averageElementCycles(entry.team, 'cargo').then(result => {
-					this.data[index].averages.cargo.cycles = result;
+					this.data[index].averages.cargo.cycles = Math.ceil(result*100)/100;
 				});
 				// calculate average cargo dropped cycles/match and set property
 				await this.sp.averageElementDrops(entry.team, 'cargo').then(result => {
-					this.data[index].averages.cargo.drops = result;
+					this.data[index].averages.cargo.drops = Math.ceil(result*100)/100;
 				});
+				await this.sp.averageDestinationCycles(entry.team, 'cargo', 'top').then(result =>{
+					this.data[index].averages.cargo.top = Math.ceil(result*100)/100;
+				});
+				await this.sp.averageDestinationCycles(entry.team, 'cargo', 'middle').then(result =>{
+					this.data[index].averages.cargo.middle = Math.ceil(result*100)/100;
+				});
+				await this.sp.averageDestinationCycles(entry.team, 'cargo', 'bottom').then(result =>{
+					this.data[index].averages.cargo.bottom = Math.ceil(result*100)/100;
+				});
+				await this.sp.averageDestinationCycles(entry.team, 'cargo', 'cargo').then(result =>{
+					this.data[index].averages.cargo.cargo = Math.ceil(result*100)/100;
+				});
+
+// -------------------------------------
 
 				// set to display processed data
 				this.data[index].visible = true;

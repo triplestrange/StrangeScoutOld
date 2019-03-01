@@ -236,6 +236,32 @@ export class StrangeparseService {
 		})
 	}
 
+	/**
+	 * Resolves the average single element cycles/match of a team
+	 * @param team team number to get cycle count for
+	 * @param element lowercase name of element as seen in journal event
+	 * @param destination lowercase name of element destination as seen in journal event
+	 */
+	averageDestinationCycles(team: number, element: string, destination: string): Promise<number> {
+		return new Promise(async resolve => {
+			let concatjournal = [];
+			let teamdata = await this.getTeam(team);
+
+			teamdata.forEach(doc => {
+				let tmp = concatjournal;
+				// @ts-ignore
+				// doesn't know `Journal` exists in the returned objects
+				concatjournal = tmp.concat(doc.Journal)
+			});
+			
+			let destjournal = this.singleDestination(concatjournal, element, destination);
+			let droplessjournal = this.removeDrops(destjournal);
+			let average = (droplessjournal.length / 2) / teamdata.length;
+
+			resolve(average);
+		})
+	}
+
 // JOURNAL MUTATIONS -------------------
 
 	/**
@@ -257,6 +283,34 @@ export class StrangeparseService {
 			word = words[words.length - 1];
 
 			if (word.toLowerCase() === element.toLowerCase()) {
+				newjournal.push(event);
+			}
+		});
+
+		return newjournal;
+	}
+
+	/**
+	 * returns cycles only of a specific type
+	 * @param journal journal to parse
+	 * @param element element to pull
+	 */
+	singleDestination(journal: any[], element: string, destination: string): any[] {
+		let newjournal = [];
+
+		journal.forEach(event => {
+			let word1: string;
+			let word2: string;
+			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+
+			let words = eventname.replace(/^./, str => {
+				return str.toLowerCase();
+			}).split(' ');
+
+			word1 = words[0];
+			word2 = words[words.length - 1];
+
+			if ((word2.toLowerCase() === element.toLowerCase()) && (word1.toLowerCase() === destination.toLowerCase())) {
 				newjournal.push(event);
 			}
 		});
