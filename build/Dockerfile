@@ -18,8 +18,8 @@ COPY ./server/package-lock.json ./
 COPY ./server/package.json ./
 RUN npm install
 COPY ./server/ ./
-#This works locally, why not on a deploy???
-#RUN patch ./node_modules/express-pouchdb/lib/routes/session.js ./session.patch
+# patch pouchdb server to set cookie expiry time
+RUN patch ./node_modules/express-pouchdb/lib/routes/session.js ./session.patch
 COPY --from=builder /strangescout/dist/jscout ./static
 EXPOSE 80 443
 ENTRYPOINT ["node", "index.js"]

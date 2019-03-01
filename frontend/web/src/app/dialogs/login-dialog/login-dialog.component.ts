@@ -14,17 +14,24 @@ import { UserService } from '../../services/user.service';
 })
 export class LoginDialogComponent {
 
+	username: string;
+	password: string;
+
+	hide = true;
+
 	constructor (
 		public dialogRef: MatDialogRef<LoginDialogComponent>,
 		private dbs: PouchdbService,
 		private us: UserService,
 		private toastr: ToastrService
-	) {}
-
-	username = '';
-	password = '';
-
-	hide = true;
+	) {
+		this.password = '';
+		if (this.us.checkID()) {
+			this.username = this.us.getID();
+		} else {
+			this.username = '';
+		}
+	}
 
 	/**
 	 * Authenticates with the remote database and gives a status notification

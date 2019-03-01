@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
+import { MatDialog } from '@angular/material';
+import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.component';
+
 // toasts
 import { ToastrService } from 'ngx-toastr';
 
@@ -16,7 +19,7 @@ import PouchDB from 'pouchdb'
 })
 export class PouchdbService {
 
-	constructor(private us: UserService, private toastr: ToastrService, private cs: CookieService) { }
+	constructor(private us: UserService, private toastr: ToastrService, private cs: CookieService, private dialog: MatDialog) { }
 
 	/**
 	 * Authenticates with the remote database
@@ -68,6 +71,7 @@ export class PouchdbService {
 	 */
 	syncRemote() {
 		const self = this;
+
 		const remoteURL = 'https://db.' + environment.domain + '/ssdb';
 		const localDB = new PouchDB('ssdb');
 		const remoteDB = new PouchDB(remoteURL, {
@@ -77,14 +81,37 @@ export class PouchdbService {
 				return PouchDB.fetch(url, opts);
 			}
 		});
-
-		localDB.sync(remoteDB).on('complete', function () {
-			self.toastr.success('Data synced');
-			console.log(localDB.info());
-		}).on('error', function (err) {
-			self.toastr.error('Error syncing data!');
-			console.log(err);
-		});
+		
+		const xhr = new XMLHttpRequest;
+		const url = 'https://db.' + environment.domain + '/_session';
+		xhr.open('GET', url);
+		xhr.withCredentials = true;
+		xhr.onreadystatechange = function() {
+			// Call a function when the state changes.
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				if (JSON.parse(xhr.responseText).userCtx.name === null) {
+					self.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
+						window.dispatchEvent(new CustomEvent('newLogin'));
+						localDB.sync(remoteDB).on('complete', function () {
+							self.toastr.success('Data synced');
+							console.log(localDB.info());
+						}).on('error', function (err) {
+							self.toastr.error('Error syncing data!');
+							console.log(err);
+						});
+					});
+				} else {
+					localDB.sync(remoteDB).on('complete', function () {
+						self.toastr.success('Data synced');
+						console.log(localDB.info());
+					}).on('error', function (err) {
+						self.toastr.error('Error syncing data!');
+						console.log(err);
+					});
+				}
+			}
+		}
+		xhr.send();
 	}
 
 	/**
