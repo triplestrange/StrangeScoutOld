@@ -16,17 +16,35 @@
 				<mat-list role="list">
 					<mat-list-item role="listitem">
 						<!-- Average cycle count from entry -->
-						Average Cycles: {{ entry.averageCycles }}
+						Average Cycles: {{ entry.averages.cycles }}
 					</mat-list-item>
 					<mat-list-item role="listitem">
 						<!-- Average drop count from entry -->
-						Average Drops: {{ entry.averageDrops }}
-					</mat-list-item>
-					<mat-list-item role="listitem">
-						<!-- Average hatch count from entry -->
-						Average Hatch Panels: {{ entry.averageHatch }}
+						Average Drops: {{ entry.averages.drops }}
 					</mat-list-item>
 				</mat-list>
+				<mat-accordion multi="true">
+					<mat-expansion-panel>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								Average Hatch Panels
+							</mat-panel-title>
+							<mat-panel-description>
+								{{ entry.averages.hatch.cycles }}
+							</mat-panel-description>
+						</mat-expansion-panel-header>
+					</mat-expansion-panel>
+					<mat-expansion-panel>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								Average Cargo
+							</mat-panel-title>
+							<mat-panel-description>
+								{{ entry.averages.cargo.cycles }}
+							</mat-panel-description>
+						</mat-expansion-panel-header>
+					</mat-expansion-panel>
+				</mat-accordion>
 			</ng-container>
 		</mat-card-content>
 	</mat-card>

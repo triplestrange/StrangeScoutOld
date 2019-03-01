@@ -26,20 +26,28 @@ export class AnalysisComponent implements OnInit {
 			// for each item in the data array (each team)
 			this.data.forEach(async (entry, index) => {
 				this.data[index].visible = false;
-				// calculate average cycles/match and set property
-				await this.sp.averageCycles(entry.team).then(result => {
-					this.data[index].averageCycles = result;
-				});
-				// calculate average dropped cycles/match and set property
-				await this.sp.averageDrops(entry.team).then(result => {
-					this.data[index].averageDrops = result;
-				});
+
+				this.data[index].averages = {};
+				this.data[index].averages.hatch = {};
+				this.data[index].averages.cargo = {};
+
 				// get match tally and set property
 				await this.sp.getMatches(entry.team).then(result => {
 					this.data[index].matchCount = result.length;
 				});
+				// calculate average cycles/match and set property
+				await this.sp.averageCycles(entry.team).then(result => {
+					this.data[index].averages.cycles = result;
+				});
+				// calculate average dropped cycles/match and set property
+				await this.sp.averageDrops(entry.team).then(result => {
+					this.data[index].averages.drops = result;
+				});
 				await this.sp.averageElementCycles(entry.team, 'hatch').then(result => {
-					this.data[index].averageHatch = result;
+					this.data[index].averages.hatch.cycles = result;
+				});
+				await this.sp.averageElementCycles(entry.team, 'cargo').then(result => {
+					this.data[index].averages.cargo.cycles = result;
 				});
 				this.data[index].visible = true;
 			});
