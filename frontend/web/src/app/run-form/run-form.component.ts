@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 // dialog imports
 import { MatDialog } from '@angular/material';
@@ -7,6 +8,7 @@ import { MatDialog } from '@angular/material';
 import { BeginMatchDialogComponent } from '../dialogs/begin-match-dialog/begin-match-dialog.component';
 import { ElementEventDialogComponent } from '../dialogs/element-event-dialog/element-event-dialog.component';
 import { EndMatchDialogComponent } from '../dialogs/end-match-dialog/end-match-dialog.component';
+import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.component';
 
 // scouter id service
 import { UserService } from '../services/user.service';
@@ -222,8 +224,27 @@ export class RunFormComponent implements OnInit {
 	onSubmit() {
 		const payload = this.payload;
 
-		this.dbs.storeLocal(payload);
-		this.dbs.syncRemote();
+		this.dbs.storeLocal(payload).then(() => {
+			const self = this;
+			const xhr = new XMLHttpRequest;
+			const url = 'https://db.' + environment.domain + '/_session';
+			xhr.open('GET', url);
+			xhr.withCredentials = true;
+			xhr.onreadystatechange = function() {
+				// Call a function when the state changes.
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (JSON.parse(xhr.responseText).userCtx.name === null) {
+						self.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
+							window.dispatchEvent(new CustomEvent('newLogin'));
+							self.dbs.syncRemote();
+						});
+					} else {
+						self.dbs.syncRemote();
+					}
+				}
+			}
+			xhr.send();
+		});
 	}
 
 	/**
