@@ -7,5 +7,5 @@ import { MatDialogRef } from '@angular/material';
 	styleUrls: ['./begin-match-dialog.component.css']
 })
 export class BeginMatchDialogComponent {
-	public dialogRef: MatDialogRef<BeginMatchDialogComponent>
+	public dialogRef: MatDialogRef<BeginMatchDialogComponent>;
 }

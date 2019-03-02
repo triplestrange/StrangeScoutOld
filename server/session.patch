@@ -1,0 +1,11 @@
+--- session.js	2019-02-28 12:10:35.750003743 -0500
++++ session-cookie_age.js	2019-02-28 12:24:25.336679779 -0500
+@@ -20,7 +20,7 @@
+     getUsersDB(req).then(function (db) {
+       return db.multiUserLogIn(name, password);
+     }).then(function (resp) {
+-      res.cookie('AuthSession', resp.sessionID, {httpOnly: true});
++      res.cookie('AuthSession', resp.sessionID, {maxAge: 259200000, httpOnly: true});
+       delete resp.sessionID;
+       if (req.query.next) {
+         utils.setLocation(res, req.query.next);

@@ -25,6 +25,9 @@ import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatListModule} from '@angular/material/list';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatExpansionModule} from '@angular/material/expansion';
 // Material Form elements
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -43,6 +46,8 @@ import { ElementEventDialogComponent } from './dialogs/element-event-dialog/elem
 import { EndMatchDialogComponent } from './dialogs/end-match-dialog/end-match-dialog.component';
 import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
+import { AdminDialogComponent } from './dialogs/admin-dialog/admin-dialog.component';
+import { AnalysisComponent } from './analysis/analysis.component';
 
 @NgModule({
 	declarations: [
@@ -54,7 +59,9 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
 		ElementEventDialogComponent,
 		EndMatchDialogComponent,
 		LoginDialogComponent,
-		ConfirmDialogComponent
+		ConfirmDialogComponent,
+		AdminDialogComponent,
+		AnalysisComponent
 	],
 	imports: [
 		BrowserModule,
@@ -75,11 +82,21 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
 		MatSortModule,
 		MatPaginatorModule,
 		MatDialogModule,
+		MatListModule,
+		MatProgressSpinnerModule,
+		MatExpansionModule,
 		ToastrModule.forRoot(),
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
 	],
 	providers: [ CookieService ],
 	bootstrap: [ AppComponent ],
-	entryComponents: [ConfirmDialogComponent, LoginDialogComponent, BeginMatchDialogComponent, EndMatchDialogComponent, ElementEventDialogComponent]
+	entryComponents: [
+		ConfirmDialogComponent,
+		LoginDialogComponent,
+		BeginMatchDialogComponent,
+		EndMatchDialogComponent,
+		ElementEventDialogComponent,
+		AdminDialogComponent
+	]
 })
 export class AppModule { }

@@ -1,0 +1,51 @@
+<h2 mat-dialog-title *ngIf="state === 'main'">Admin Panel</h2>
+<h2 mat-dialog-title *ngIf="state === 'create'">Create User</h2>
+<!--<h2 mat-dialog-title *ngIf="state === 'timeout'">Auth Timeout</h2>-->
+
+<div class="center-align">
+
+	<div *ngIf="state === 'main'">
+		<button mat-raised-button class="admin-button" type="button" (click)="show('create')">Create User</button>
+		<!--<button mat-raised-button class="admin-button" type="button" (click)="show('timeout')">Auth Timeout</button>-->
+	</div>
+
+	<div *ngIf="state === 'create'">
+		<form id="createForm" #form=ngForm>
+		<div>
+			<mat-form-field class="user-field">
+				<input matInput name="username" id="username" type="text" placeholder="Username" [(ngModel)]="username" #user=ngModel required>
+				<mat-error *ngIf="user.invalid">Invalid Username</mat-error>
+			</mat-form-field>
+		</div>
+		<div>
+			<mat-form-field class="user-field">
+				<input matInput name="password" id="password" type="text" placeholder="Password" [(ngModel)]="password" #pass=ngModel [type]="hide ? 'password' : 'text'" required>
+				<mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+				<mat-error *ngIf="pass.invalid">Invalid Password</mat-error>
+			</mat-form-field>
+		</div>
+		<div class="user-field left-align">
+			<mat-checkbox name="admin" [(ngModel)]="admin">Admin Account</mat-checkbox>
+		</div>
+		</form>
+	</div>
+
+	<!--
+	<div *ngIf="state === 'timeout'">
+		<div>
+			<mat-form-field class="user-field">
+				<input matInput name="timeout" id="timeout" type="number" placeholder="Timeout (seconds)" [(ngModel)]="timeout" #time=ngModel required>
+				<mat-error *ngIf="time.invalid">Invalid Timeout</mat-error>
+			</mat-form-field>
+		</div>
+	</div>
+	-->
+
+</div>
+
+<div mat-dialog-actions class="dialog-actions">
+	<button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+	<span class="spacer"></span>
+	<button mat-raised-button *ngIf="state ==='create'" type="button" color="primary" (click)="newUser()">Create</button>
+	<!--<button mat-raised-button *ngIf="state ==='timeout'" type="button" color="primary" (click)="setTimeout()">Set</button>-->
+</div>

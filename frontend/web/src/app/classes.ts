@@ -1,4 +1,6 @@
 export class Run {
+	_id: string;
+	type: 'run';
 	TeamNumber: number;
 	MatchNumber: number;
 	StartPosition: string;
@@ -6,6 +8,7 @@ export class Run {
 	Notes: string;
 	Scouter: string;
 	Timestamp: number;
+	_rev?: string;
 }
 
 export class EventJournalEntry {

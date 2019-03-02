@@ -1,0 +1,11 @@
+mat-card.team-card {
+	max-width: 350px;
+	width: 85%;
+	margin-top: 50px;
+	align-self: flex-start;
+}
+
+mat-card.team-card mat-card-header {
+	display: block;
+	text-align: center;
+}

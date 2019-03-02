@@ -4,7 +4,7 @@ import { environment } from '../environments/environment';
 import { MatDialog } from '@angular/material';
 import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.component';
 
-import { HomeComponent } from './home/home.component'
+import { HomeComponent } from './home/home.component';
 
 // animations
 import {trigger, transition} from '@angular/animations';
@@ -26,7 +26,9 @@ import { UserService } from './services/user.service';
 	animations: [trigger('routerTransition', [
 		// set which animation to play on view change
 		transition('home => run-form', rightIn),
-		transition('run-form => home', leftIn)
+		transition('run-form => home', leftIn),
+		transition('home => analysis', leftIn),
+		transition('analysis => home', rightIn)
 	])],
 	styleUrls: ['./app.component.css'],
 	providers: [ UserService ]
@@ -58,7 +60,7 @@ export class AppComponent implements OnInit {
 		// check for updates
 		interval(30000).subscribe(() => this.updates.checkForUpdate());
 
-		if (this.us.checkID() != true) {
+		if (this.us.checkID() !== true) {
 			this.dialog.open(LoginDialogComponent, {disableClose: true}).afterClosed().subscribe(result => {
 				window.dispatchEvent(new CustomEvent('newLogin'));
 			});
