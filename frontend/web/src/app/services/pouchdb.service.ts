@@ -29,7 +29,7 @@ export class PouchdbService {
 	 */
 	authenticateRemote(user: string, pass: string, callback) {
 		const xhr = new XMLHttpRequest;
-		const url = 'https://db.' + environment.domain + '/_session';
+		const url = `${location.protocol}//db.${window.location.host}/_session`;
 		xhr.open('POST', url);
 		xhr.withCredentials = true;
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -50,7 +50,7 @@ export class PouchdbService {
 	 */
 	deauthenticateRemote() {
 		const xhr = new XMLHttpRequest;
-		const url = 'https://db.' + environment.domain + '/_session';
+		const url = `${location.protocol}//db.${window.location.host}/_session`;
 		xhr.withCredentials = true;
 		xhr.open('DELETE', url);
 		xhr.send();
@@ -75,7 +75,7 @@ export class PouchdbService {
 	 */
 	syncRemote() {
 		const self = this;
-		const remoteURL = 'https://db.' + environment.domain + '/ssdb';
+		const remoteURL = `${location.protocol}//db.${window.location.host}/ssdb`;
 		const localDB = new PouchDB('ssdb');
 		const remoteDB = new PouchDB(remoteURL, {
 			adapter: 'http',
@@ -108,7 +108,7 @@ export class PouchdbService {
 	isAdmin(): Promise<boolean> {
 		return new Promise(resolve => {
 			const xhr = new XMLHttpRequest;
-			const url = 'https://db.' + environment.domain + '/_session';
+			const url = `${location.protocol}//db.${window.location.host}/_session`;
 			xhr.open('GET', url);
 			xhr.withCredentials = true;
 			xhr.onreadystatechange = function() {
@@ -139,7 +139,7 @@ export class PouchdbService {
 			// create a new admin user
 			return new Promise(resolve => {
 				const xhr = new XMLHttpRequest;
-				const url = `https://db.${environment.domain}/_node/node1@127.0.0.1/_config/admins/${user}`;
+				const url = `${location.protocol}//db.${window.location.host}/_node/node1@127.0.0.1/_config/admins/${user}`;
 				xhr.open('PUT', url);
 				xhr.withCredentials = true;
 				xhr.onreadystatechange = function() {
@@ -154,7 +154,7 @@ export class PouchdbService {
 			// create a regular user
 			return new Promise(resolve => {
 				const xhr = new XMLHttpRequest;
-				const url = `https://db.${environment.domain}/_users/org.couchdb.user:${user}`;
+				const url = `${location.protocol}//db.${window.location.host}/_users/org.couchdb.user:${user}`;
 				const newuser = {
 					_id: `org.couchdb.user:${user}`,
 					name: user,
@@ -185,7 +185,7 @@ export class PouchdbService {
 	setConfig(section: string, option: string, value: string): Promise<number> {
 		return new Promise(resolve => {
 			const xhr = new XMLHttpRequest;
-			const url = `https://db.${environment.domain}/_node/node1@127.0.0.1/_config/${section}/${option}`;
+			const url = `${location.protocol}//db.${window.location.host}/_node/node1@127.0.0.1/_config/${section}/${option}`;
 			xhr.open('PUT', url);
 			xhr.withCredentials = true;
 			xhr.onreadystatechange = function() {
@@ -206,7 +206,7 @@ export class PouchdbService {
 	getConfig(section: string, option: string): Promise<string> {
 		return new Promise(resolve => {
 			const xhr = new XMLHttpRequest;
-			const url = `https://db.${environment.domain}/_node/node1@127.0.0.1/_config/${section}/${option}`;
+			const url = `${location.protocol}//db.${window.location.host}/_node/node1@127.0.0.1/_config/${section}/${option}`;
 			xhr.open('GET', url);
 			xhr.withCredentials = true;
 			xhr.onreadystatechange = function() {

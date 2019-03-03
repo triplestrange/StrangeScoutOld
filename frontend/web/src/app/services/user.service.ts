@@ -32,7 +32,7 @@ export class UserService {
 		// set cookie and expire after 3 days (typical competition length)
 		const expiredDate = new Date();
 		expiredDate.setDate( expiredDate.getDate() + 3 );
-		this.cs.set('scouter', name, expiredDate, '/', environment.domain);
+		this.cs.set('scouter', name, expiredDate, '/', window.location.hostname);
 	}
 
 	/**
@@ -47,7 +47,7 @@ export class UserService {
 	 * Deletes the user ID
 	 */
 	clear() {
-		this.cs.delete('scouter', '/', environment.domain);
+		this.cs.delete('scouter', '/', window.location.hostname);
 	}
 
 }

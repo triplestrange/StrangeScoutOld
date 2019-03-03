@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
 	syncData() {
 		const self = this;
 		const xhr = new XMLHttpRequest;
-		const url = 'https://db.' + environment.domain + '/_session';
+		const url = `${location.protocol}//db.${window.location.host}/_session`;
 		xhr.open('GET', url);
 		xhr.withCredentials = true;
 		xhr.onreadystatechange = function() {

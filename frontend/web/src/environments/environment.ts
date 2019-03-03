@@ -4,7 +4,6 @@
 
 export const environment = {
 	production: false,
-	domain: 'localhost',
 	version: '0.0.0'
 };
 
