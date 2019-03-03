@@ -18,8 +18,8 @@ const app = express();
 program
 	.option('-d, --domain [domain]', 'Domain to host StrangeScout on (required)')
 	.option('-p, --port [port]', 'Port to host on', '80')
-	.option('-P, --path [directory]', 'Directory to store database files in', './dbs/')
-	.option('-c, --config [file]', 'File to use for DB configuration', './config.json')
+	.option('-P, --path [directory]', 'Directory to store database files in', '<program_path>/dbs/')
+	.option('-c, --config [file]', 'File to use for DB configuration', '<program_path>/config.json')
 	.parse(process.argv);
 
 // OPTIONS -----------------------------
@@ -33,13 +33,14 @@ if (domain !== undefined && domain !== '') {
 	console.log(`Hosting StrangeScout on ${domain}`);
 } else {
 	console.log('ERROR: No domain set!');
+	program.outputHelp();
 	process.exit(1);
 }
 
 let dbopts = {}
 
 // define database prefix
-if (program.path === './dbs/') {
+if (program.path === '<program_path>/dbs/') {
 	dbopts = {prefix: path.join(__dirname, 'dbs/')};
 } else {
 	dbopts = {prefix: path.join(program.path)};
@@ -49,7 +50,7 @@ if (program.path === './dbs/') {
 const db = PouchDB.defaults(dbopts);
 
 // config file stuff
-if (program.config !== './config.json') {
+if (program.config !== '<program_path>/config.json') {
 	const DBConf = path.join(__dirname, 'config.json');
 	const persistDBConf = path.join(program.config);
 
