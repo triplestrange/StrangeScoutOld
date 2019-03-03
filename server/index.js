@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
 const express = require('express');
 const vhost = require('vhost');
 const PouchDB = require('pouchdb');
@@ -8,64 +12,89 @@ const fs = require('fs');
 const winston = require('winston');
 const expressWinston = require('express-winston');
 
-// define database prefix
-const db = PouchDB.defaults({prefix: path.join(__dirname, 'dbs/')});
-
 // define app
 const app = express();
-const port = 80;
+
+program
+	.option('-d, --domain [domain]', 'Domain to host StrangeScout on (required)')
+	.option('-p, --port [port]', 'Port to host on', '80')
+	.option('-P, --path [directory]', 'Directory to store database files in', './dbs/')
+	.option('-c, --config [file]', 'File to use for DB configuration', './config.json')
+	.parse(process.argv);
+
+// OPTIONS -----------------------------
+
+// set port
+const port = program.port;
 
 // define host domain
-const domain = process.env.JSCOUT_DOMAIN;
-if (domain === undefined || domain === '') {
+const domain = program.domain;
+if (domain !== undefined && domain !== '') {
+	console.log(`Hosting StrangeScout on ${domain}`);
+} else {
 	console.log('ERROR: No domain set!');
 	process.exit(1);
-} else {
-	console.log(`Hosting StrangeScout on ${domain}`);
 }
 
-const DBConf = path.join(__dirname, 'config.json');
-const persistDBConf = path.join(__dirname, 'dbs/config.json');
+let dbopts = {}
 
-// restore persistent db config file
-if (fs.existsSync(persistDBConf)) {
-	console.log('Restoring database config...');
-	try {
-		fs.copyFileSync(persistDBConf, DBConf);
-	} catch(err ){
-		console.log(`Error restoring config: ${err.toString()}`);
-		process.exit(1);
-	}
+// define database prefix
+if (program.path === './dbs/') {
+	dbopts = {prefix: path.join(__dirname, 'dbs/')};
 } else {
-	console.log('No existing database config');
-	console.log('Creating new empty config...');
-	try {
-		fs.writeFileSync(DBConf, '{}');
+	dbopts = {prefix: path.join(program.path)};
+}
+
+// define database
+const db = PouchDB.defaults(dbopts);
+
+// config file stuff
+if (program.config !== './config.json') {
+	const DBConf = path.join(__dirname, 'config.json');
+	const persistDBConf = path.join(program.config);
+
+	// restore persistent db config file
+	if (fs.existsSync(persistDBConf)) {
+		console.log('Restoring database config...');
 		try {
-			fs.copyFileSync(DBConf, persistDBConf);
+			fs.copyFileSync(persistDBConf, DBConf);
 		} catch(err ){
-			console.log(`Error backing up config: ${err.toString()}`);
+			console.log(`Error restoring config: ${err.toString()}`);
 			process.exit(1);
 		}
-	} catch (err) {
-		console.log(`Error creating empty config: ${err.toString()}`);
-		process.exit(1);
-	}
-}
-
-// watch config file to copy to persistent storage
-fs.watchFile(DBConf, (curr, prev) => {
-	//if (event === 'change') {
-		console.log('Database config modified');
-		if (DBConf) {
+	} else {
+		console.log('No existing database config');
+		console.log('Creating new empty config...');
+		try {
+			fs.writeFileSync(DBConf, '{}');
 			try {
 				fs.copyFileSync(DBConf, persistDBConf);
 			} catch(err ){
 				console.log(`Error backing up config: ${err.toString()}`);
+				process.exit(1);
 			}
+		} catch (err) {
+			console.log(`Error creating empty config: ${err.toString()}`);
+			process.exit(1);
 		}
-	//}
-});
+	}
+
+	// watch config file to copy to persistent storage
+	fs.watchFile(DBConf, (curr, prev) => {
+		//if (event === 'change') {
+			console.log('Database config modified');
+			if (DBConf) {
+				try {
+					fs.copyFileSync(DBConf, persistDBConf);
+				} catch(err ){
+					console.log(`Error backing up config: ${err.toString()}`);
+				}
+			}
+		//}
+	});
+}
+
+// LOG ---------------------------------
 
 // logging (https://github.com/bithavoc/express-winston#request-logging)
 app.use(expressWinston.logger({
@@ -79,6 +108,8 @@ app.use(expressWinston.logger({
 	msg: "HTTP {{req.method}} {{req.url}} {{req.method}} {{res.responseTime}}ms",
 	expressFormat: false
 }));
+
+// HEADERS -----------------------------
 
 // CORS Headers
 function cors(req, res, next) {
@@ -99,6 +130,8 @@ function noCache(req, res, next) {
 	res.header('Pragma', 'no-cache');
 	next();
 }
+
+// SERVER ------------------------------
 
 // static files
 const static = express();

@@ -20,4 +20,4 @@ COPY ./server/ ./
 RUN patch ./node_modules/express-pouchdb/lib/routes/session.js ./session.patch
 COPY --from=builder /strangescout/dist/jscout ./static
 EXPOSE 80 443
-ENTRYPOINT ["node", "index.js"]
+ENTRYPOINT ["node", "index.js", "--domain", "$JSCOUT_DOMAIN"]
