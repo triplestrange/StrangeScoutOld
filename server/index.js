@@ -15,12 +15,39 @@ const expressWinston = require('express-winston');
 // define app
 const app = express();
 
-program
-	.option('-d, --domain [domain]', 'Domain to host StrangeScout on (required)')
-	.option('-p, --port [port]', 'Port to host on', '80')
-	.option('-P, --path [directory]', 'Directory to store database files in', '<program_path>/dbs/')
-	.option('-c, --config [file]', 'File to use for DB configuration', '<program_path>/config.json')
-	.parse(process.argv);
+if (process.env.SNAP !== undefined) {
+	// we don't want path options if in a snap
+	program
+		.option('-d, --domain [domain]', 'Domain to host StrangeScout on (required)')
+		.option('-p, --port [port]', 'Port to host on', '80')
+		.parse(process.argv);
+
+	// set db path to SNAP_COMMON dir
+	program.path = path.join(process.env.SNAP_COMMON, 'dbs/');
+	// set so we don't use the hacky conf backup stuff
+	program.config = '<program_path>/config.json';
+
+	// change dir to snap data so config is written proper
+	process.chdir(process.env.SNAP_COMMON);
+} else {
+	program
+		.option('-d, --domain [domain]', 'Domain to host StrangeScout on (required)')
+		.option('-p, --port [port]', 'Port to host on', '80')
+		.option('-P, --path [directory]', 'Directory to store database files in', '<program_path>/dbs/')
+		.option('-c, --config [file]', 'File to use for DB configuration', './config.json')
+		.parse(process.argv);
+}
+
+// create db path if it doesn't exist
+if (program.path === '<program_path>/dbs/') {
+	if (!fs.existsSync(path.join(__dirname, 'dbs/'))) {
+		fs.mkdirSync(path.join(__dirname, 'dbs/'));
+	}
+} else {
+	if (!fs.existsSync(program.path)) {
+		fs.mkdirSync(program.path);
+	}
+}
 
 // OPTIONS -----------------------------
 
