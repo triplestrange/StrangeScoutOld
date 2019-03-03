@@ -248,6 +248,35 @@ export class RunFormComponent implements OnInit {
 	}
 
 	/**
+	 * Main form page undo button
+	 *
+	 * Removes the last journal event and opens the coresponding dialog for whatever get event came before
+	 */
+	undo() {
+		if (this.journal.length > 0) {
+			const last = this.journal[this.journal.length - 2].Event;
+			const elem = this.gameElements.find(function(element) {
+				console.log(last, '::', element.Event)
+				return element.Event === last;
+			});
+			this.journal.pop();
+			// opens a popup with sub events
+			console.log(elem)
+			const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: '250px', disableClose: true, autoFocus: false, data: elem});
+			// after the popup is closed
+			dialogRef.afterClosed().subscribe(result => {
+				if (result === 'cancel') {
+					// remove the last event if canceled
+					this.journal.pop();
+				} else {
+					// new event
+					this.newJournalEntry(result);
+				}
+			});
+		}
+	}
+
+	/**
 	 * Removes nulls from an object
 	 * @param obj Object to remove nulls from
 	 */

@@ -58,6 +58,7 @@
 	</div>
 </mat-card>
 
+<button mat-raised-button *ngIf="showForm" color="warn" type="button" (click)="undo()" [disabled]="time === 0 || journal.length === 0">Undo</button>
 <button mat-raised-button *ngIf="showForm" color="primary" class="submit-run" [disabled]="time > 0">Next</button>
 
 </form>
