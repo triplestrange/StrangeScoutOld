@@ -6,5 +6,8 @@
 .tbz
 node_modules
 
+parts
+snap
+
 *.snap
 *.tar.bz2

@@ -5,17 +5,21 @@ description: |
     StrangeScout Scouting System for FRC teams developed by team 1533 Triple Strange
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+confinement: strict # use 'strict' once you have the right plugs and slots
 
 apps:
     strangescout:
         command: lib/node_modules/strangescout-server/index.js
-        plugs: [network]
+        plugs: [network, network-bind]
+    service:
+        command: lib/node_modules/strangescout-server/index.js
+        plugs: [network, network-bind]
+        daemon: simple
 
 parts:
     jscout:
         plugin: nodejs
-        source: ./frontend/web/
+        source: frontend/web/
         node-engine: 11.10.0
         build-packages:
             - python
@@ -27,9 +31,11 @@ parts:
             cp -r dist/jscout ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/static
         stage:
             - lib
+            - -lib/node_modules/npm
+            - -lib/node_modules/jscout
     strangescout:
         plugin: nodejs
-        source: ./server/
+        source: server/
         node-engine: 11.10.0
         after: [jscout]
         build-packages:

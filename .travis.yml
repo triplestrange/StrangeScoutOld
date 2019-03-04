@@ -1,15 +1,29 @@
 #.travis.yml
 
+dist: xenial
+
 language: node_js
 node_js:
   - "11"
 
 before_script:
-  - cd frontend/web/
-  - npm install
+  - sudo apt install build-essential
+  - sudo snap install --classic snapcraft
+#  - cd frontend/web/
+#  - npm install
 
 script:
-  - ./node_modules/.bin/ng build --prod
+  - snapcraft snap -o ./strangescout.snap
+#  - ./node_modules/.bin/ng build --prod --aot --source-map=false
+#  - cd ../..
+
+deploy:
+  provider: snap
+  snap: strangescout.snap
+  channel: edge
+  skip_cleanup: true
+  on:
+    branch: snapcraft
 
 notifications:
   email:
