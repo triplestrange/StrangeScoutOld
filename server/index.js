@@ -38,17 +38,6 @@ if (process.env.SNAP !== undefined) {
 		.parse(process.argv);
 }
 
-// create db path if it doesn't exist
-if (program.path === '<program_path>/dbs/') {
-	if (!fs.existsSync(path.join(__dirname, 'dbs/'))) {
-		fs.mkdirSync(path.join(__dirname, 'dbs/'));
-	}
-} else {
-	if (!fs.existsSync(program.path)) {
-		fs.mkdirSync(program.path);
-	}
-}
-
 // OPTIONS -----------------------------
 
 // set port
@@ -64,9 +53,19 @@ if (domain !== undefined && domain !== '') {
 	process.exit(1);
 }
 
-let dbopts = {}
+// create db path if it doesn't exist
+if (program.path === '<program_path>/dbs/') {
+	if (!fs.existsSync(path.join(__dirname, 'dbs/'))) {
+		fs.mkdirSync(path.join(__dirname, 'dbs/'));
+	}
+} else {
+	if (!fs.existsSync(program.path)) {
+		fs.mkdirSync(program.path);
+	}
+}
 
 // define database prefix
+let dbopts = {}
 if (program.path === '<program_path>/dbs/') {
 	dbopts = {prefix: path.join(__dirname, 'dbs/')};
 } else {
