@@ -9,10 +9,10 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 
 apps:
     strangescout:
-        command: lib/node_modules/strangescout-server/index.js
+        command: lib/node_modules/strangescout-server/command.js
         plugs: [network, network-bind]
     service:
-        command: lib/node_modules/strangescout-server/index.js
+        command: lib/node_modules/strangescout-server/service.js
         plugs: [network, network-bind]
         daemon: simple
 
