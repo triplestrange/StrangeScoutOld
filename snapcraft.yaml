@@ -1,0 +1,38 @@
+name: strangescout
+version: 'git' # pull version from git
+summary: StrangeScout Scouting System
+description: |
+    StrangeScout Scouting System for FRC teams developed by team 1533 Triple Strange
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+apps:
+    strangescout:
+        command: lib/node_modules/strangescout-server/index.js
+        plugs: [network]
+
+parts:
+    jscout:
+        plugin: nodejs
+        source: ./frontend/web/
+        node-engine: 11.10.0
+        build-packages:
+            - python
+            - make
+            - g++
+        override-build: |
+            ./node_modules/.bin/ng build --prod --aot --source-map=false
+            mkdir -p ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/
+            cp -r dist/jscout ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/static
+        stage:
+            - lib
+    strangescout:
+        plugin: nodejs
+        source: ./server/
+        node-engine: 11.10.0
+        after: [jscout]
+        build-packages:
+            - python
+            - make
+            - g++

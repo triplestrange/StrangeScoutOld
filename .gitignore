@@ -5,3 +5,6 @@
 .txz
 .tbz
 node_modules
+
+*.snap
+*.tar.bz2
