@@ -1,21 +1,15 @@
 #!/bin/sh -e
 
-domain="$(snapctl get domain)"
-port="$(snapctl get port)"
+domain=localhost
+port=80
 
-if [ -z "$domain" ]; then
-	echo "domain is required"
-	exit 1
-fi
+printf "setting default domain: $domain"
+printf "setting default port: $port"
 
-if [ -z "$port" ]; then
-	echo "No port specified: defaulting to 80"
-	port="80"
-fi
+snapctl set domain=$domain
+snapctl set port=$port
 
 printf "{\n" > $SNAP_COMMON/service.conf.json
 printf "\"domain\": \"%s\",\n" "$domain" >> $SNAP_COMMON/service.conf.json
 printf "\"port\": \"%s\"\n" "$port" >> $SNAP_COMMON/service.conf.json
 printf "}\n" >> $SNAP_COMMON/service.conf.json
-
-snapctl restart

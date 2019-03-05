@@ -42,15 +42,7 @@ const port = program.port;
 
 let datadir = '';
 if (program.path === '<program_path>/dbs/') {
-	if (process.env.SNAP !== undefined) {
-		if (process.getuid() === 0) {
-			datadir = path.join(process.env.SNAP_COMMON, 'dbs/');
-		} else {
-			datadir = path.join(process.env.SNAP_USER_COMMON, 'dbs/');
-		}
-	} else {
-		datadir = path.join(__dirname, 'dbs/');
-	}
+	datadir = path.join(__dirname, 'dbs/');
 } else {
 	datadir = program.path;
 }
