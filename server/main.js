@@ -10,8 +10,14 @@ const expressWinston = require('express-winston');
 
 let globaldomain = '';
 
-module.exports = function(domain, port, datadir) {
+module.exports = function(domain, port, keypath, certpath, datadir) {
 	globaldomain = domain;
+
+	if (port < 1024 && process.getuid() !== 0) {
+		console.error(`Port ${port} is restricted to root - you are not root!\nTry running with sudo?`);
+		process.exit(1);
+	}
+
 	// create db path if it doesn't exist
 	if (!fs.existsSync(datadir)) {
 		fs.mkdirSync(datadir);
@@ -54,8 +60,15 @@ module.exports = function(domain, port, datadir) {
 	app.use(vhost(`${domain}`, static));
 	app.use(vhost(`db.${domain}`, pouch));
 
+	console.log(`Hosting StrangeScout on ${domain}`);
+
 	// listener
-	app.listen(port, () => console.log(`listening on port ${port}`));
+	app.listen(port, () => {
+		console.log(`listening on port ${port}`);
+	}).on('error', (err) => {
+		console.log(err);
+	});
+
 }
 
 // HEADERS -----------------------------
