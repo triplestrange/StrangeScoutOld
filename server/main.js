@@ -3,6 +3,7 @@ const vhost = require('vhost');
 const PouchDB = require('pouchdb');
 const path = require('path');
 const https = require('https');
+const compression = require('compression');
 const fs = require('fs');
 
 // winston for logging
@@ -76,6 +77,9 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 		msg: "HTTP {{req.method}} {{req.url}} {{req.method}} {{res.responseTime}}ms",
 		expressFormat: false
 	}));
+
+	// use compression
+	app.use(compression());
 
 	// static files
 	const static = express();
