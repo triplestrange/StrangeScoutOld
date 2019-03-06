@@ -16,12 +16,12 @@ fi
 
 if [ -z "$httponly" ]; then
 	echo "httponly not specified: defaulting to false"
-	port="false"
+	httponly="false"
 fi
 
 printf "{\n" > $SNAP_COMMON/service.conf.json
 printf "\"domain\": \"%s\",\n" "$domain" >> $SNAP_COMMON/service.conf.json
-printf "\"httponly\": \"%s\",\n" "$httponly" >> $SNAP_COMMON/service.conf.json
+printf "\"httponly\": %s,\n" "$httponly" >> $SNAP_COMMON/service.conf.json
 printf "\"port\": \"%s\"\n" "$port" >> $SNAP_COMMON/service.conf.json
 printf "}\n" >> $SNAP_COMMON/service.conf.json
 
