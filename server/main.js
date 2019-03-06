@@ -2,6 +2,7 @@ const express = require('express');
 const vhost = require('vhost');
 const PouchDB = require('pouchdb');
 const path = require('path');
+const https = require('https');
 const fs = require('fs');
 
 // winston for logging
@@ -14,7 +15,7 @@ module.exports = function(domain, port, keypath, certpath, datadir) {
 	globaldomain = domain;
 
 	if (port < 1024 && process.getuid() !== 0) {
-		console.error(`Port ${port} is restricted to root - you are not root!\nTry running with sudo?`);
+		console.error(`Port ${port} is restricted to root - \x1b[31myou are not root!\x1b[0m\nTry running with sudo?`);
 		process.exit(1);
 	}
 
@@ -22,18 +23,38 @@ module.exports = function(domain, port, keypath, certpath, datadir) {
 	if (!fs.existsSync(datadir)) {
 		fs.mkdirSync(datadir);
 	}
-
 	process.chdir(datadir);
 
 	// set DB options
 	const dbopts = {prefix: datadir};
-
 	// define database
 	const db = PouchDB.defaults(dbopts);
 
+	let key = '';
+	if (fs.existsSync(keypath)) {
+		key = fs.readFileSync(keypath);
+	} else {
+		console.error(`\x1b[31mERROR:\x1b[0m No key file at \`${keypath}\`!`);
+		process.exit(1);
+	}
+
+	let cert = '';
+	if (fs.existsSync(certpath)) {
+		cert = fs.readFileSync(certpath);
+	} else {
+		console.error(`\x1b[31mERROR:\x1b[0m No certificate file at \`${certpath}\`!`);
+		process.exit(1);
+	}
+
+	const serveropts = {
+		// Private key
+		key: key,
+		// Fullchain file or cert file (prefer the former)
+		cert: cert
+	};
+
 	// define app
 	const app = express();
-
 	// logging (https://github.com/bithavoc/express-winston#request-logging)
 	app.use(expressWinston.logger({
 		transports: [
@@ -50,7 +71,6 @@ module.exports = function(domain, port, keypath, certpath, datadir) {
 	// static files
 	const static = express();
 	static.use(express.static(path.join(__dirname, 'static')));
-
 	// pouchdb
 	const pouch = express();
 	pouch.use(cors);
@@ -62,8 +82,10 @@ module.exports = function(domain, port, keypath, certpath, datadir) {
 
 	console.log(`Hosting StrangeScout on ${domain}`);
 
-	// listener
-	app.listen(port, () => {
+	// server
+	https
+	.createServer(serveropts, app)
+	.listen(port, () => {
 		console.log(`listening on port ${port}`);
 	}).on('error', (err) => {
 		console.log(err);

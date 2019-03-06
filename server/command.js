@@ -37,7 +37,7 @@ if (process.env.SNAP !== undefined) {
 // define host domain
 const domain = program.domain;
 if (domain === undefined || domain === '') {
-	console.error('ERROR: No domain set!');
+	console.error('\x1b[31mERROR:\x1b[0m No domain set!');
 	program.outputHelp();
 	process.exit(1);
 }
