@@ -20,7 +20,7 @@ apps:
 parts:
     strangescout:
         plugin: nodejs
-        source: build/output
+        source: out
         node-engine: 11.10.0
         override-build: |
             snapcraftctl build

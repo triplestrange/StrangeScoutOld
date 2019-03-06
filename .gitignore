@@ -6,6 +6,7 @@
 .tbz
 
 build
+out
 
 parts
 stage
