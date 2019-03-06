@@ -15,6 +15,7 @@ apps:
         command: lib/node_modules/strangescout-server/service.js
         plugs: [network, network-bind]
         daemon: simple
+        restart-condition: on-abnormal
 
 parts:
     jscout:
