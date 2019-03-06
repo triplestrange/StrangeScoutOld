@@ -5,11 +5,11 @@ SNAP=$(BUILDPATH)/strangescout.snap
 
 build:
 	@printf "\n Creating build directories\n";
-	mkdir -p $(BUILDPATH)/{frontend,output};
+	mkdir -p $(BUILDPATH)/{frontend,output}/;
 
 	@printf "\n Copying sources\n";
-	find server/ -mindepth 1 -maxdepth 1 ! -regex '\(server/node_modules\|server/frontend/dist\)' -exec cp -r {} $(BUILDPATH)/output \;
-	find frontend/web/ -mindepth 1 -maxdepth 1 ! -regex '\(frontend/web/node_modules\)' -exec cp -r {} $(BUILDPATH)/frontend \;
+	find server/ -mindepth 1 -maxdepth 1 ! -regex '\(server/node_modules\|server/static\)' -exec cp -r {} $(BUILDPATH)/output/ \;
+	find frontend/web/ -mindepth 1 -maxdepth 1 ! -regex '\(frontend/web/node_modules\)' -exec cp -r {} $(BUILDPATH)/frontend/ \;
 
 	@printf "\n Installing frontend dependencies\n";
 	@cd $(BUILDPATH)/frontend; \
