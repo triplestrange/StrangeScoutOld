@@ -5,7 +5,8 @@ SNAP=$(BUILDPATH)/strangescout.snap
 
 build:
 	@printf "\n Creating build directories\n";
-	mkdir -p $(BUILDPATH)/{frontend,output}/;
+	mkdir -p $(BUILDPATH)/frontend
+	mkdir -p $(BUILDPATH)/output
 
 	@printf "\n Copying sources\n";
 	cd server; tar cf - --exclude='node_modules' --exclude='static' * | ( cd $(BUILDPATH)/output; tar xfp -)
