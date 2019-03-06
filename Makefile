@@ -8,8 +8,8 @@ build:
 	mkdir -p $(BUILDPATH)/{frontend,output}/;
 
 	@printf "\n Copying sources\n";
-	find server/ -mindepth 1 -maxdepth 1 ! -regex '\(server/node_modules\|server/static\)' -exec cp -r {} $(BUILDPATH)/output/ \;
-	find frontend/web/ -mindepth 1 -maxdepth 1 ! -regex '\(frontend/web/node_modules\)' -exec cp -r {} $(BUILDPATH)/frontend/ \;
+	cd server; tar cf - --exclude='node_modules' --exclude='static' * | ( cd $(BUILDPATH)/output; tar xfp -)
+	cd frontend/web; tar cf - --exclude='node_modules' --exclude='dist' * | ( cd $(BUILDPATH)/frontend; tar xfp -)
 
 	@printf "\n Installing frontend dependencies\n";
 	@cd $(BUILDPATH)/frontend; \
