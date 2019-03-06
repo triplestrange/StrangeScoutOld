@@ -16,7 +16,7 @@ script:
 
 deploy:
   provider: snap
-  snap: build/strangescout.snap
+  snap: strangescout.snap
   channel: edge
   skip_cleanup: true
   on:
