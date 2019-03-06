@@ -9,17 +9,14 @@ node_js:
 before_script:
   - sudo apt install build-essential
   - sudo snap install --classic snapcraft
-#  - cd frontend/web/
-#  - npm install
 
 script:
-  - snapcraft snap -o ./strangescout.snap
-#  - ./node_modules/.bin/ng build --prod --aot --source-map=false
-#  - cd ../..
+  - make build
+  - make snap
 
 deploy:
   provider: snap
-  snap: strangescout.snap
+  snap: build/strangescout.snap
   channel: edge
   skip_cleanup: true
   on:

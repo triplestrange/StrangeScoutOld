@@ -18,28 +18,9 @@ apps:
         restart-condition: on-abnormal
 
 parts:
-    jscout:
-        plugin: nodejs
-        source: frontend/web/
-        node-engine: 11.10.0
-        build-packages:
-            - python
-            - make
-            - g++
-        override-build: |
-            ./node_modules/.bin/ng build --prod --aot --source-map=false
-            mkdir -p ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/
-            cp -r dist/jscout ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/static
-        stage:
-            - lib
-            - -lib/node_modules/npm
-            - -lib/node_modules/jscout
     strangescout:
         plugin: nodejs
-        source: server/
+        source: build/output
         node-engine: 11.10.0
-        after: [jscout]
-        build-packages:
-            - python
-            - make
-            - g++
+        override-build: |
+            snapcraftctl build
