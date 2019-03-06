@@ -1,6 +1,7 @@
 #!/bin/sh -e
 
 domain="$(snapctl get domain)"
+httponly="$(snapctl get httponly)"
 port="$(snapctl get port)"
 
 if [ -z "$domain" ]; then
@@ -13,8 +14,14 @@ if [ -z "$port" ]; then
 	port="80"
 fi
 
+if [ -z "$httponly" ]; then
+	echo "httponly not specified: defaulting to false"
+	port="false"
+fi
+
 printf "{\n" > $SNAP_COMMON/service.conf.json
 printf "\"domain\": \"%s\",\n" "$domain" >> $SNAP_COMMON/service.conf.json
+printf "\"httponly\": \"%s\",\n" "$httponly" >> $SNAP_COMMON/service.conf.json
 printf "\"port\": \"%s\"\n" "$port" >> $SNAP_COMMON/service.conf.json
 printf "}\n" >> $SNAP_COMMON/service.conf.json
 
