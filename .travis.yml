@@ -5,13 +5,16 @@ dist: xenial
 language: node_js
 node_js:
   - "11"
+services:
+  - docker
 
 before_script:
   - sudo apt install build-essential
   - sudo snap install --classic snapcraft
 
 script:
-  - make build
+  - make
+  - make docker
   - make snap
 
 deploy:

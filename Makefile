@@ -4,7 +4,7 @@ BUILDPATH=$(shell pwd)/build
 OUT=$(shell pwd)/out
 SNAP=$(shell pwd)/strangescout.snap
 
-build:
+out:
 	@printf "\n Creating build directories\n";
 	mkdir -p $(BUILDPATH)/frontend
 	mkdir -p $(BUILDPATH)/output
@@ -43,9 +43,8 @@ clean:
 	rm -rf $(BUILDPATH);
 	rm -rf $(OUT);
 
-snap: build
+snap: out
 	snapcraft snap -o $(SNAP);
 
-cleansnap: build
-
-docker: build
+docker: out
+	docker image build -f docker/Dockerfile ./
