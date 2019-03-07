@@ -18,12 +18,18 @@ script:
   - make snap
 
 deploy:
-  provider: snap
-  snap: strangescout.snap
-  channel: edge
-  skip_cleanup: true
-  on:
-    branch: snapcraft
+  - provider: snap
+    snap: strangescout.snap
+    channel: edge
+    skip_cleanup: true
+    on:
+      repo: triplestrange/StrangeScout
+      branch: master
+  - provider: script
+    script: bash docker/deploy.sh
+    on:
+      repo: triplestrange/StrangeScout
+      branch: snapcraft
 
 notifications:
   email:

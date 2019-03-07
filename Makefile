@@ -1,8 +1,15 @@
 #!make
 
+VERSION=$(shell ./.version.sh)
+
 BUILDPATH=$(shell pwd)/build
 OUT=$(shell pwd)/out
 SNAP=$(shell pwd)/strangescout.snap
+
+NAME = team1533/strangescout
+IMG = $(NAME):$(VERSION)
+LATEST = $(NAME):latest
+ 
 
 out:
 	@printf "\n Creating build directories\n";
@@ -12,6 +19,9 @@ out:
 	@printf "\n Copying sources\n";
 	cd server; tar cf - --exclude='node_modules' --exclude='static' --exclude='dbs/*' * | ( cd $(BUILDPATH)/output; tar xfp -)
 	cd frontend/web; tar cf - --exclude='node_modules' --exclude='dist' * | ( cd $(BUILDPATH)/frontend; tar xfp -)
+
+	@printf "\n Setting version %s\n" "$(VERSION)";
+	sed -i s/0.0.0/$(SS_VERSION)/ $(BUILDPATH)/frontend/src/environments/environment.prod.ts;
 
 	@printf "\n Installing frontend dependencies\n";
 	@cd $(BUILDPATH)/frontend; \
@@ -37,14 +47,16 @@ out:
 
 	@printf "\n Done!";
 
-.PHONY: clean
+.PHONY: clean docker
 clean:
 	@echo " Cleaning...";
 	rm -rf $(BUILDPATH);
 	rm -rf $(OUT);
+	rm -rf $(SNAP);
 
 snap: out
 	snapcraft snap -o $(SNAP);
 
 docker: out
-	docker image build -f docker/Dockerfile ./
+	docker image build -f docker/Dockerfile -t $(IMG) ./
+	docker tag $(IMG) $(LATEST)
