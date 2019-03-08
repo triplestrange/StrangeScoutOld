@@ -1,5 +1,6 @@
 name: strangescout
 version: 'git' # pull version from git
+version-script: ./.version.sh
 summary: StrangeScout Scouting System
 description: |
     StrangeScout Scouting System for FRC teams developed by team 1533 Triple Strange

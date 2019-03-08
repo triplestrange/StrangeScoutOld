@@ -21,7 +21,7 @@ out:
 	cd frontend/web; tar cf - --exclude='node_modules' --exclude='dist' * | ( cd $(BUILDPATH)/frontend; tar xfp -)
 
 	@printf "\n Setting version %s\n" "$(VERSION)";
-	sed -i s/0.0.0/$(SS_VERSION)/ $(BUILDPATH)/frontend/src/environments/environment.prod.ts;
+	sed -i s/0.0.0/$(VERSION)/ $(BUILDPATH)/frontend/src/environments/environment.prod.ts;
 
 	@printf "\n Installing frontend dependencies\n";
 	@cd $(BUILDPATH)/frontend; \
@@ -44,6 +44,9 @@ out:
 
 	@printf "\n Cleaning build files\n";
 	rm -rf $(BUILDPATH);
+
+	@printf "\n Creating version file\n";
+	echo $(VERSION) > $(OUT)/version;
 
 	@printf "\n Done!";
 

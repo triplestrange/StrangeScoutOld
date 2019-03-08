@@ -66,5 +66,5 @@ let datadir = program.path;
 if (datadir === '<program_path>/dbs/') {
 	datadir = path.join(__dirname, 'dbs/');
 }
-console.log(program.httponly)
+
 server(domain, datadir, program.httponly, port, key, cert);

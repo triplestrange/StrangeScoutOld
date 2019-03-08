@@ -24,12 +24,11 @@ deploy:
     skip_cleanup: true
     on:
       repo: triplestrange/StrangeScout
-      branch: master
   - provider: script
     script: bash docker/deploy.sh
+    skip_cleanup: true
     on:
       repo: triplestrange/StrangeScout
-      branch: snapcraft
 
 notifications:
   email:
