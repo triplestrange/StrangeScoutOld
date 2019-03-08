@@ -38,7 +38,7 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 	process.chdir(datadir);
 
 	// set DB options
-	const dbopts = {prefix: datadir};
+	const dbopts = {prefix: `${datadir}/`};
 	// define database
 	const db = PouchDB.defaults(dbopts);
 
