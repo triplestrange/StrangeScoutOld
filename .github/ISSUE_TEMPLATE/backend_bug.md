@@ -1,8 +1,6 @@
 ---
-name: Backend Bug (GoScout, Docker Compose)
-about: Report an issue with our Docker Compose, Dockerfiles, or the actual GoScout
-  code
-
+name: Backend Bug (Snap, Docker, Node Server, etc)
+about: Report an issue with the distribution system, build system, or the node server
 ---
 
 **Describe the bug**
@@ -32,4 +30,4 @@ If applicable, add screenshots to help explain your problem.
  - Output of `uname -a`: [e.g. Linux hostname 4.15.0-1010-aws #10-Ubuntu SMP Thu May 24 08:41:34 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux]
 
 **Additional context**
-Add any other context about the problem here. *Include any modifications to the default setup blueprint (for example, using MySQL rather than MariaDB.*
+Add any other context about the problem here. *Include any modifications to the default setup blueprint*

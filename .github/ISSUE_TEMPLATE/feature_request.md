@@ -1,11 +1,11 @@
 ---
-name: Feature request
+name: Feature Request
 about: Suggest an idea for this project. Includes all parts of codebase.
 
 ---
 
 **What parts of the StrangeScout system does this involve?**
-[e.g. just GoScout, JScout and GoScout, etc.]
+[e.g. the node server, JScout, distribution methods, etc.]
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]

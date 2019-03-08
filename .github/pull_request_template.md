@@ -1,7 +1,7 @@
-<!--- (this is a comment) Thanks for your contribution! We look forward to quickly merging your PR, so please follow this template to speed processing. Thanks again! -->
+<!-- (this is a comment) Thanks for your contribution! We look forward to quickly merging your PR, so please follow this template to speed processing. Thanks again! -->
 
 **Brief description of your changes:**
-<!--- Make sure that commits have informative
+<!-- Make sure that commits have informative -->
 
 **What issue(s) does this PR close/update/change/reference?**
 <!-- type the # sign and a helpful suggestions menu will appear -->
