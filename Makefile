@@ -9,6 +9,7 @@ SNAP=$(shell pwd)/strangescout.snap
 NAME = team1533/strangescout
 IMG = $(NAME):$(VERSION)
 LATEST = $(NAME):latest
+STABLE = $(NAME):stable
  
 
 out:
@@ -63,3 +64,4 @@ snap: out
 docker: out
 	docker image build -f docker/Dockerfile -t $(IMG) ./
 	docker tag $(IMG) $(LATEST)
+	if git describe --tags --exact-match > /dev/null 2>&1; then docker tag $(IMG) $(STABLE); fi
