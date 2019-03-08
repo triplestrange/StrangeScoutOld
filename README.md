@@ -25,7 +25,7 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 
 **Service**
 1. **Set config options**
-	- Run `snap set strangescout domain=<yourdomain.tld>`
+	- Run `snap set strangescout domain=<your_domain.tld>`
 	- If you want to use StrangeScout in HTTP only mode, append `httponly=true`
 	- If running in HTTP only mode, you can specify what port to run on by appending `port=<port>`
 2. **Restart the service**
@@ -33,7 +33,7 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 
 **Manual**
 1. **Run StrangeScout**
-	- Run `strangescout -d <yourdomain.tld>`
+	- Run `strangescout -d <your_domain.tld>`
 	- If you want to use StrangeScout in HTTP only mode, append `-o`
 	- If running in HTTP only mode, you can specify what port to run on by appending `-p <port>`
 
@@ -50,8 +50,8 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 	- Copy certificate file to `/var/lib/docker/volumes/<volume_name>/_data/server.crt`
 	- Copy key file to `/var/lib/docker/volumes/<volume_name>/_data/server.key`
 5. **Run StrangeScout**
-	- To use HTTPS, run `docker run -it -p 80:80 -p 443:443 -e DOMAIN=<yourdomain.tld> team1533/strangescout`
-	- To run as HTTP only, run `docker run -it -p 80:80 -e HTTPONLY=true -e DOMAIN=<yourdomain.tld> team1533/strangescout`
+	- To use HTTPS, run `docker run -it -p 80:80 -p 443:443 -e DOMAIN=<your_domain.tld> team1533/strangescout`
+	- To run as HTTP only, run `docker run -it -p 80:80 -e HTTPONLY=true -e DOMAIN=<your_domain.tld> team1533/strangescout`
 
 ### Manual
 
@@ -66,7 +66,7 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 	- Copy certificate file to `./out/server.crt`
 	- Copy key file to `./out/server.key`
 4. **Run StrangeScout**
-	- Run `node ./out/command.js -d <yourdomain.tld>`
+	- Run `node ./out/command.js -d <your_domain.tld>`
 	- If you want to use StrangeScout in HTTP only mode, append `-o`
 	- If running in HTTP only mode, you can specify what port to run on by appending `-p <port>`
 	*Additional options can be seen by running `node ./out/command.js --help`*
