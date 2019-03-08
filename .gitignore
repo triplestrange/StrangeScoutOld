@@ -4,4 +4,13 @@
 .tgz
 .txz
 .tbz
-node_modules
+
+build
+out
+
+parts
+stage
+prime
+
+*.snap
+*.tar.bz2

@@ -1,15 +1,34 @@
 #.travis.yml
 
+dist: xenial
+
 language: node_js
 node_js:
   - "11"
+services:
+  - docker
 
 before_script:
-  - cd frontend/web/
-  - npm install
+  - sudo apt install build-essential
+  - sudo snap install --classic snapcraft
 
 script:
-  - ./node_modules/.bin/ng build --prod
+  - make
+  - make docker
+  - make snap
+
+deploy:
+  - provider: snap
+    snap: strangescout.snap
+    channel: edge
+    skip_cleanup: true
+    on:
+      repo: triplestrange/StrangeScout
+  - provider: script
+    script: bash docker/deploy.sh
+    skip_cleanup: true
+    on:
+      repo: triplestrange/StrangeScout
 
 notifications:
   email:

@@ -1,0 +1,19 @@
+#!/bin/sh -e
+
+domain=localhost
+httponly=false
+port=80
+
+printf "setting default domain: $domain"
+printf "setting default httponly: $httponly"
+printf "setting default port (when HTTP only): $port"
+
+snapctl set domain=$domain
+snapctl set httponly=$httponly
+snapctl set port=$port
+
+printf "{\n" > $SNAP_COMMON/service.conf.json
+printf "\"domain\": \"%s\",\n" "$domain" >> $SNAP_COMMON/service.conf.json
+printf "\"httponly\": %s,\n" "$httponly" >> $SNAP_COMMON/service.conf.json
+printf "\"port\": \"%s\"\n" "$port" >> $SNAP_COMMON/service.conf.json
+printf "}\n" >> $SNAP_COMMON/service.conf.json
