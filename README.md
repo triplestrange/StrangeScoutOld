@@ -56,6 +56,7 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 ### Manual
 
 **Dependencies:** `git`, `make`, `python`, `g++`, `nodejs`, `nodejs-npm`
+
 ***NOTE:*** If you don't want to use HTTPS, you can skip step 3
 1. **Clone the StrangeScout repository**
 2. **Build StrangeScout**
