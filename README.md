@@ -52,6 +52,7 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 5. **Run StrangeScout**
 	- To use HTTPS, run `docker run -it -p 80:80 -p 443:443 -e DOMAIN=<your_domain.tld> team1533/strangescout`
 	- To run as HTTP only, run `docker run -it -p 80:80 -e HTTPONLY=true -e DOMAIN=<your_domain.tld> team1533/strangescout`
+	- To force the database CORS headers to use HTTPS on their origin (useful if running in HTTPONLY mode behind a reverse proxy that handles HTTPS) add `-e HTTPSCORS=true` to the docker command
 
 ### Manual
 

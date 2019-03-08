@@ -13,6 +13,8 @@ const expressWinston = require('express-winston');
 let globaldomain = '';
 let globalhttps = true;
 
+let httpscors = process.env.HTTPSCORS;
+
 module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 	globaldomain = domain;
 	if (httponly) {
@@ -129,7 +131,11 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 
 // CORS Headers
 function cors(req, res, next) {
-	res.set("Access-Control-Allow-Origin", `${req.protocol}://${globaldomain}`);
+	if (globalhttps || httpscors === 'true') {
+		res.set("Access-Control-Allow-Origin", `https://${globaldomain}`);
+	} else {
+		res.set("Access-Control-Allow-Origin", `http://${globaldomain}`);
+	}
 	res.set("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 	res.set("Access-Control-Allow-Credentials", "true");
 	res.set("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
