@@ -18,17 +18,21 @@ script:
   - make snap
 
 deploy:
+  - provider: script
+    script: bash docker/deploy.sh
+    skip_cleanup: true
+    on:
+      repo: triplestrange/StrangeScout
+      all_branches: true
+      condition: ( "$TRAVIS_BRANCH" == "master" ) || ( -n "$TRAVIS_TAG" )
   - provider: snap
     snap: strangescout.snap
     channel: edge
     skip_cleanup: true
     on:
       repo: triplestrange/StrangeScout
-  - provider: script
-    script: bash docker/deploy.sh
-    skip_cleanup: true
-    on:
-      repo: triplestrange/StrangeScout
+      all_branches: true
+      condition: ( "$TRAVIS_BRANCH" == "master" ) || ( -n "$TRAVIS_TAG" )
 
 notifications:
   email:

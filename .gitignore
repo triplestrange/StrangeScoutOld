@@ -11,6 +11,7 @@ out
 parts
 stage
 prime
+snap/.snapcraft
 
 *.snap
 *.tar.bz2

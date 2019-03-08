@@ -19,11 +19,16 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 		globalhttps = false;
 	}
 
-	if (port < 1024 && process.getuid() !== 0) {
-		console.error(`Port ${port} is restricted to root - \x1b[31myou are not root!\x1b[0m\nTry running with sudo?`);
-		process.exit(1);
+	if (process.getuid() !== 0) {
+		if (!httponly) {
+			console.error(`Ports 80 and 443 are restricted to root - \x1b[31myou are not root!\x1b[0m\nTry running with sudo?`);
+			process.exit(1);
+		} else if (port < 1024) {
+			console.error(`Port ${port} is restricted to root - \x1b[31myou are not root!\x1b[0m\nTry running with sudo?`);
+			process.exit(1);
+		}
 	}
-
+	
 	// create db path if it doesn't exist
 	if (!fs.existsSync(datadir)) {
 		fs.mkdirSync(datadir);
@@ -124,11 +129,7 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 
 // CORS Headers
 function cors(req, res, next) {
-	if (globalhttps) {
-		res.set("Access-Control-Allow-Origin", `https://${globaldomain}`);
-	} else {
-		res.set("Access-Control-Allow-Origin", `http://${globaldomain}`);
-	}
+	res.set("Access-Control-Allow-Origin", `${req.protocol}://${globaldomain}`);
 	res.set("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 	res.set("Access-Control-Allow-Credentials", "true");
 	res.set("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
