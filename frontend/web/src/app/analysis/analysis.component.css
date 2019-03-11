@@ -9,3 +9,9 @@ mat-card.team-card mat-card-header {
 	display: block;
 	text-align: center;
 }
+
+mat-accordion.sorter {
+	max-width: 250px;
+	width: 85%;
+	margin-top: 25px;
+}

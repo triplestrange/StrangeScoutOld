@@ -1,3 +1,26 @@
+<div *ngIf="data.length > 0" class="center-container">
+	<mat-accordion class="sorter" multi="true">
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Sorting
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+			<mat-form-field>
+				<mat-select placeholder="Sort Method" [(ngModel)]="sort.method" (ngModelChange)="resort()">
+					<mat-option *ngFor="let method of sortmethods" [value]="method.value">{{ method.name }}</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-form-field>
+				<mat-select placeholder="Sort Direction" [(ngModel)]="sort.ascending" (ngModelChange)="resort()">
+					<mat-option [value]="false">Descending</mat-option>
+					<mat-option [value]="true">Ascending</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</mat-expansion-panel>
+	</mat-accordion>
+</div>
+
 <div class="center-container">
 
 	<!-- Create a card for each entry in the data array -->

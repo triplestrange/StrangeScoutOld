@@ -11,6 +11,21 @@ export class AnalysisComponent implements OnInit {
 
 	data: any[];
 
+	sort = {
+		method: 'team',
+		ascending: true
+	}
+	sortmethods = [
+		{name: 'Team Number', value: 'team'},
+		{name: 'Match Count', value: 'matchCount'},
+		{name: 'Cycle Count', value: 'averages.cycles'},
+		{name: 'Drop Count', value: 'averages.drops'},
+		{name: 'Hatch Cycle Count', value: 'averages.hatch.cycles'},
+		{name: 'Hatch Drop Count', value: 'averages.hatch.drops'},
+		{name: 'Cargo Cycle Count', value: 'averages.cargo.cycles'},
+		{name: 'Cargo Drop Count', value: 'averages.cargo.drops'}
+	]
+
 	constructor(public sp: StrangeparseService) {
 		this.data = [];
 		// creates indexes if not exists
@@ -103,15 +118,17 @@ export class AnalysisComponent implements OnInit {
 	}
 
 	/**
-	 * Sort the data cards ascending by average cycle count
-	 * @param descending sort in descending order
+	 * Sort the data cards based on the sort object
 	 */
-	cycleSort(descending?: boolean) {
+	resort() {
 		this.data.sort((a, b) => {
-			if (a.averageCycles > b.averageCycles) {
-				if (descending) return -1; else return 1;
-			} else if (b.averageCycles > a.averageCycles) {
-				if (descending) return 1; else return -1;
+			a = eval('a.' + this.sort.method)
+			b = eval('b.' + this.sort.method)
+
+			if (a > b) {
+				if (!this.sort.ascending) return -1; else return 1;
+			} else if (b > a) {
+				if (!this.sort.ascending) return 1; else return -1;
 			} else {
 				return 0;
 			}
