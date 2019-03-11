@@ -17,7 +17,13 @@ export class AnalysisComponent implements OnInit {
 	}
 	sortmethods = [
 		{name: 'Team Number', value: 'team'},
-		{name: 'Match Count', value: 'matchCount'}
+		{name: 'Match Count', value: 'matchCount'},
+		{name: 'Cycle Count', value: 'averages.cycles'},
+		{name: 'Drop Count', value: 'averages.drops'},
+		{name: 'Hatch Cycle Count', value: 'averages.hatch.cycles'},
+		{name: 'Hatch Drop Count', value: 'averages.hatch.drops'},
+		{name: 'Cargo Cycle Count', value: 'averages.cargo.cycles'},
+		{name: 'Cargo Drop Count', value: 'averages.cargo.drops'}
 	]
 
 	constructor(public sp: StrangeparseService) {
@@ -116,9 +122,12 @@ export class AnalysisComponent implements OnInit {
 	 */
 	resort() {
 		this.data.sort((a, b) => {
-			if (a[this.sort.method] > b[this.sort.method]) {
+			a = eval('a.' + this.sort.method)
+			b = eval('b.' + this.sort.method)
+
+			if (a > b) {
 				if (!this.sort.ascending) return -1; else return 1;
-			} else if (b[this.sort.method] > a[this.sort.method]) {
+			} else if (b > a) {
 				if (!this.sort.ascending) return 1; else return -1;
 			} else {
 				return 0;
