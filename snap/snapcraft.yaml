@@ -25,6 +25,6 @@ parts:
         node-engine: 11.10.0
         override-build: |
             mkdir -p ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/
-            cp -r ./* ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/
+            tar cf - * | ( cd ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/; tar xfp -)
         stage:
             - lib
