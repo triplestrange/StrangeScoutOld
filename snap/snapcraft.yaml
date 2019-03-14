@@ -26,3 +26,5 @@ parts:
         override-build: |
             mkdir -p ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/
             cp -r ./* ${SNAPCRAFT_PART_INSTALL}/lib/node_modules/strangescout-server/
+        stage:
+            - lib
