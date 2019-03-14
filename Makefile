@@ -38,7 +38,7 @@ out:
 
 	@printf "\n Installing server dependencies\n";
 	@cd $(BUILDPATH)/output; \
-	npm i;
+	npm i --production;
 
 	@printf "\n Relocating output\n";
 	mv $(BUILDPATH)/output $(OUT);
@@ -51,7 +51,7 @@ out:
 
 	@printf "\n Done!";
 
-.PHONY: clean docker
+.PHONY: clean docker snap
 clean:
 	@echo " Cleaning...";
 	rm -rf $(BUILDPATH);
