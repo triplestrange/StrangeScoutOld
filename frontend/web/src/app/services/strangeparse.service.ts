@@ -58,7 +58,7 @@ export class StrangeparseService {
 					teams.push(entry.TeamNumber);
 				});
 				let dedupteams = this.removeDuplicate(teams);
-				let sorted = dedupteams.sort(function(a, b){return a-b});
+				let sorted = dedupteams.sort((a, b) => {return a-b});
 				resolve(sorted);
 			}).catch(error => {
 				console.log(`Error getting teams: ${error}`);
@@ -91,7 +91,7 @@ export class StrangeparseService {
 					matches.push(entry.MatchNumber);
 				});
 				let dedupmatches = this.removeDuplicate(matches);
-				let sorted = dedupmatches.sort(function(a, b){return a-b});
+				let sorted = dedupmatches.sort((a, b) => {return a-b});
 				resolve(sorted);
 			}).catch(error => {
 				console.log(`Error getting matches: ${error}`);
@@ -362,7 +362,7 @@ export class StrangeparseService {
 	 * @param src source array
 	 */
 	removeDuplicate(src: any[]): any[] {
-		return src.filter(function(elem, pos,arr) {
+		return src.filter((elem, pos, arr) => {
 			return arr.indexOf(elem) == pos;
 		});
 	}
