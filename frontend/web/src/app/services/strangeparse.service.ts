@@ -58,7 +58,7 @@ export class StrangeparseService {
 					teams.push(entry.TeamNumber);
 				});
 				let dedupteams = this.removeDuplicate(teams);
-				let sorted = dedupteams.sort(function(a, b){return a-b});
+				let sorted = dedupteams.sort((a, b) => {return a-b});
 				resolve(sorted);
 			}).catch(error => {
 				console.log(`Error getting teams: ${error}`);
@@ -91,7 +91,7 @@ export class StrangeparseService {
 					matches.push(entry.MatchNumber);
 				});
 				let dedupmatches = this.removeDuplicate(matches);
-				let sorted = dedupmatches.sort(function(a, b){return a-b});
+				let sorted = dedupmatches.sort((a, b) => {return a-b});
 				resolve(sorted);
 			}).catch(error => {
 				console.log(`Error getting matches: ${error}`);
@@ -107,7 +107,7 @@ export class StrangeparseService {
 	 * Resolves an array of objects for all runs by a specified team
 	 * @param team team to get runs of
 	 */
-	getTeam(team: number): Promise<{}[]> {
+	getTeam(team: number): Promise<any[]> {
 		return new Promise(resolve => {
 			this.db.find({
 				selector: {
@@ -115,7 +115,7 @@ export class StrangeparseService {
 					TeamNumber: team
 				}
 			}).then(result => {
-				resolve(result.docs);
+				resolve(this.dropDuplicateMatch(result.docs));
 			});
 		});
 	}
@@ -362,8 +362,26 @@ export class StrangeparseService {
 	 * @param src source array
 	 */
 	removeDuplicate(src: any[]): any[] {
-		return src.filter(function(elem, pos,arr) {
+		return src.filter((elem, pos, arr) => {
 			return arr.indexOf(elem) == pos;
+		});
+	}
+
+	/**
+	 * Removes docs with matching match numbers
+	 * @param src Array of docs
+	 */
+	dropDuplicateMatch(src: any[]): any[] {
+		let matches: number[];
+		matches = [];
+		src.forEach((value) => {
+			let matchnum = value.MatchNumber;
+			if (!matches.includes(matchnum)) {
+				matches.push(matchnum);
+			}
+		});
+		return src.filter((elem) => {
+			return matches.includes(elem.MatchNumber);
 		});
 	}
 }

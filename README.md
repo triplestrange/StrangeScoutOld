@@ -12,30 +12,7 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 
 ## Installation
 
-### Snap
-
-***NOTE:*** If you don't want to use HTTPS, you can skip step 3
-1. **Setup [Snap](https://snapcraft.io/) on your server**
-2. **Install StrangeScout**
-	- Run `snap install strangescout`
-	- For bleeding edge run `snap install strangescout --edge`
-3. **Copy TLS certificates**
-	- Copy certificate file to `/var/snap/strangescout/common/server.crt`
-	- Copy key file to `/var/snap/strangescout/common/server.key`
-
-**Service**
-1. **Set config options**
-	- Run `snap set strangescout domain=<your_domain.tld>`
-	- If you want to use StrangeScout in HTTP only mode, append `httponly=true`
-	- If running in HTTP only mode, you can specify what port to run on by appending `port=<port>`
-2. **Restart the service**
-	- Run `snap restart strangescout`
-
-**Manual**
-1. **Run StrangeScout**
-	- Run `strangescout -d <your_domain.tld>`
-	- If you want to use StrangeScout in HTTP only mode, append `-o`
-	- If running in HTTP only mode, you can specify what port to run on by appending `-p <port>`
+***NOTE:*** Snap based installation is currently non-functional until we resolve a node dependency issue
 
 ### Docker
 
