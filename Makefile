@@ -4,7 +4,7 @@ VERSION=$(shell ./.version.sh)
 
 BUILDPATH=$(shell pwd)/build
 OUT=$(shell pwd)/out
-SNAP=$(shell pwd)/strangescout.snap
+#SNAP=$(shell pwd)/strangescout.snap
 
 NAME = team1533/strangescout
 IMG = $(NAME):$(VERSION)
@@ -51,15 +51,15 @@ out:
 
 	@printf "\n Done!";
 
-.PHONY: clean docker snap
+.PHONY: clean docker # snap
 clean:
 	@echo " Cleaning...";
 	rm -rf $(BUILDPATH);
 	rm -rf $(OUT);
-	rm -rf $(SNAP);
+#	rm -rf $(SNAP);
 
-snap: out
-	snapcraft snap -o $(SNAP);
+#snap: out
+#	snapcraft snap -o $(SNAP);
 
 docker: out
 	docker image build -f docker/Dockerfile -t $(IMG) ./
