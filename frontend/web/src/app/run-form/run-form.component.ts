@@ -101,7 +101,7 @@ export class RunFormComponent implements OnInit {
 						// remove last event if canceled
 						this.journal.pop();
 						this.holding = '';
-					} else {
+					} else if (result !== 'hold') {
 						// new event
 						this.newJournalEntry(result);
 						this.holding = '';
