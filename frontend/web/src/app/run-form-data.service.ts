@@ -31,6 +31,7 @@ export class RunFormDataService {
 		{
 			Name: 'Get Hatch',
 			RevealTime: 0,
+			IgnoreHolding: false,
 			Event: 'getHatch',
 			SubEvents: [
 				{Name: 'Top Ship Hatch', Value: 'topHatch'},
@@ -43,6 +44,7 @@ export class RunFormDataService {
 		{
 			Name: 'Get Cargo',
 			RevealTime: 0,
+			IgnoreHolding: false,
 			Event: 'getCargo',
 			SubEvents: [
 				{Name: 'Top Ship Cargo', Value: 'topCargo'},
@@ -55,6 +57,7 @@ export class RunFormDataService {
 		{
 			Name: 'Start Habitat Climb',
 			RevealTime: 120,
+			IgnoreHolding: true,
 			Event: 'startClimb',
 			SubEvents: [
 				{Name: 'Level 1', Value: 'L1Climb'},

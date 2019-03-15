@@ -14,12 +14,4 @@ export class ElementEventDialogComponent {
 		this.element = data;
 	}
 
-	/**
-	 * Cancels the event
-	 *
-	 * Closes the dialog, returning the string `cancel`
-	 */
-	cancelEvent() {
-		this.dialogRef.close('cancel');
-	}
 }

@@ -4,5 +4,7 @@
 	</div>
 </div>
 <div mat-dialog-actions>
-	<button mat-button (click)="cancelEvent()">Undo</button>
+	<button mat-button (click)="dialogRef.close('hold')">Hold</button>
+	<span class="spacer"></span>
+	<button mat-button color="warn" (click)="dialogRef.close('cancel')">Undo</button>
 </div>
