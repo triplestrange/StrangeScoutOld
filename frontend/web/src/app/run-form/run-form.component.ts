@@ -265,6 +265,11 @@ export class RunFormComponent implements OnInit {
 	 */
 	undo() {
 		if (this.journal.length > 0) {
+			if (this.holding !== '') {
+				this.journal.pop();
+				this.holding = '';
+				return;
+			}
 			const last = this.journal[this.journal.length - 2].Event;
 			const elem = this.gameElements.find(function(element) {
 				console.log(last, '::', element.Event)
@@ -281,7 +286,7 @@ export class RunFormComponent implements OnInit {
 					// remove the last event if canceled
 					this.journal.pop();
 					this.holding = '';
-				} else {
+				} else if (result !== 'hold') {
 					// new event
 					this.newJournalEntry(result);
 					this.holding = '';
