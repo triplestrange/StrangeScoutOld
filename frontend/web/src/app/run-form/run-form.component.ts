@@ -47,6 +47,9 @@ export class RunFormComponent implements OnInit {
 	// empty journal array
 	journal: EventJournalEntry[] = [];
 
+	// used to disable buttons if a robot is holding an element
+	holding = '';
+
 	// starting positions
 	startingPositions: OptionEventChoice[] = RunFormDataService.startingPositions;
 	// starting configs
@@ -89,6 +92,7 @@ export class RunFormComponent implements OnInit {
 				const element = this.gameElements.find(item => {
 					return item.Event === load;
 				});
+				this.holding = element.Name;
 				// opens a popup with sub events
 				const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: '250px', disableClose: true, autoFocus: false, data: element});
 				// after the popup is closed
@@ -96,9 +100,11 @@ export class RunFormComponent implements OnInit {
 					if (result === 'cancel') {
 						// remove last event if canceled
 						this.journal.pop();
+						this.holding = '';
 					} else {
 						// new event
 						this.newJournalEntry(result);
+						this.holding = '';
 					}
 				});
 			}
@@ -110,9 +116,12 @@ export class RunFormComponent implements OnInit {
 	 * @param element Name of the game element
 	 */
 	getElement(element) {
-		// creates a new journal entry for the event specified by the element
-		if (element.Event !== '') {
-			this.newJournalEntry(element.Event);
+		if (this.holding === '') {
+			this.holding = element.Name;
+			// creates a new journal entry for the event specified by the element
+			if (element.Event !== '') {
+				this.newJournalEntry(element.Event);
+			}
 		}
 		// opens a popup with sub events
 		const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: '250px', disableClose: true, autoFocus: false, data: element});
@@ -121,9 +130,11 @@ export class RunFormComponent implements OnInit {
 			if (result === 'cancel') {
 				// remove the last event if canceled
 				this.journal.pop();
-			} else {
+				this.holding = '';
+			} else if (result !== 'hold') {
 				// new event
 				this.newJournalEntry(result);
+				this.holding = '';
 			}
 		});
 	}
@@ -260,6 +271,7 @@ export class RunFormComponent implements OnInit {
 				return element.Event === last;
 			});
 			this.journal.pop();
+			this.holding = elem.Name;
 			// opens a popup with sub events
 			console.log(elem)
 			const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: '250px', disableClose: true, autoFocus: false, data: elem});
@@ -268,9 +280,11 @@ export class RunFormComponent implements OnInit {
 				if (result === 'cancel') {
 					// remove the last event if canceled
 					this.journal.pop();
+					this.holding = '';
 				} else {
 					// new event
 					this.newJournalEntry(result);
+					this.holding = '';
 				}
 			});
 		}
