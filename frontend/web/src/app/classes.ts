@@ -25,5 +25,6 @@ export class GameElement {
 	Name: string;
 	Event: string;
 	RevealTime: number;
+	IgnoreHolding: boolean;
 	SubEvents: OptionEventChoice[];
 }
