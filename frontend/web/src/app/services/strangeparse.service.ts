@@ -202,7 +202,7 @@ export class StrangeparseService {
 				// doesn't know `Journal` exists in the returned objects
 				concatjournal = tmp.concat(doc.Journal)
 			});
-			
+
 			let elementjournal = this.singleElement(concatjournal, element);
 			let droplessjournal = this.removeDrops(elementjournal);
 			let average = (droplessjournal.length / 2) / teamdata.length;
@@ -253,10 +253,10 @@ export class StrangeparseService {
 				// doesn't know `Journal` exists in the returned objects
 				concatjournal = tmp.concat(doc.Journal)
 			});
-			
+
 			let destjournal = this.singleDestination(concatjournal, element, destination);
 			let droplessjournal = this.removeDrops(destjournal);
-			let average = (droplessjournal.length / 2) / teamdata.length;
+			let average = droplessjournal.length / teamdata.length;
 
 			resolve(average);
 		})
@@ -373,15 +373,16 @@ export class StrangeparseService {
 	 */
 	dropDuplicateMatch(src: any[]): any[] {
 		let matches: number[];
+		let final: any[];
 		matches = [];
+		final = [];
 		src.forEach((value) => {
 			let matchnum = value.MatchNumber;
 			if (!matches.includes(matchnum)) {
 				matches.push(matchnum);
+				final.push(value);
 			}
 		});
-		return src.filter((elem) => {
-			return matches.includes(elem.MatchNumber);
-		});
+		return final;
 	}
 }
