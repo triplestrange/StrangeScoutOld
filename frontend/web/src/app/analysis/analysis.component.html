@@ -17,6 +17,9 @@
 					<mat-option [value]="true">Ascending</mat-option>
 				</mat-select>
 			</mat-form-field>
+			<div class="center-container">
+				<button mat-button color="warn" type="button" (click)="reset()">Reset</button>
+			</div>
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>
@@ -31,78 +34,76 @@
 			<mat-card-subtitle>{{ entry.matchCount }} match<ng-container *ngIf="entry.matchCount !== 1">es</ng-container></mat-card-subtitle>
 		</mat-card-header>
 		<mat-card-content>
-			<div class="center-container">
-				<mat-spinner *ngIf="!entry.visible"></mat-spinner>
+			<!-- New list -->
+			<mat-list role="list">
+				<mat-list-item role="listitem">
+					<!-- Average cycle count from entry -->
+					Average Cycles: {{ entry.averages.cycles }}
+				</mat-list-item>
+				<mat-list-item role="listitem">
+					<!-- Average drop count from entry -->
+					Average Drops: {{ entry.averages.drops }}
+				</mat-list-item>
+			</mat-list>
+			<mat-accordion multi="true">
+				<mat-expansion-panel>
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							Average Hatch Panels
+						</mat-panel-title>
+						<mat-panel-description>
+							{{ entry.averages.hatch.cycles }}
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+					<mat-list role="list">
+						<mat-list-item role="listitem">
+							Average Dropped Panels: {{ entry.averages.hatch.drops }}
+						</mat-list-item>
+						<mat-list-item role="listitem">
+							Average Top Panels: {{ entry.averages.hatch.top }}
+						</mat-list-item>
+						<mat-list-item role="listitem">
+							Average Middle Panels: {{ entry.averages.hatch.middle }}
+						</mat-list-item>
+						<mat-list-item role="listitem">
+							Average Bottom Panels: {{ entry.averages.hatch.bottom }}
+						</mat-list-item>
+						<mat-list-item role="listitem">
+							Average Cargo Panels: {{ entry.averages.hatch.cargo }}
+						</mat-list-item>
+					</mat-list>
+				</mat-expansion-panel>
+				<mat-expansion-panel>
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							Average Cargo
+						</mat-panel-title>
+						<mat-panel-description>
+							{{ entry.averages.cargo.cycles }}
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+					<mat-list role="list">
+						<mat-list-item role="listitem">
+							Average Dropped Cargo: {{ entry.averages.cargo.drops }}
+						</mat-list-item>
+						<mat-list-item role="listitem">
+							Average Top Cargo: {{ entry.averages.cargo.top }}
+						</mat-list-item>
+						<mat-list-item role="listitem">
+							Average Middle Cargo: {{ entry.averages.cargo.middle }}
+						</mat-list-item>
+						<mat-list-item role="listitem">
+							Average Bottom Cargo: {{ entry.averages.cargo.bottom }}
+						</mat-list-item>
+						<mat-list-item role="listitem">
+							Average Cargo Cargo: {{ entry.averages.cargo.cargo }}
+						</mat-list-item>
+					</mat-list>
+				</mat-expansion-panel>
+			</mat-accordion>
+			<div class="center-container remove-button-container">
+				<button mat-button color="warn" type="button" [disabled]="data.length < 2" (click)="dropTeam(entry.team)">Hide Team</button>
 			</div>
-			<ng-container *ngIf="entry.visible">
-				<!-- New list -->
-				<mat-list role="list">
-					<mat-list-item role="listitem">
-						<!-- Average cycle count from entry -->
-						Average Cycles: {{ entry.averages.cycles }}
-					</mat-list-item>
-					<mat-list-item role="listitem">
-						<!-- Average drop count from entry -->
-						Average Drops: {{ entry.averages.drops }}
-					</mat-list-item>
-				</mat-list>
-				<mat-accordion multi="true">
-					<mat-expansion-panel>
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								Average Hatch Panels
-							</mat-panel-title>
-							<mat-panel-description>
-								{{ entry.averages.hatch.cycles }}
-							</mat-panel-description>
-						</mat-expansion-panel-header>
-						<mat-list role="list">
-							<mat-list-item role="listitem">
-								Average Dropped Panels: {{ entry.averages.hatch.drops }}
-							</mat-list-item>
-							<mat-list-item role="listitem">
-								Average Top Panels: {{ entry.averages.hatch.top }}
-							</mat-list-item>
-							<mat-list-item role="listitem">
-								Average Middle Panels: {{ entry.averages.hatch.middle }}
-							</mat-list-item>
-							<mat-list-item role="listitem">
-								Average Bottom Panels: {{ entry.averages.hatch.bottom }}
-							</mat-list-item>
-							<mat-list-item role="listitem">
-								Average Cargo Panels: {{ entry.averages.hatch.cargo }}
-							</mat-list-item>
-						</mat-list>
-					</mat-expansion-panel>
-					<mat-expansion-panel>
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								Average Cargo
-							</mat-panel-title>
-							<mat-panel-description>
-								{{ entry.averages.cargo.cycles }}
-							</mat-panel-description>
-						</mat-expansion-panel-header>
-						<mat-list role="list">
-							<mat-list-item role="listitem">
-								Average Dropped Cargo: {{ entry.averages.cargo.drops }}
-							</mat-list-item>
-							<mat-list-item role="listitem">
-								Average Top Cargo: {{ entry.averages.cargo.top }}
-							</mat-list-item>
-							<mat-list-item role="listitem">
-								Average Middle Cargo: {{ entry.averages.cargo.middle }}
-							</mat-list-item>
-							<mat-list-item role="listitem">
-								Average Bottom Cargo: {{ entry.averages.cargo.bottom }}
-							</mat-list-item>
-							<mat-list-item role="listitem">
-								Average Cargo Cargo: {{ entry.averages.cargo.cargo }}
-							</mat-list-item>
-						</mat-list>
-					</mat-expansion-panel>
-				</mat-accordion>
-			</ng-container>
 		</mat-card-content>
 	</mat-card>
 </div>

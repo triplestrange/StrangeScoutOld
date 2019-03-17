@@ -15,3 +15,7 @@ mat-accordion.sorter {
 	width: 85%;
 	margin-top: 25px;
 }
+
+.remove-button-container {
+	padding-top: 10px;
+}
