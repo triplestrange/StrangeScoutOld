@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 
 import {StrangeparseService} from '../services/strangeparse.service';
 
@@ -9,7 +9,7 @@ import * as c3 from 'c3';
 	templateUrl: './analysis.component.html',
 	styleUrls: ['./analysis.component.css']
 })
-export class AnalysisComponent implements OnInit, AfterViewInit {
+export class AnalysisComponent implements AfterViewInit {
 
 	data: any[];
 	original: any[];
@@ -28,6 +28,10 @@ export class AnalysisComponent implements OnInit, AfterViewInit {
 		{name: 'Cargo Cycle Count', value: 'averages.cargo.cycles'},
 		{name: 'Cargo Drop Count', value: 'averages.cargo.drops'}
 	]
+
+// CHARTS ------------------------------
+	cyclechart: any;
+// -------------------------------------
 
 	constructor(public sp: StrangeparseService) {
 		this.data = [];
@@ -121,7 +125,7 @@ export class AnalysisComponent implements OnInit, AfterViewInit {
 			// this.original = this.data;
 			this.data.forEach((value) => {
 				this.original.push(value);
-			})
+			});
 		});
 	}
 
@@ -141,6 +145,7 @@ export class AnalysisComponent implements OnInit, AfterViewInit {
 				return 0;
 			}
 		});
+		this.reloadGraphs();
 	}
 
 	/**
@@ -157,6 +162,7 @@ export class AnalysisComponent implements OnInit, AfterViewInit {
 		})
 		this.sort.ascending = true;
 		this.sort.method = 'team';
+		this.reloadGraphs();
 	}
 
 	/**
@@ -170,21 +176,52 @@ export class AnalysisComponent implements OnInit, AfterViewInit {
 		this.data = this.data.filter((e, i) => {
 			return i !== index;
 		});
+		this.reloadGraphs();
 	}
 
+// -------------------------------------
+
 	ngAfterViewInit() {
-		let cyclechart = c3.generate({
+		this.cyclechart = c3.generate({
 			bindto: '#cyclechart',
 			data: {
-				columns: [
-					['data1', 30, 200, 100, 400, 150, 250],
-					['data2', 50, 20, 10, 40, 15, 25]
-				]
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {
+				width: {
+					ratio: 0.5
+				}
+			},
+			axis: {
+				x: {
+					tick: {
+						format: (x) => {return ''}
+					}
+				}
 			}
 		});
 	}
 
-	ngOnInit() {
+	reloadGraphs() {
+		this.cyclechart.load({
+			unload: true,
+			columns: this.cyclecolumns
+		});
+		console.log(this.cyclecolumns)
+	}
+
+// -------------------------------------
+
+	get cyclecolumns() {
+		let cyclecolumns: any[];
+		cyclecolumns = [];	
+		this.data.forEach((element) => {
+			cyclecolumns.push([element.team.toString(), element.averages.cycles])
+		});
+		console.log(cyclecolumns)
+		return cyclecolumns;
 	}
 
 }
