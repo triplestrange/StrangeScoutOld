@@ -20,15 +20,15 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 1. **Setup [Docker](https://www.docker.com/) on your server**
 2. **Pull StrangeScout**
 	- Run `docker pull team1533/strangescout:<version or 'latest'>`
-3. **Create a Docker volume to store databases and certs**
-	- Run `docker volume create <volume_name>`
+3. **Create a directory to store databases and certs**
+	- Run `mkdir <datadir_name>`
 	- *[More Info](https://docs.docker.com/engine/reference/commandline/volume_create/)*
-4. **Copy TLS certificates into volume**
-	- Copy certificate file to `/var/lib/docker/volumes/<volume_name>/_data/server.crt`
-	- Copy key file to `/var/lib/docker/volumes/<volume_name>/_data/server.key`
+4. **Copy TLS certificates into data directory**
+	- Copy certificate file to `<data_dir>/server.crt`
+	- Copy key file to `<data_dir>/server.key`
 5. **Run StrangeScout**
-	- To use HTTPS, run `docker run -it -p 80:80 -p 443:443 -e DOMAIN=<your_domain.tld> team1533/strangescout`
-	- To run as HTTP only, run `docker run -it -p 80:80 -e HTTPONLY=true -e DOMAIN=<your_domain.tld> team1533/strangescout`
+	- To use HTTPS, run `docker run -it -p 80:80 -p 443:443 -v <data_dir>:/opt/strangescout -e DOMAIN=<your_domain.tld> team1533/strangescout`
+	- To run as HTTP only, run `docker run -it -p 80:80 -v <data_dir>:/opt/strangescout -e HTTPONLY=true -e DOMAIN=<your_domain.tld> team1533/strangescout`
 	- To force the database CORS headers to use HTTPS on their origin (useful if running in HTTPONLY mode behind a reverse proxy that handles HTTPS) add `-e HTTPSCORS=true` to the docker command
 
 ### Manual
