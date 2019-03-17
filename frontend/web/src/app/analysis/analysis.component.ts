@@ -52,60 +52,62 @@ export class AnalysisComponent implements OnInit {
 					this.data[index].matchCount = result.length;
 				});
 
+				this.data[index].rawdata = await this.sp.getTeam(entry.team);
+
 // OVERALL -----------------------------
 
 				// calculate average cycles/match and set property
-				this.sp.averageCycles(entry.team).then(result => {
+				this.sp.averageCycles(entry.team, entry.rawdata).then(result => {
 					this.data[index].averages.cycles = Math.ceil(result*100)/100;
 				});
 				// calculate average dropped cycles/match and set property
-				this.sp.averageDrops(entry.team).then(result => {
+				this.sp.averageDrops(entry.team, entry.rawdata).then(result => {
 					this.data[index].averages.drops = Math.ceil(result*100)/100;
 				});
 
 // HATCH -------------------------------
 
 				// calculate average hatch panel cycles/match and set property
-				this.sp.averageElementCycles(entry.team, 'hatch').then(result => {
+				this.sp.averageElementCycles(entry.team, 'hatch', entry.rawdata).then(result => {
 					this.data[index].averages.hatch.cycles = Math.ceil(result*100)/100;
 				});
 				// calculate average hatch panel dropped cycles/match and set property
-				this.sp.averageElementDrops(entry.team, 'hatch').then(result => {
+				this.sp.averageElementDrops(entry.team, 'hatch', entry.rawdata).then(result => {
 					this.data[index].averages.hatch.drops = Math.ceil(result*100)/100;
 				});
-				this.sp.averageDestinationCycles(entry.team, 'hatch', 'top').then(result =>{
+				this.sp.averageDestinationCycles(entry.team, 'hatch', 'top', entry.rawdata).then(result =>{
 					this.data[index].averages.hatch.top = Math.ceil(result*100)/100;
 				});
-				this.sp.averageDestinationCycles(entry.team, 'hatch', 'middle').then(result =>{
+				this.sp.averageDestinationCycles(entry.team, 'hatch', 'middle', entry.rawdata).then(result =>{
 					this.data[index].averages.hatch.middle = Math.ceil(result*100)/100;
 				});
-				this.sp.averageDestinationCycles(entry.team, 'hatch', 'bottom').then(result =>{
+				this.sp.averageDestinationCycles(entry.team, 'hatch', 'bottom', entry.rawdata).then(result =>{
 					this.data[index].averages.hatch.bottom = Math.ceil(result*100)/100;
 				});
-				this.sp.averageDestinationCycles(entry.team, 'hatch', 'cargo').then(result =>{
+				this.sp.averageDestinationCycles(entry.team, 'hatch', 'cargo', entry.rawdata).then(result =>{
 					this.data[index].averages.hatch.cargo = Math.ceil(result*100)/100;
 				});
 
 // CARGO -------------------------------
 
 				// calculate average cargo cycles/match and set property
-				this.sp.averageElementCycles(entry.team, 'cargo').then(result => {
+				this.sp.averageElementCycles(entry.team, 'cargo', entry.rawdata).then(result => {
 					this.data[index].averages.cargo.cycles = Math.ceil(result*100)/100;
 				});
 				// calculate average cargo dropped cycles/match and set property
-				this.sp.averageElementDrops(entry.team, 'cargo').then(result => {
+				this.sp.averageElementDrops(entry.team, 'cargo', entry.rawdata).then(result => {
 					this.data[index].averages.cargo.drops = Math.ceil(result*100)/100;
 				});
-				this.sp.averageDestinationCycles(entry.team, 'cargo', 'top').then(result =>{
+				this.sp.averageDestinationCycles(entry.team, 'cargo', 'top', entry.rawdata).then(result =>{
 					this.data[index].averages.cargo.top = Math.ceil(result*100)/100;
 				});
-				this.sp.averageDestinationCycles(entry.team, 'cargo', 'middle').then(result =>{
+				this.sp.averageDestinationCycles(entry.team, 'cargo', 'middle', entry.rawdata).then(result =>{
 					this.data[index].averages.cargo.middle = Math.ceil(result*100)/100;
 				});
-				this.sp.averageDestinationCycles(entry.team, 'cargo', 'bottom').then(result =>{
+				this.sp.averageDestinationCycles(entry.team, 'cargo', 'bottom', entry.rawdata).then(result =>{
 					this.data[index].averages.cargo.bottom = Math.ceil(result*100)/100;
 				});
-				this.sp.averageDestinationCycles(entry.team, 'cargo', 'cargo').then(result =>{
+				this.sp.averageDestinationCycles(entry.team, 'cargo', 'cargo', entry.rawdata).then(result =>{
 					this.data[index].averages.cargo.cargo = Math.ceil(result*100)/100;
 				});
 
