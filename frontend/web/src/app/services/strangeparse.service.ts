@@ -144,10 +144,16 @@ export class StrangeparseService {
 	 * Resolves the average cycles/match of a team
 	 * @param team team number to get cycle count for
 	 */
-	averageCycles(team: number): Promise<number> {
+	averageCycles(team: number, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
 			let concatjournal = [];
-			let teamdata = await this.getTeam(team);
+			let teamdata: any[];
+			
+			if (rawdata) {
+				teamdata = rawdata;
+			} else {
+				teamdata = await this.getTeam(team);
+			}
 
 			teamdata.forEach(doc => {
 				let tmp = concatjournal;
@@ -167,10 +173,16 @@ export class StrangeparseService {
 	 * Resolves the average dropped cycles/match of a team
 	 * @param team team number to get dropped cycle count for
 	 */
-	averageDrops(team: number): Promise<number> {
+	averageDrops(team: number, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
 			let concatjournal = [];
-			let teamdata = await this.getTeam(team);
+			let teamdata: any[];
+
+			if (rawdata) {
+				teamdata = rawdata;
+			} else {
+				teamdata = await this.getTeam(team);
+			}
 
 			teamdata.forEach(doc => {
 				let tmp = concatjournal;
@@ -191,10 +203,16 @@ export class StrangeparseService {
 	 * @param team team number to get cycle count for
 	 * @param element lowercase name of element as seen in journal event
 	 */
-	averageElementCycles(team: number, element: string): Promise<number> {
+	averageElementCycles(team: number, element: string, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
 			let concatjournal = [];
-			let teamdata = await this.getTeam(team);
+			let teamdata: any[];
+			
+			if (rawdata) {
+				teamdata = rawdata;
+			} else {
+				teamdata = await this.getTeam(team);
+			}
 
 			teamdata.forEach(doc => {
 				let tmp = concatjournal;
@@ -216,10 +234,16 @@ export class StrangeparseService {
 	 * @param team team number to get dropped cycle count for
 	 * @param element lowercase name of element as seen in journal event
 	 */
-	averageElementDrops(team: number, element: string): Promise<number> {
+	averageElementDrops(team: number, element: string, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
 			let concatjournal = [];
-			let teamdata = await this.getTeam(team);
+			let teamdata: any[];
+			
+			if (rawdata) {
+				teamdata = rawdata;
+			} else {
+				teamdata = await this.getTeam(team);
+			}
 
 			teamdata.forEach(doc => {
 				let tmp = concatjournal;
@@ -242,10 +266,16 @@ export class StrangeparseService {
 	 * @param element lowercase name of element as seen in journal event
 	 * @param destination lowercase name of element destination as seen in journal event
 	 */
-	averageDestinationCycles(team: number, element: string, destination: string): Promise<number> {
+	averageDestinationCycles(team: number, element: string, destination: string, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
 			let concatjournal = [];
-			let teamdata = await this.getTeam(team);
+			let teamdata: any[];
+			
+			if (rawdata) {
+				teamdata = rawdata;
+			} else {
+				teamdata = await this.getTeam(team);
+			}
 
 			teamdata.forEach(doc => {
 				let tmp = concatjournal;
