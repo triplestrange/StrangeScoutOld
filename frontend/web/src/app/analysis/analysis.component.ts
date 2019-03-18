@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material';
 
 import {StrangeparseService} from '../services/strangeparse.service';
 
@@ -182,8 +183,14 @@ export class AnalysisComponent implements AfterViewInit {
 // -------------------------------------
 
 	ngAfterViewInit() {
-		this.createGraphs();
-		this.reloadGraphs();
+		//this.createGraphs();
+		//this.reloadGraphs();
+	}
+
+	tabChange(event: MatTabChangeEvent) {
+		if (event.tab.textLabel === "Charts") {
+			this.createGraphs();
+		}
 	}
 
 	createGraphs() {

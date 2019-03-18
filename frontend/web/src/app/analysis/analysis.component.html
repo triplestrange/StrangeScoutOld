@@ -24,7 +24,7 @@
 	</mat-accordion>
 </div>
 
-<mat-tab-group *ngIf="data.length > 0" (selectedTabChange)="createGraphs()" (animationDone)="reloadGraphs()">
+<mat-tab-group mat-stretch-tabs disableRipple="true" *ngIf="data.length > 0" (selectedTabChange)="tabChange($event)" (animationDone)="reloadGraphs()">
 <mat-tab label="Data">
 	<div class="center-container">
 
