@@ -182,6 +182,11 @@ export class AnalysisComponent implements AfterViewInit {
 // -------------------------------------
 
 	ngAfterViewInit() {
+		this.createGraphs();
+		this.reloadGraphs();
+	}
+
+	createGraphs() {
 		this.cyclechart = c3.generate({
 			bindto: '#cyclechart',
 			data: {
