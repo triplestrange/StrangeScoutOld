@@ -56,7 +56,7 @@ export class RunFormDataService {
 		},
 		{
 			Name: 'Start Habitat Climb',
-			RevealTime: 120,
+			RevealTime: 90,
 			IgnoreHolding: true,
 			Event: 'startClimb',
 			SubEvents: [
