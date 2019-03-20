@@ -32,6 +32,9 @@ export class AnalysisComponent implements AfterViewInit {
 
 // CHARTS ------------------------------
 	cyclechart: any;
+	dropchart: any;
+	hatchchart: any;
+	cargochart: any;
 // -------------------------------------
 
 	constructor(public sp: StrangeparseService) {
@@ -201,17 +204,57 @@ export class AnalysisComponent implements AfterViewInit {
 				columns: [],
 				order: null
 			},
-			bar: {
-				width: {
-					ratio: 0.5
-				}
+			bar: {width: {
+				ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
+		this.dropchart = c3.generate({
+			bindto: '#dropchart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
 			},
-			axis: {
-				x: {
-					tick: {
-						format: (x) => {return ''}
-					}
-				}
+			bar: {width: {
+					ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
+		this.hatchchart = c3.generate({
+			bindto: '#hatchchart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {width: {
+					ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
+		this.cargochart = c3.generate({
+			bindto: '#cargochart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {width: {
+					ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
 			}
 		});
 	}
@@ -221,7 +264,18 @@ export class AnalysisComponent implements AfterViewInit {
 			unload: true,
 			columns: this.cyclecolumns
 		});
-		console.log(this.cyclecolumns)
+		this.dropchart.load({
+			unload: true,
+			columns: this.dropcolumns
+		});
+		this.hatchchart.load({
+			unload: true,
+			columns: this.hatchcolumns
+		});
+		this.cargochart.load({
+			unload: true,
+			columns: this.cargocolumns
+		});
 	}
 
 // -------------------------------------
@@ -232,8 +286,31 @@ export class AnalysisComponent implements AfterViewInit {
 		this.data.forEach((element) => {
 			cyclecolumns.push([element.team.toString(), element.averages.cycles])
 		});
-		console.log(cyclecolumns)
 		return cyclecolumns;
+	}
+	get dropcolumns() {
+		let columns: any[];
+		columns = [];	
+		this.data.forEach((element) => {
+			columns.push([element.team.toString(), element.averages.drops])
+		});
+		return columns;
+	}
+	get hatchcolumns() {
+		let columns: any[];
+		columns = [];	
+		this.data.forEach((element) => {
+			columns.push([element.team.toString(), element.averages.hatch.cycles])
+		});
+		return columns;
+	}
+	get cargocolumns() {
+		let columns: any[];
+		columns = [];	
+		this.data.forEach((element) => {
+			columns.push([element.team.toString(), element.averages.cargo.cycles])
+		});
+		return columns;
 	}
 
 }

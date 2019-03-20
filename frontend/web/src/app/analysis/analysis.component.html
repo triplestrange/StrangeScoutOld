@@ -24,7 +24,7 @@
 	</mat-accordion>
 </div>
 
-<mat-tab-group mat-stretch-tabs disableRipple="true" *ngIf="data.length > 0" (selectedTabChange)="tabChange($event)" (animationDone)="reloadGraphs()">
+<mat-tab-group mat-stretch-tabs dynamicHeight disableRipple="true" *ngIf="data.length > 0" (selectedTabChange)="tabChange($event)" (animationDone)="reloadGraphs()">
 <mat-tab label="Data">
 	<div class="center-container">
 
@@ -111,6 +111,21 @@
 	</div>
 </mat-tab>
 <mat-tab label="Charts">
-	<div id="cyclechart"></div>
+	<div class="chart-container">
+		<h3 class="mat-card-title">Average Cycles</h3>
+		<div id="cyclechart"></div>
+	</div>
+	<div class="chart-container">
+		<h3 class="mat-card-title">Average Drops</h3>
+		<div id="dropchart"></div>
+	</div>
+	<div class="chart-container">
+		<h3 class="mat-card-title">Average Hatch Panels</h3>
+		<div id="hatchchart"></div>
+	</div>
+	<div class="chart-container">
+		<h3 class="mat-card-title">Average Cargo</h3>
+		<div id="cargochart"></div>
+	</div>
 </mat-tab>
 </mat-tab-group>
