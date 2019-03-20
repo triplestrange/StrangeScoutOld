@@ -19,3 +19,7 @@ mat-accordion.sorter {
 .remove-button-container {
 	padding-top: 10px;
 }
+
+div.chart-container {
+	padding: 25px;
+}

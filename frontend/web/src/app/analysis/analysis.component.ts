@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material';
 
 import {StrangeparseService} from '../services/strangeparse.service';
+
+import * as c3 from 'c3';
 
 @Component({
 	selector: 'app-analysis',
 	templateUrl: './analysis.component.html',
 	styleUrls: ['./analysis.component.css']
 })
-export class AnalysisComponent implements OnInit {
+export class AnalysisComponent implements AfterViewInit {
 
 	data: any[];
 	original: any[];
@@ -26,6 +29,13 @@ export class AnalysisComponent implements OnInit {
 		{name: 'Cargo Cycle Count', value: 'averages.cargo.cycles'},
 		{name: 'Cargo Drop Count', value: 'averages.cargo.drops'}
 	]
+
+// CHARTS ------------------------------
+	cyclechart: any;
+	dropchart: any;
+	hatchchart: any;
+	cargochart: any;
+// -------------------------------------
 
 	constructor(public sp: StrangeparseService) {
 		this.data = [];
@@ -119,7 +129,7 @@ export class AnalysisComponent implements OnInit {
 			// this.original = this.data;
 			this.data.forEach((value) => {
 				this.original.push(value);
-			})
+			});
 		});
 	}
 
@@ -139,6 +149,7 @@ export class AnalysisComponent implements OnInit {
 				return 0;
 			}
 		});
+		this.reloadGraphs();
 	}
 
 	/**
@@ -155,6 +166,7 @@ export class AnalysisComponent implements OnInit {
 		})
 		this.sort.ascending = true;
 		this.sort.method = 'team';
+		this.reloadGraphs();
 	}
 
 	/**
@@ -168,9 +180,137 @@ export class AnalysisComponent implements OnInit {
 		this.data = this.data.filter((e, i) => {
 			return i !== index;
 		});
+		this.reloadGraphs();
 	}
 
-	ngOnInit() {
+// -------------------------------------
+
+	ngAfterViewInit() {
+		//this.createGraphs();
+		//this.reloadGraphs();
+	}
+
+	tabChange(event: MatTabChangeEvent) {
+		if (event.tab.textLabel === "Charts") {
+			this.createGraphs();
+		}
+	}
+
+	createGraphs() {
+		this.cyclechart = c3.generate({
+			bindto: '#cyclechart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {width: {
+				ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
+		this.dropchart = c3.generate({
+			bindto: '#dropchart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {width: {
+					ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
+		this.hatchchart = c3.generate({
+			bindto: '#hatchchart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {width: {
+					ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
+		this.cargochart = c3.generate({
+			bindto: '#cargochart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {width: {
+					ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
+	}
+
+	reloadGraphs() {
+		this.cyclechart.load({
+			unload: true,
+			columns: this.cyclecolumns
+		});
+		this.dropchart.load({
+			unload: true,
+			columns: this.dropcolumns
+		});
+		this.hatchchart.load({
+			unload: true,
+			columns: this.hatchcolumns
+		});
+		this.cargochart.load({
+			unload: true,
+			columns: this.cargocolumns
+		});
+	}
+
+// -------------------------------------
+
+	get cyclecolumns() {
+		let cyclecolumns: any[];
+		cyclecolumns = [];	
+		this.data.forEach((element) => {
+			cyclecolumns.push([element.team.toString(), element.averages.cycles])
+		});
+		return cyclecolumns;
+	}
+	get dropcolumns() {
+		let columns: any[];
+		columns = [];	
+		this.data.forEach((element) => {
+			columns.push([element.team.toString(), element.averages.drops])
+		});
+		return columns;
+	}
+	get hatchcolumns() {
+		let columns: any[];
+		columns = [];	
+		this.data.forEach((element) => {
+			columns.push([element.team.toString(), element.averages.hatch.cycles])
+		});
+		return columns;
+	}
+	get cargocolumns() {
+		let columns: any[];
+		columns = [];	
+		this.data.forEach((element) => {
+			columns.push([element.team.toString(), element.averages.cargo.cycles])
+		});
+		return columns;
 	}
 
 }
