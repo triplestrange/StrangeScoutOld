@@ -48,7 +48,8 @@
 <mat-card *ngIf="showForm" style="text-align: center;">
 	<ng-container [counter]="counter" [interval]="interval" (value)="time = $event">
 		<h3 class="countdown">Remaining Time: {{ displayTime }}</h3>
-		Last Event: {{ lastEvent }}
+		<p>Team: {{ team }}</p>
+		<p>Last Event: {{ lastEvent }}</p>
 	</ng-container>
 </mat-card>
 
