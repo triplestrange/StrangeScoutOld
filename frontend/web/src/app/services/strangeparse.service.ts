@@ -310,6 +310,7 @@ export class StrangeparseService {
 			let teamdata: any[];
 
 			let totaltime = 0;
+			let average = 0;
 			
 			if (rawdata) {
 				teamdata = rawdata;
@@ -333,7 +334,9 @@ export class StrangeparseService {
 				}
 			});
 
-			let average = totaltime / (defensejournal.length / 2);
+			if (defensejournal.length !== 0) {
+				average = totaltime / (defensejournal.length / 2);
+			}
 
 			resolve(average);
 		})

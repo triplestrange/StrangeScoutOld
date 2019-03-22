@@ -24,6 +24,7 @@ export class AnalysisComponent implements AfterViewInit {
 		{name: 'Match Count', value: 'matchCount'},
 		{name: 'Cycle Count', value: 'averages.cycles'},
 		{name: 'Drop Count', value: 'averages.drops'},
+		{name: 'Defense Time', value: 'averages.defensetime'},
 		{name: 'Hatch Cycle Count', value: 'averages.hatch.cycles'},
 		{name: 'Hatch Drop Count', value: 'averages.hatch.drops'},
 		{name: 'Cargo Cycle Count', value: 'averages.cargo.cycles'},
@@ -74,6 +75,9 @@ export class AnalysisComponent implements AfterViewInit {
 				this.sp.averageDrops(entry.team, entry.rawdata).then(result => {
 					this.data[index].averages.drops = Math.ceil(result*100)/100;
 				});
+				this.sp.averageDefenseTime(entry.team, entry.rawdata).then(result => {
+					this.data[index].averages.defensetime = Math.ceil(result*100)/100;
+				})
 
 // HATCH -------------------------------
 
