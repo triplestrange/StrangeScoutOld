@@ -24,6 +24,7 @@ export class AnalysisComponent implements AfterViewInit {
 		{name: 'Match Count', value: 'matchCount'},
 		{name: 'Cycle Count', value: 'averages.cycles'},
 		{name: 'Drop Count', value: 'averages.drops'},
+		{name: 'Defense Time', value: 'averages.defensetime'},
 		{name: 'Hatch Cycle Count', value: 'averages.hatch.cycles'},
 		{name: 'Hatch Drop Count', value: 'averages.hatch.drops'},
 		{name: 'Cargo Cycle Count', value: 'averages.cargo.cycles'},
@@ -35,6 +36,7 @@ export class AnalysisComponent implements AfterViewInit {
 	dropchart: any;
 	hatchchart: any;
 	cargochart: any;
+	defensechart: any;
 // -------------------------------------
 
 	constructor(public sp: StrangeparseService) {
@@ -74,6 +76,9 @@ export class AnalysisComponent implements AfterViewInit {
 				this.sp.averageDrops(entry.team, entry.rawdata).then(result => {
 					this.data[index].averages.drops = Math.ceil(result*100)/100;
 				});
+				this.sp.averageDefenseTime(entry.team, entry.rawdata).then(result => {
+					this.data[index].averages.defensetime = Math.ceil(result*100)/100;
+				})
 
 // HATCH -------------------------------
 
@@ -257,6 +262,21 @@ export class AnalysisComponent implements AfterViewInit {
 				}}
 			}
 		});
+		this.defensechart = c3.generate({
+			bindto: '#defensechart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {width: {
+					ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
 	}
 
 	reloadGraphs() {
@@ -275,6 +295,10 @@ export class AnalysisComponent implements AfterViewInit {
 		this.cargochart.load({
 			unload: true,
 			columns: this.cargocolumns
+		});
+		this.defensechart.load({
+			unload: true,
+			columns: this.defensecolumns
 		});
 	}
 
@@ -309,6 +333,14 @@ export class AnalysisComponent implements AfterViewInit {
 		columns = [];	
 		this.data.forEach((element) => {
 			columns.push([element.team.toString(), element.averages.cargo.cycles])
+		});
+		return columns;
+	}
+	get defensecolumns() {
+		let columns: any[];
+		columns = [];	
+		this.data.forEach((element) => {
+			columns.push([element.team.toString(), element.averages.defensetime])
 		});
 		return columns;
 	}

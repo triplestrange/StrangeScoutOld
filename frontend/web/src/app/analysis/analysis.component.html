@@ -46,6 +46,10 @@
 						<!-- Average drop count from entry -->
 						Average Drops: {{ entry.averages.drops }}
 					</mat-list-item>
+					<mat-list-item role="listitem">
+						<!-- Average defense time from entry -->
+						Average Defense Time: {{ entry.averages.defensetime }} seconds
+					</mat-list-item>
 				</mat-list>
 				<mat-accordion multi="true">
 					<mat-expansion-panel>
@@ -126,6 +130,10 @@
 	<div class="chart-container">
 		<h3 class="mat-card-title">Average Cargo</h3>
 		<div id="cargochart"></div>
+	</div>
+	<div class="chart-container">
+		<h3 class="mat-card-title">Average Defense Time</h3>
+		<div id="defensechart"></div>
 	</div>
 </mat-tab>
 </mat-tab-group>

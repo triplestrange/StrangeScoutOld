@@ -2,5 +2,6 @@
 	Click when the match starts!
 </div>
 <div mat-dialog-actions>
-	<button mat-button mat-dialog-close cdkFocusInitial>Begin Match</button>
+	<button mat-button (click)="dialogRef.close(false)">Close</button>
+	<button mat-button cdkFocusInitial (click)="dialogRef.close(true)">Begin Match</button>
 </div>

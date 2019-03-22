@@ -164,7 +164,9 @@ export class StrangeparseService {
 			});
 			
 			let droplessjournal = this.removeDrops(concatjournal);
-			let average = (droplessjournal.length / 2) / teamdata.length;
+			let climblessjournal = this.removeClimb(droplessjournal);
+			let defenselessjournal = this.removeDefense(climblessjournal);
+			let average = (defenselessjournal.length / 2) / teamdata.length;
 
 			resolve(average);
 		});
@@ -297,6 +299,49 @@ export class StrangeparseService {
 		})
 	}
 
+	/**
+	 * Average time a team spends on defense (in seconds)
+	 * @param team team number to get data for
+	 * @param rawdata (optional) pass an array of doc objects to be parsed instead of querying the db
+	 */
+	averageDefenseTime(team: number, rawdata?: any[]): Promise<number> {
+		return new Promise(async resolve => {
+			let concatjournal = [];
+			let teamdata: any[];
+
+			let totaltime = 0;
+			let average = 0;
+			
+			if (rawdata) {
+				teamdata = rawdata;
+			} else {
+				teamdata = await this.getTeam(team);
+			}
+
+			teamdata.forEach(doc => {
+				let tmp = concatjournal;
+				// @ts-ignore
+				// doesn't know `Journal` exists in the returned objects
+				concatjournal = tmp.concat(doc.Journal)
+			});
+
+			let defensejournal = this.onlyDefense(concatjournal);
+
+			defensejournal.forEach((event, index) => {
+				if (event.Event === 'stopDefense') {
+					let duration = event.Time - defensejournal[index - 1].Time;
+					totaltime = totaltime + duration;
+				}
+			});
+
+			if (defensejournal.length !== 0) {
+				average = totaltime / teamdata.length;
+			}
+
+			resolve(average);
+		})
+	}
+
 // JOURNAL MUTATIONS -------------------
 
 	/**
@@ -354,6 +399,46 @@ export class StrangeparseService {
 	}
 
 	/**
+	 * removes defense from a journal
+	 * @param journal journal to remove defense from
+	 */
+	removeDefense(journal: any[]): any[] {
+		let newjournal = [];
+
+		journal.forEach(event => {
+			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+			let word = eventname.replace(/^./, str => {
+				return str.toLowerCase();
+			}).split(' ')[1];
+			if (word !== 'Defense') {
+				newjournal.push(event);
+			}
+		});
+
+		return newjournal;
+	}
+
+	/**
+	 * return only defense events in a journal
+	 * @param journal journal to parse
+	 */
+	onlyDefense(journal: any[]): any[] {
+		let newjournal = [];
+
+		journal.forEach(event => {
+			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+			let word = eventname.replace(/^./, str => {
+				return str.toLowerCase();
+			}).split(' ')[1];
+			if (word === 'Defense') {
+				newjournal.push(event);
+			}
+		});
+
+		return newjournal;
+	}
+
+	/**
 	 * removes cycles resulting in a drop from a journal
 	 * @param journal journal to remove drops from
 	 */
@@ -387,6 +472,17 @@ export class StrangeparseService {
 		});
 
 		return newjournal;
+	}
+
+	/**
+	 * Removes climbs from a journal
+	 * @param src source journal
+	 */
+	removeClimb(src: any[]): any[] {
+		while (src[src.length - 1].Event.substr(src[src.length - 1].Event.length - 5) === 'Climb') {
+			src.pop();
+		}
+		return src;
 	}
 
 // EXTRA -------------------------------

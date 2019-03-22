@@ -56,13 +56,14 @@ export class RunFormDataService {
 		},
 		{
 			Name: 'Start Habitat Climb',
-			RevealTime: 120,
+			RevealTime: 90,
 			IgnoreHolding: true,
 			Event: 'startClimb',
 			SubEvents: [
 				{Name: 'Level 1', Value: 'L1Climb'},
 				{Name: 'Level 2', Value: 'L2Climb'},
-				{Name: 'Level 3', Value: 'L3Climb'}
+				{Name: 'Level 3', Value: 'L3Climb'},
+				{Name: 'Incomplete', Value: 'DNFClimb'}
 			]
 		}
 	];

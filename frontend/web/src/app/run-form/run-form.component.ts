@@ -50,6 +50,9 @@ export class RunFormComponent implements OnInit {
 	// used to disable buttons if a robot is holding an element
 	holding = '';
 
+	// currently defending?
+	defending = false;
+
 	// starting positions
 	startingPositions: OptionEventChoice[] = RunFormDataService.startingPositions;
 	// starting configs
@@ -71,42 +74,44 @@ export class RunFormComponent implements OnInit {
 	 */
 	startMatch() {
 		// popup before match start
-		const dialogRef = this.dialog.open(BeginMatchDialogComponent);
+		const dialogRef = this.dialog.open(BeginMatchDialogComponent, {disableClose: true});
 		// after closing popup
 		dialogRef.afterClosed().subscribe(result => {
-			// show form body
-			this.showForm = true;
+			if (result) {
+				// show form body
+				this.showForm = true;
 
-			// if the starting load is not "none"
-			if (this.load !== 'none') {
-				// local var of load
-				const load = this.load;
+				// if the starting load is not "none"
+				if (this.load !== 'none') {
+					// local var of load
+					const load = this.load;
 
-				// loadout journal entry
-				let entry = new EventJournalEntry;
-				entry.Time = 0;
-				entry.Event = this.load;
-				this.journal.push(entry);
-				
-				// find the gameElement with a matching top level event to the load value
-				const element = this.gameElements.find(item => {
-					return item.Event === load;
-				});
-				this.holding = element.Name;
-				// opens a popup with sub events
-				const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: '250px', disableClose: true, autoFocus: false, data: element});
-				// after the popup is closed
-				dialogRef.afterClosed().subscribe(result => {
-					if (result === 'cancel') {
-						// remove last event if canceled
-						this.journal.pop();
-						this.holding = '';
-					} else if (result !== 'hold') {
-						// new event
-						this.newJournalEntry(result);
-						this.holding = '';
-					}
-				});
+					// loadout journal entry
+					let entry = new EventJournalEntry;
+					entry.Time = 0;
+					entry.Event = this.load;
+					this.journal.push(entry);
+
+					// find the gameElement with a matching top level event to the load value
+					const element = this.gameElements.find(item => {
+						return item.Event === load;
+					});
+					this.holding = element.Name;
+					// opens a popup with sub events
+					const dialogRef = this.dialog.open(ElementEventDialogComponent, {width: '250px', disableClose: true, autoFocus: false, data: element});
+					// after the popup is closed
+					dialogRef.afterClosed().subscribe(result => {
+						if (result === 'cancel') {
+							// remove last event if canceled
+							this.journal.pop();
+							this.holding = '';
+						} else if (result !== 'hold') {
+							// new event
+							this.newJournalEntry(result);
+							this.holding = '';
+						}
+					});
+				}
 			}
 		});
 	}
@@ -218,6 +223,10 @@ export class RunFormComponent implements OnInit {
 	 * Opens end match dialog containing notes - on close submits the payload
 	 */
 	endMatch() {
+		// end defense if currently defending
+		if (this.defending) {
+			this.toggleDefense();
+		}
 		// popup before match start
 		const dialogRef = this.dialog.open(EndMatchDialogComponent, {disableClose: true});
 		// after closing popup
@@ -292,6 +301,16 @@ export class RunFormComponent implements OnInit {
 					this.holding = '';
 				}
 			});
+		}
+	}
+
+	toggleDefense() {
+		if (this.defending) {
+			this.newJournalEntry('stopDefense');
+			this.defending = false;
+		} else {
+			this.newJournalEntry('startDefense');
+			this.defending = true;
 		}
 	}
 
