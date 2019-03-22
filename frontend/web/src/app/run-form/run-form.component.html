@@ -55,7 +55,13 @@
 
 <mat-card *ngIf="showForm" class="button-card">
 	<div *ngFor="let element of gameElements">
-		<button mat-raised-button *ngIf="showForm" class="element-button" type="button" color="primary" [disabled]="(counter - time) < (element.RevealTime + 1) || time < 1 || (holding !== element.Name && holding !== '' && !element.IgnoreHolding)" (click)="getElement(element)">{{element.Name}}</button>
+		<button mat-raised-button *ngIf="showForm" class="element-button" type="button" color="primary" [disabled]="(counter - time) < (element.RevealTime + 1) || time < 1 || (holding !== element.Name && holding !== '' && !element.IgnoreHolding) || defending" (click)="getElement(element)">{{element.Name}}</button>
+	</div>
+	<div>
+		<button mat-raised-button *ngIf="showForm" class="element-button" type="button" color="primary" [disabled]="time < 1" (click)="toggleDefense()">
+		<ng-container *ngIf="!defending">Start Defending</ng-container>
+		<ng-container *ngIf="defending">Stop Defending</ng-container>
+		</button>
 	</div>
 </mat-card>
 

@@ -50,6 +50,9 @@ export class RunFormComponent implements OnInit {
 	// used to disable buttons if a robot is holding an element
 	holding = '';
 
+	// currently defending?
+	defending = false;
+
 	// starting positions
 	startingPositions: OptionEventChoice[] = RunFormDataService.startingPositions;
 	// starting configs
@@ -220,6 +223,10 @@ export class RunFormComponent implements OnInit {
 	 * Opens end match dialog containing notes - on close submits the payload
 	 */
 	endMatch() {
+		// end defense if currently defending
+		if (this.defending) {
+			this.toggleDefense();
+		}
 		// popup before match start
 		const dialogRef = this.dialog.open(EndMatchDialogComponent, {disableClose: true});
 		// after closing popup
@@ -294,6 +301,16 @@ export class RunFormComponent implements OnInit {
 					this.holding = '';
 				}
 			});
+		}
+	}
+
+	toggleDefense() {
+		if (this.defending) {
+			this.newJournalEntry('stopDefense');
+			this.defending = false;
+		} else {
+			this.newJournalEntry('startDefense');
+			this.defending = true;
 		}
 	}
 
