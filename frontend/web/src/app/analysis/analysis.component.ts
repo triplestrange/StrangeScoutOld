@@ -36,6 +36,7 @@ export class AnalysisComponent implements AfterViewInit {
 	dropchart: any;
 	hatchchart: any;
 	cargochart: any;
+	defensechart: any;
 // -------------------------------------
 
 	constructor(public sp: StrangeparseService) {
@@ -261,6 +262,21 @@ export class AnalysisComponent implements AfterViewInit {
 				}}
 			}
 		});
+		this.defensechart = c3.generate({
+			bindto: '#defensechart',
+			data: {
+				type: 'bar',
+				columns: [],
+				order: null
+			},
+			bar: {width: {
+					ratio: 0.5
+			}},
+			axis: {x: {tick: {
+					format: (x) => {return ''}
+				}}
+			}
+		});
 	}
 
 	reloadGraphs() {
@@ -279,6 +295,10 @@ export class AnalysisComponent implements AfterViewInit {
 		this.cargochart.load({
 			unload: true,
 			columns: this.cargocolumns
+		});
+		this.defensechart.load({
+			unload: true,
+			columns: this.defensecolumns
 		});
 	}
 
@@ -313,6 +333,14 @@ export class AnalysisComponent implements AfterViewInit {
 		columns = [];	
 		this.data.forEach((element) => {
 			columns.push([element.team.toString(), element.averages.cargo.cycles])
+		});
+		return columns;
+	}
+	get defensecolumns() {
+		let columns: any[];
+		columns = [];	
+		this.data.forEach((element) => {
+			columns.push([element.team.toString(), element.averages.defensetime])
 		});
 		return columns;
 	}
