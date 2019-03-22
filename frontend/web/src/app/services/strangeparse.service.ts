@@ -335,7 +335,7 @@ export class StrangeparseService {
 			});
 
 			if (defensejournal.length !== 0) {
-				average = totaltime / (defensejournal.length / 2);
+				average = totaltime / teamdata.length;
 			}
 
 			resolve(average);
