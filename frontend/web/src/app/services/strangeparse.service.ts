@@ -165,7 +165,8 @@ export class StrangeparseService {
 			
 			let droplessjournal = this.removeDrops(concatjournal);
 			let climblessjournal = this.removeClimb(droplessjournal);
-			let average = (climblessjournal.length / 2) / teamdata.length;
+			let defenselessjournal = this.removeDefense(climblessjournal);
+			let average = (defenselessjournal.length / 2) / teamdata.length;
 
 			resolve(average);
 		});
@@ -347,6 +348,26 @@ export class StrangeparseService {
 			word2 = words[words.length - 1];
 
 			if ((word2.toLowerCase() === element.toLowerCase()) && (word1.toLowerCase() === destination.toLowerCase())) {
+				newjournal.push(event);
+			}
+		});
+
+		return newjournal;
+	}
+
+	/**
+	 * removes defense from a journal
+	 * @param journal journal to remove defense from
+	 */
+	removeDefense(journal: any[]): any[] {
+		let newjournal = [];
+
+		journal.forEach(event => {
+			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+			let word = eventname.replace(/^./, str => {
+				return str.toLowerCase();
+			}).split(' ')[1];
+			if (word !== 'Defense') {
 				newjournal.push(event);
 			}
 		});
