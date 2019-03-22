@@ -164,7 +164,8 @@ export class StrangeparseService {
 			});
 			
 			let droplessjournal = this.removeDrops(concatjournal);
-			let average = (droplessjournal.length / 2) / teamdata.length;
+			let climblessjournal = this.removeClimb(droplessjournal);
+			let average = (climblessjournal.length / 2) / teamdata.length;
 
 			resolve(average);
 		});
@@ -387,6 +388,17 @@ export class StrangeparseService {
 		});
 
 		return newjournal;
+	}
+
+	/**
+	 * Removes climbs from a journal
+	 * @param src source journal
+	 */
+	removeClimb(src: any[]): any[] {
+		while (src[src.length - 1].Event.substr(src[src.length - 1].Event.length - 5) === 'Climb') {
+			src.pop();
+		}
+		return src;
 	}
 
 // EXTRA -------------------------------
