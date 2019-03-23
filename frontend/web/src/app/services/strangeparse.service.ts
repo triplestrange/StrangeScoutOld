@@ -485,7 +485,7 @@ export class StrangeparseService {
 	 * @param src source journal
 	 */
 	removeClimb(src: any[]): any[] {
-		while (src[src.length - 1].Event.substr(src[src.length - 1].Event.length - 5) === 'Climb') {
+		while (src.length > 0 && src[src.length - 1].Event.substr(src[src.length - 1].Event.length - 5) === 'Climb') {
 			src.pop();
 		}
 		return src;
