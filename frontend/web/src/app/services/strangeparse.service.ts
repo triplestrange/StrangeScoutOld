@@ -149,6 +149,8 @@ export class StrangeparseService {
 		return new Promise(async resolve => {
 			let concatjournal = [];
 			let teamdata: any[];
+
+			let average: number;
 			
 			if (rawdata) {
 				teamdata = rawdata;
@@ -162,11 +164,15 @@ export class StrangeparseService {
 				// doesn't know `Journal` exists in the returned objects
 				concatjournal = tmp.concat(doc.Journal)
 			});
-			
-			let droplessjournal = this.removeDrops(concatjournal);
-			let climblessjournal = this.removeClimb(droplessjournal);
-			let defenselessjournal = this.removeDefense(climblessjournal);
-			let average = (defenselessjournal.length / 2) / teamdata.length;
+
+			if (concatjournal.length < 1) {
+				average = 0;
+			} else {
+				let droplessjournal = this.removeDrops(concatjournal);
+				let climblessjournal = this.removeClimb(droplessjournal);
+				let defenselessjournal = this.removeDefense(climblessjournal);
+				average = (defenselessjournal.length / 2) / teamdata.length;
+			}
 
 			resolve(average);
 		});
