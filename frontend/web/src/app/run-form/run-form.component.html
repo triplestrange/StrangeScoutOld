@@ -7,7 +7,7 @@
 	<label for="teamNumber">Team Number</label>
 	<div>
 		<mat-form-field class="setup-field">
-			<input matInput name="teamNumber" id="teamNumber" type="number" min="0" max="9999" [(ngModel)]="team" #teamNumber=ngModel required>
+			<input matInput name="teamNumber" id="teamNumber" type="number" min="1" max="9999" [(ngModel)]="team" #teamNumber=ngModel required>
 		</mat-form-field>
 	</div>
 	<div class="alert-required" *ngIf="teamNumber.invalid && (teamNumber.dirty || teamNumber.touched)">Team Number is required</div>
@@ -15,7 +15,7 @@
 	<label for="matchNumber">Match Number</label>
 	<div>
 		<mat-form-field class="setup-field">
-			<input matInput name="matchNumber" id="matchNumber" type="number" min="0" max="999" [(ngModel)]="match" #matchNumber=ngModel required>
+			<input matInput name="matchNumber" id="matchNumber" type="number" min="1" max="999" [(ngModel)]="match" #matchNumber=ngModel required>
 		</mat-form-field>
 	</div>
 	<div class="alert-required" *ngIf="matchNumber.invalid && (matchNumber.dirty || matchNumber.touched)">Match Number is required</div>
