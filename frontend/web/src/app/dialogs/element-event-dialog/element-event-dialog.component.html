@@ -1,6 +1,6 @@
 <div mat-dialog-content class="event-dialog">
 	<div *ngFor="let event of element.SubEvents">
-		<button mat-raised-button class="event-button" type="button" (click)="this.dialogRef.close(event.Value)">{{event.Name}}</button>
+		<button mat-raised-button class="event-button" type="button" [disabled]="!enabled" (click)="this.dialogRef.close(event.Value)">{{event.Name}}</button>
 	</div>
 </div>
 <div mat-dialog-actions>
