@@ -23,7 +23,7 @@
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>
-<div class="center-container csv-button">
+<div *ngIf="data.length > 0" class="center-container csv-button">
 	<button mat-raised-button color="primary" type="button" (click)="downloadCSV()">Download CSV</button>
 </div>
 
