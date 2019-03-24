@@ -23,6 +23,9 @@
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>
+<div class="center-container csv-button">
+	<button mat-raised-button color="primary" type="button" (click)="downloadCSV()">Download CSV</button>
+</div>
 
 <mat-tab-group mat-stretch-tabs dynamicHeight disableRipple="true" *ngIf="data.length > 0" (selectedTabChange)="tabChange($event)" (animationDone)="reloadGraphs()">
 <mat-tab label="Data">
