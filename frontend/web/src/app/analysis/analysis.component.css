@@ -23,3 +23,7 @@ mat-accordion.sorter {
 div.chart-container {
 	padding: 25px;
 }
+
+div.csv-button {
+	padding-top: 20px;
+}
