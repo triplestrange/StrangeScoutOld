@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
 
 import {StrangeparseService} from '../services/strangeparse.service';
@@ -10,7 +10,7 @@ import * as c3 from 'c3';
 	templateUrl: './analysis.component.html',
 	styleUrls: ['./analysis.component.css']
 })
-export class AnalysisComponent implements AfterViewInit {
+export class AnalysisComponent {
 
 	data: any[];
 	original: any[];
@@ -138,6 +138,8 @@ export class AnalysisComponent implements AfterViewInit {
 		});
 	}
 
+// FILTERING ---------------------------
+
 	/**
 	 * Sort the data cards based on the sort object
 	 */
@@ -188,12 +190,68 @@ export class AnalysisComponent implements AfterViewInit {
 		this.reloadGraphs();
 	}
 
-// -------------------------------------
+// CSV ---------------------------------
 
-	ngAfterViewInit() {
-		//this.createGraphs();
-		//this.reloadGraphs();
-	}
+/**
+ * Downloads a csv of the current data
+ */
+downloadCSV() {
+	const csvcontents = this.csv;
+
+	const m = new Date();
+	const dateString =
+	m.getUTCFullYear() + "-" +
+	("0" + (m.getUTCMonth()+1)).slice(-2) + "-" +
+	("0" + m.getUTCDate()).slice(-2) + "_" +
+	("0" + m.getUTCHours()).slice(-2) + "-" +
+	("0" + m.getUTCMinutes()).slice(-2) + "-" +
+	("0" + m.getUTCSeconds()).slice(-2);
+
+	const filename = `scouting_${dateString}.csv`
+
+	this.downloadString(csvcontents, 'text/csv', filename)
+}
+
+get csv() {
+	let csvcontents = 'Team Number, Match Count, Cycles, Drops, Defense Time, Hatch Cycles, Hatch Drops, Top Hatch, Middle Hatch, Bottom Hatch, Cargo Hatch, Cargo Cycles, Cargo Drops, Top Cargo, Middle Cargo, Bottom Cargo, Cargo Cargo';
+	csvcontents = csvcontents.concat('\n');
+	this.data.forEach(e => {
+
+		let row = '';
+		row = row.concat(`${e.team}, ${e.matchCount}, ${e.averages.cycles}, ${e.averages.drops}, ${e.averages.defensetime}, `)
+		row = row.concat(`${e.averages.hatch.cycles}, ${e.averages.hatch.drops}, ${e.averages.hatch.top}, ${e.averages.hatch.middle}, ${e.averages.hatch.bottom}, ${e.averages.hatch.cargo}, `);
+		row = row.concat(`${e.averages.cargo.cycles}, ${e.averages.cargo.drops}, ${e.averages.cargo.top}, ${e.averages.cargo.middle}, ${e.averages.cargo.bottom}, ${e.averages.cargo.cargo}`);
+		row = row.concat('\n');
+		csvcontents = csvcontents.concat(row);
+	});
+	
+	return csvcontents;
+}
+
+// from https://gist.github.com/danallison/3ec9d5314788b337b682
+/**
+ * downloads a string as a file
+ * @param text string contents
+ * @param fileType file type
+ * @param fileName file name
+ */
+downloadString(text, fileType, fileName) {
+	var blob = new Blob([text], { type: fileType });
+
+	var a = document.createElement('a');
+	a.download = fileName;
+	a.href = URL.createObjectURL(blob);
+	a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+	a.style.display = "none";
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+	setTimeout(() => {
+		URL.revokeObjectURL(a.href);
+	}, 1500);
+}
+
+// GRAPHS ------------------------------
 
 	tabChange(event: MatTabChangeEvent) {
 		if (event.tab.textLabel === "Charts") {
@@ -302,7 +360,7 @@ export class AnalysisComponent implements AfterViewInit {
 		});
 	}
 
-// -------------------------------------
+// COLUMNS -----------------------------
 
 	get cyclecolumns() {
 		let cyclecolumns: any[];
