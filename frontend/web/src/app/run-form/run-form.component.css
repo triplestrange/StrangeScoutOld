@@ -46,3 +46,7 @@ button.element-button {
 .setup-field {
 	width: 100%;
 }
+
+mat-card.setup-card div {
+	padding-top: 20px;
+}

@@ -23,17 +23,15 @@ export class StrangeparseService {
 	 * Resolves `true` on success, otherwise `false`
 	 */
 	createIndexes(): Promise<boolean> {
-		return new Promise(resolve => {
-			this.db.createIndex({
-				index: {
-					fields: ['MatchNumber', 'TeamNumber']
-				}
-			}).then(() => {
-				resolve(true);
-			}).catch(error => {
-				console.log(`Error creating index: ${error}`);
-				resolve(false);
-			});
+		return this.db.createIndex({
+			index: {
+				fields: ['MatchNumber', 'TeamNumber']
+			}
+		}).then(() => {
+			return true;
+		}).catch(error => {
+			console.log(`Error creating index: ${error}`);
+			return false;
 		});
 	}
 
@@ -41,29 +39,22 @@ export class StrangeparseService {
 	 * Resolves an array of team numbers with available data
 	 */
 	getTeams(): Promise<number[]> {
-
-		return new Promise(resolve => {
+		return this.db.find({
+			selector: {
+				type: 'run'
+			},
+			fields: ['TeamNumber']
+		}).then(result => {
 			let teams: number[];
-			teams = [];
-
-			this.db.find({
-				selector: {
-					type: 'run'
-				},
-				fields: ['TeamNumber']
-			}).then(result => {
-				result.docs.forEach(entry => {
-					// @ts-ignore
-					// doesn't know `TeamNumber` exists in the returned objects
-					teams.push(entry.TeamNumber);
-				});
-				let dedupteams = this.removeDuplicate(teams);
-				let sorted = dedupteams.sort((a, b) => {return a-b});
-				resolve(sorted);
-			}).catch(error => {
-				console.log(`Error getting teams: ${error}`);
-				resolve([]);
-			});
+			// @ts-ignore
+			teams = result.docs.map(entry => entry.TeamNumber);
+			
+			let dedupteams = this.removeDuplicate(teams);
+			let sorted = dedupteams.sort((a, b) => {return a-b});
+			return sorted;
+		}).catch(error => {
+			console.log(`Error getting teams: ${error}`);
+			return [];
 		});
 
 	}
@@ -108,34 +99,30 @@ export class StrangeparseService {
 	 * @param team team to get runs of
 	 */
 	getTeam(team: number): Promise<any[]> {
-		return new Promise(resolve => {
-			this.db.find({
+		return this.db.find({
 				selector: {
 					type: 'run',
 					TeamNumber: team
 				}
 			}).then(result => {
-				resolve(this.dropDuplicateMatch(result.docs));
+				return this.dropDuplicateMatch(result.docs);
 			});
-		});
 	}
 
 	/**
 	 * Resolves an array of objects
 	 */
 	allData(): Promise<{}[]> {
-		return new Promise(resolve => {
-			this.db.allDocs({
+		return this.db.allDocs({
 				include_docs: true
 			}).then(result => {
-				let out: any[];
-				out = [];
-				result.rows.forEach(row => {
-					out.push(row.doc)
-				})
-				resolve(out)
-			})
-		})
+				return result.rows
+					.map(row => row.doc)
+					.filter(elem => {
+						//@ts-ignore
+						return elem.type == 'run';
+					});
+			});
 	}
 
 // AVERAGES ----------------------------
@@ -509,17 +496,16 @@ export class StrangeparseService {
 	 * @param src Array of docs
 	 */
 	dropDuplicateMatch(src: any[]): any[] {
-		let matches: number[];
-		let final: any[];
-		matches = [];
-		final = [];
-		src.forEach((value) => {
-			let matchnum = value.MatchNumber;
-			if (!matches.includes(matchnum)) {
-				matches.push(matchnum);
-				final.push(value);
+		let matches: any = {};
+
+		return src.filter((value) => {
+			let matchnum = value.MatchNumber.toString();
+			if (!matches[matchnum]) {
+				matches[matchnum] = true;
+				return true;
+			} else {
+				return false;
 			}
 		});
-		return final;
 	}
 }

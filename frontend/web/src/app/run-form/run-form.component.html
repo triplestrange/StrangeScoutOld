@@ -1,44 +1,45 @@
 <form class="center-container" name="runForm" id="runForm" (ngSubmit)="endMatch()">
 
-<mat-card *ngIf="!showForm">
+<mat-card *ngIf="!showForm" class="setup-card">
 	<mat-card-header>
 		<mat-card-title>Setup</mat-card-title>
 	</mat-card-header>
-	<label for="teamNumber">Team Number</label>
+	
 	<div>
+		<label for="teamNumber">Team Number</label>
 		<mat-form-field class="setup-field">
 			<input matInput name="teamNumber" id="teamNumber" type="number" min="1" max="9999" [(ngModel)]="team" #teamNumber=ngModel required>
 		</mat-form-field>
+		<span class="alert-required" *ngIf="teamNumber.invalid && (teamNumber.dirty || teamNumber.touched)">Team Number is required</span>
 	</div>
-	<div class="alert-required" *ngIf="teamNumber.invalid && (teamNumber.dirty || teamNumber.touched)">Team Number is required</div>
 
-	<label for="matchNumber">Match Number</label>
 	<div>
+		<label for="matchNumber">Match Number</label>
 		<mat-form-field class="setup-field">
 			<input matInput name="matchNumber" id="matchNumber" type="number" min="1" max="999" [(ngModel)]="match" #matchNumber=ngModel required>
 		</mat-form-field>
+		<span class="alert-required" *ngIf="matchNumber.invalid && (matchNumber.dirty || matchNumber.touched)">Match Number is required</span>
 	</div>
-	<div class="alert-required" *ngIf="matchNumber.invalid && (matchNumber.dirty || matchNumber.touched)">Match Number is required</div>
 
-	<label>Starting Position</label>
 	<div>
+		<label>Starting Position</label>
 		<mat-form-field class="setup-field">
 			<mat-select name="StartingPos" id="startingPos" [(ngModel)]="start" #startingPos=ngModel required>
 				<mat-option *ngFor="let opt of startingPositions" [value]="opt.Value">{{opt.Name}}</mat-option>
 			</mat-select>
 		</mat-form-field>
+		<span class="alert-required" *ngIf="startingPos.invalid && (startingPos.dirty || startingPos.touched)">Starting Position is required</span>
 	</div>
-	<div class="alert-required" *ngIf="startingPos.invalid && (startingPos.dirty || startingPos.touched)">Starting Position is required</div>
 
-	<label>Starting Configuration</label>
 	<div>
+		<label>Starting Configuration</label>
 		<mat-form-field class="setup-field">
 			<mat-select name="StartingConf" id="startingConf" [(ngModel)]="load" #startingConf=ngModel required>
 				<mat-option *ngFor="let opt of startingConfigs" [value]="opt.Value">{{opt.Name}}</mat-option>
 			</mat-select>
 		</mat-form-field>
+		<span class="alert-required" *ngIf="startingConf.invalid && (startingConf.dirty || startingConf.touched)">Starting Configuration is required</span>
 	</div>
-	<div class="alert-required" *ngIf="startingConf.invalid && (startingConf.dirty || startingConf.touched)">Starting Configuration is required</div>
 
 	<div class="center-container">
 		<button mat-raised-button *ngIf="!showForm" color="primary" type="button" (click)="startMatch()" [disabled]="teamNumber.invalid || matchNumber.invalid || startingPos.invalid || startingConf.invalid">Next</button>

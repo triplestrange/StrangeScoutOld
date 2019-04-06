@@ -14,6 +14,7 @@ export class AnalysisComponent {
 
 	data: any[];
 	original: any[];
+	allruns: any[];
 
 	sort = {
 		method: 'team',
@@ -43,7 +44,9 @@ export class AnalysisComponent {
 		this.data = [];
 		this.original = [];
 		// creates indexes if not exists
-		this.sp.createIndexes().then(async () => {
+		this.sp.createIndexes()
+			.catch(() => {}) //Subjective addition, should be added only if createIndex does not catch itself
+			.then(async () => {
 			// gets list of teams from index
 			// creates items in the data array for each
 			// (executes synchronously)
@@ -64,7 +67,20 @@ export class AnalysisComponent {
 					this.data[index].matchCount = result.length;
 				});
 
-				this.data[index].rawdata = await this.sp.getTeam(entry.team);
+				//this.data[index].rawdata = await this.sp.getTeam(entry.team);
+				this.data[index].rawdata = [];
+
+			});
+
+			await this.sp.allData().then(result => {
+				result.forEach(row => {
+					//@ts-ignore
+					let index = this.data.findIndex(x => x.team == row.TeamNumber)
+					this.data[index].rawdata.push(row);
+				});
+			});
+
+			await this.data.forEach(async (entry, index) => {
 
 // OVERALL -----------------------------
 

@@ -16,6 +16,6 @@ export class ElementEventDialogComponent {
 		this.element = data;
 
 		let self = this;
-		setTimeout(function () { self.enabled = true; }, 750);
+		setTimeout(function () { self.enabled = true; }, 500);
 	}
 }

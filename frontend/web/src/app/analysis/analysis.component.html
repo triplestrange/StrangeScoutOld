@@ -1,28 +1,41 @@
+<!-- div holding the sort menu (hides if data array is empty) -->
 <div *ngIf="data.length > 0" class="center-container">
 	<mat-accordion class="sorter" multi="true">
 		<mat-expansion-panel>
+		
 			<mat-expansion-panel-header>
 				<mat-panel-title>
 					Sorting
 				</mat-panel-title>
 			</mat-expansion-panel-header>
+
 			<mat-form-field>
+				<!-- Sort method selection - pulls an option for each option in the sortmethods array -->
+				<!-- Binds value to sort.method -->
 				<mat-select placeholder="Sort Method" [(ngModel)]="sort.method" (ngModelChange)="resort()">
 					<mat-option *ngFor="let method of sortmethods" [value]="method.value">{{ method.name }}</mat-option>
 				</mat-select>
 			</mat-form-field>
+
 			<mat-form-field>
+				<!-- Sort direction - ascending/descending -->
+				<!-- Binds as a boolean to sort.ascending -->
 				<mat-select placeholder="Sort Direction" [(ngModel)]="sort.ascending" (ngModelChange)="resort()">
 					<mat-option [value]="false">Descending</mat-option>
 					<mat-option [value]="true">Ascending</mat-option>
 				</mat-select>
 			</mat-form-field>
+
+			<!-- Button to reset sort methods -->
 			<div class="center-container">
 				<button mat-button color="warn" type="button" (click)="reset()">Reset</button>
 			</div>
+			
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>
+
+<!-- Button to download CSV of current data structure - hides when data array is empty -->
 <div *ngIf="data.length > 0" class="center-container csv-button">
 	<button mat-raised-button color="primary" type="button" (click)="downloadCSV()">Download CSV</button>
 </div>
@@ -54,8 +67,11 @@
 						Average Defense Time: {{ entry.averages.defensetime }} seconds
 					</mat-list-item>
 				</mat-list>
+
 				<mat-accordion multi="true">
+					<!-- Hatch expansion panel -->
 					<mat-expansion-panel>
+
 						<mat-expansion-panel-header>
 							<mat-panel-title>
 								Average Hatch Panels
@@ -64,6 +80,7 @@
 								{{ entry.averages.hatch.cycles }}
 							</mat-panel-description>
 						</mat-expansion-panel-header>
+
 						<mat-list role="list">
 							<mat-list-item role="listitem">
 								Average Dropped Panels: {{ entry.averages.hatch.drops }}
@@ -81,8 +98,12 @@
 								Average Cargo Panels: {{ entry.averages.hatch.cargo }}
 							</mat-list-item>
 						</mat-list>
+
 					</mat-expansion-panel>
+
+					<!-- Cargo expansion panel -->
 					<mat-expansion-panel>
+
 						<mat-expansion-panel-header>
 							<mat-panel-title>
 								Average Cargo
@@ -91,6 +112,7 @@
 								{{ entry.averages.cargo.cycles }}
 							</mat-panel-description>
 						</mat-expansion-panel-header>
+
 						<mat-list role="list">
 							<mat-list-item role="listitem">
 								Average Dropped Cargo: {{ entry.averages.cargo.drops }}
@@ -108,35 +130,47 @@
 								Average Cargo Cargo: {{ entry.averages.cargo.cargo }}
 							</mat-list-item>
 						</mat-list>
+
 					</mat-expansion-panel>
 				</mat-accordion>
+
+				<!-- Hide team button - disables if fewer thsan 2 teams -->
 				<div class="center-container remove-button-container">
 					<button mat-button color="warn" type="button" [disabled]="data.length < 2" (click)="dropTeam(entry.team)">Hide Team</button>
 				</div>
+
 			</mat-card-content>
 		</mat-card>
+
 	</div>
 </mat-tab>
+
 <mat-tab label="Charts">
+
 	<div class="chart-container">
 		<h3 class="mat-card-title">Average Cycles</h3>
 		<div id="cyclechart"></div>
 	</div>
+
 	<div class="chart-container">
 		<h3 class="mat-card-title">Average Drops</h3>
 		<div id="dropchart"></div>
 	</div>
+
 	<div class="chart-container">
 		<h3 class="mat-card-title">Average Hatch Panels</h3>
 		<div id="hatchchart"></div>
 	</div>
+
 	<div class="chart-container">
 		<h3 class="mat-card-title">Average Cargo</h3>
 		<div id="cargochart"></div>
 	</div>
+
 	<div class="chart-container">
 		<h3 class="mat-card-title">Average Defense Time</h3>
 		<div id="defensechart"></div>
 	</div>
+
 </mat-tab>
 </mat-tab-group>
