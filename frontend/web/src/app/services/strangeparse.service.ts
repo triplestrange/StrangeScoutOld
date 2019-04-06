@@ -25,7 +25,7 @@ export class StrangeparseService {
 	createIndexes(): Promise<boolean> {
 		return this.db.createIndex({
 			index: {
-				fields: ['MatchNumber', 'TeamNumber']
+				fields: ['TeamNumber']
 			}
 		}).then(() => {
 			return true;
@@ -55,39 +55,6 @@ export class StrangeparseService {
 		}).catch(error => {
 			console.log(`Error getting teams: ${error}`);
 			return [];
-		});
-
-	}
-
-	/**
-	 * Resolves an array of match numbers with available data
-	 * @param team optional parameter specifying a team to get the matches of
-	 */
-	getMatches(team?: number): Promise<number[]> {
-
-		return new Promise(resolve => {
-			let matches: number[];
-			matches = [];
-
-			this.db.find({
-				selector: {
-					type: 'run',
-					TeamNumber: {$eq: team}
-				},
-				fields: ['MatchNumber']
-			}).then(result => {
-				result.docs.forEach(entry => {
-					// @ts-ignore
-					// doesn't know `MatchNumber` exists in the returned objects
-					matches.push(entry.MatchNumber);
-				});
-				let dedupmatches = this.removeDuplicate(matches);
-				let sorted = dedupmatches.sort((a, b) => {return a-b});
-				resolve(sorted);
-			}).catch(error => {
-				console.log(`Error getting matches: ${error}`);
-				resolve([]);
-			});
 		});
 
 	}

@@ -49,7 +49,7 @@
 			<mat-card-header>
 				<!-- Set the team number title and matches played subtitle -->
 				<mat-card-title>Team {{ entry.team }}</mat-card-title>
-				<mat-card-subtitle>{{ entry.matchCount }} match<ng-container *ngIf="entry.matchCount !== 1">es</ng-container></mat-card-subtitle>
+				<mat-card-subtitle>{{ entry.rawdata.length }} match<ng-container *ngIf="entry.rawdata.length !== 1">es</ng-container></mat-card-subtitle>
 			</mat-card-header>
 			<mat-card-content>
 				<!-- New list -->

@@ -62,11 +62,6 @@ export class AnalysisComponent {
 				this.data[index].averages.hatch = {};
 				this.data[index].averages.cargo = {};
 
-				// get match tally and set property
-				this.sp.getMatches(entry.team).then(result => {
-					this.data[index].matchCount = result.length;
-				});
-
 				//this.data[index].rawdata = await this.sp.getTeam(entry.team);
 				this.data[index].rawdata = [];
 
