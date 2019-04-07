@@ -22,7 +22,7 @@ export class AnalysisComponent {
 	}
 	sortmethods = [
 		{name: 'Team Number', value: 'team'},
-		{name: 'Match Count', value: 'matchCount'},
+		{name: 'Match Count', value: 'rawdata.length'},
 		{name: 'Cycle Count', value: 'averages.cycles'},
 		{name: 'Drop Count', value: 'averages.drops'},
 		{name: 'Defense Time', value: 'averages.defensetime'},
@@ -229,7 +229,7 @@ get csv() {
 	this.data.forEach(e => {
 
 		let row = '';
-		row = row.concat(`${e.team}, ${e.matchCount}, ${e.averages.cycles}, ${e.averages.drops}, ${e.averages.defensetime}, `)
+		row = row.concat(`${e.team}, ${e.rawdata.length}, ${e.averages.cycles}, ${e.averages.drops}, ${e.averages.defensetime}, `)
 		row = row.concat(`${e.averages.hatch.cycles}, ${e.averages.hatch.drops}, ${e.averages.hatch.top}, ${e.averages.hatch.middle}, ${e.averages.hatch.bottom}, ${e.averages.hatch.cargo}, `);
 		row = row.concat(`${e.averages.cargo.cycles}, ${e.averages.cargo.drops}, ${e.averages.cargo.top}, ${e.averages.cargo.middle}, ${e.averages.cargo.bottom}, ${e.averages.cargo.cargo}`);
 		row = row.concat('\n');
