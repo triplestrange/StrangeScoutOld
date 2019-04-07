@@ -132,6 +132,21 @@
 						</mat-list>
 
 					</mat-expansion-panel>
+
+					<!-- Notes expansion panel -->
+					<mat-expansion-panel *ngIf="entry.notes.length > 0">
+
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								Notes
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+
+						<ul>
+							<li *ngFor="let note of entry.notes">{{ note }}</li>
+						</ul>
+
+					</mat-expansion-panel>
 				</mat-accordion>
 
 				<!-- Hide team button - disables if fewer thsan 2 teams -->

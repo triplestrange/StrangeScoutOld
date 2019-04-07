@@ -209,7 +209,7 @@ export class StrangeparseService {
 			let average = (dropjournal.length / 2) / teamdata.length;
 
 			resolve(average);
-		})
+		});
 	}
 
 	/**
@@ -281,6 +281,34 @@ export class StrangeparseService {
 			resolve(average);
 		})
 	}
+
+// NOTES -------------------------------
+
+/**
+ * Resolves notes for a team
+ * @param team team number to get notes for
+ * @param rawdata (optional) pass an array of doc objects to be parsed instead of querying the db
+ */
+notes(team: number, rawdata?: any[]): Promise<string[]> {
+	return new Promise(async resolve => {
+		let notesArray: string[] = [];
+		let teamdata: any[];
+		
+		if (rawdata) {
+			teamdata = rawdata;
+		} else {
+			teamdata = await this.getTeam(team);
+		}
+	
+		teamdata.forEach(doc => {
+			if (doc.Notes) {
+				notesArray.push(doc.Notes);
+			}
+		});
+
+		resolve(notesArray);
+	});
+}
 
 // JOURNAL MUTATIONS -------------------
 

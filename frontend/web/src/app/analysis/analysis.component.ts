@@ -61,8 +61,8 @@ export class AnalysisComponent {
 				this.data[index].averages = {};
 				this.data[index].averages.hatch = {};
 				this.data[index].averages.cargo = {};
+				this.data[index].notes = [];
 
-				//this.data[index].rawdata = await this.sp.getTeam(entry.team);
 				this.data[index].rawdata = [];
 
 			});
@@ -89,7 +89,10 @@ export class AnalysisComponent {
 				});
 				this.sp.averageDefenseTime(entry.team, entry.rawdata).then(result => {
 					this.data[index].averages.defensetime = Math.ceil(result*100)/100;
-				})
+				});
+				this.sp.notes(entry.team, entry.rawdata).then(result => {
+					this.data[index].notes = result;
+				});
 
 // HATCH -------------------------------
 
