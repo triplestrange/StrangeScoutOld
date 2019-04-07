@@ -101,10 +101,10 @@ export class StrangeparseService {
 	 */
 	averageCycles(team: number, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
-			let concatjournal = [];
+			let concatjournal: any[];
 			let teamdata: any[];
 
-			let average: number;
+			let average: number = 0;
 			
 			if (rawdata) {
 				teamdata = rawdata;
@@ -112,16 +112,11 @@ export class StrangeparseService {
 				teamdata = await this.getTeam(team);
 			}
 
-			teamdata.forEach(doc => {
-				let tmp = concatjournal;
-				// @ts-ignore
-				// doesn't know `Journal` exists in the returned objects
-				concatjournal = tmp.concat(doc.Journal)
-			});
+			concatjournal = teamdata
+				.map(doc => doc.Journal)
+				.reduce((x,y) => x.concat(y), []);
 
-			if (concatjournal.length < 1) {
-				average = 0;
-			} else {
+			if (concatjournal.length > 0) {
 				let droplessjournal = this.removeDrops(concatjournal);
 				let climblessjournal = this.removeClimb(droplessjournal);
 				let defenselessjournal = this.removeDefense(climblessjournal);
@@ -139,7 +134,7 @@ export class StrangeparseService {
 	 */
 	averageDrops(team: number, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
-			let concatjournal = [];
+			let concatjournal: any[];
 			let teamdata: any[];
 
 			if (rawdata) {
@@ -148,12 +143,9 @@ export class StrangeparseService {
 				teamdata = await this.getTeam(team);
 			}
 
-			teamdata.forEach(doc => {
-				let tmp = concatjournal;
-				// @ts-ignore
-				// doesn't know `Journal` exists in the returned objects
-				concatjournal = tmp.concat(doc.Journal)
-			});
+			concatjournal = teamdata
+				.map(doc => doc.Journal)
+				.reduce((x,y) => x.concat(y), []);
 
 			let dropjournal = this.onlyDrops(concatjournal);
 			let average = (dropjournal.length / 2) / teamdata.length;
@@ -170,7 +162,7 @@ export class StrangeparseService {
 	 */
 	averageElementCycles(team: number, element: string, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
-			let concatjournal = [];
+			let concatjournal: any[];
 			let teamdata: any[];
 			
 			if (rawdata) {
@@ -179,12 +171,9 @@ export class StrangeparseService {
 				teamdata = await this.getTeam(team);
 			}
 
-			teamdata.forEach(doc => {
-				let tmp = concatjournal;
-				// @ts-ignore
-				// doesn't know `Journal` exists in the returned objects
-				concatjournal = tmp.concat(doc.Journal)
-			});
+			concatjournal = teamdata
+				.map(doc => doc.Journal)
+				.reduce((x,y) => x.concat(y), []);
 
 			let elementjournal = this.singleElement(concatjournal, element);
 			let droplessjournal = this.removeDrops(elementjournal);
@@ -202,7 +191,7 @@ export class StrangeparseService {
 	 */
 	averageElementDrops(team: number, element: string, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
-			let concatjournal = [];
+			let concatjournal: any[];
 			let teamdata: any[];
 			
 			if (rawdata) {
@@ -211,12 +200,9 @@ export class StrangeparseService {
 				teamdata = await this.getTeam(team);
 			}
 
-			teamdata.forEach(doc => {
-				let tmp = concatjournal;
-				// @ts-ignore
-				// doesn't know `Journal` exists in the returned objects
-				concatjournal = tmp.concat(doc.Journal)
-			});
+			concatjournal = teamdata
+				.map(doc => doc.Journal)
+				.reduce((x,y) => x.concat(y), []);
 			
 			let elementjournal = this.singleElement(concatjournal, element);
 			let dropjournal = this.onlyDrops(elementjournal);
@@ -235,7 +221,7 @@ export class StrangeparseService {
 	 */
 	averageDestinationCycles(team: number, element: string, destination: string, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
-			let concatjournal = [];
+			let concatjournal: any[];
 			let teamdata: any[];
 			
 			if (rawdata) {
@@ -244,12 +230,9 @@ export class StrangeparseService {
 				teamdata = await this.getTeam(team);
 			}
 
-			teamdata.forEach(doc => {
-				let tmp = concatjournal;
-				// @ts-ignore
-				// doesn't know `Journal` exists in the returned objects
-				concatjournal = tmp.concat(doc.Journal)
-			});
+			concatjournal = teamdata
+				.map(doc => doc.Journal)
+				.reduce((x,y) => x.concat(y), []);
 
 			let destjournal = this.singleDestination(concatjournal, element, destination);
 			let droplessjournal = this.removeDrops(destjournal);
@@ -266,11 +249,11 @@ export class StrangeparseService {
 	 */
 	averageDefenseTime(team: number, rawdata?: any[]): Promise<number> {
 		return new Promise(async resolve => {
-			let concatjournal = [];
+			let concatjournal: any[];
 			let teamdata: any[];
 
-			let totaltime = 0;
-			let average = 0;
+			let totaltime: number = 0;
+			let average: number = 0;
 			
 			if (rawdata) {
 				teamdata = rawdata;
@@ -278,12 +261,9 @@ export class StrangeparseService {
 				teamdata = await this.getTeam(team);
 			}
 
-			teamdata.forEach(doc => {
-				let tmp = concatjournal;
-				// @ts-ignore
-				// doesn't know `Journal` exists in the returned objects
-				concatjournal = tmp.concat(doc.Journal)
-			});
+			concatjournal = teamdata
+				.map(doc => doc.Journal)
+				.reduce((x,y) => x.concat(y), []);
 
 			let defensejournal = this.onlyDefense(concatjournal);
 
@@ -310,7 +290,7 @@ export class StrangeparseService {
 	 * @param element element to pull
 	 */
 	singleElement(journal: any[], element: string): any[] {
-		let newjournal = [];
+		let newjournal: any[] = [];
 
 		journal.forEach(event => {
 			let word: string;
@@ -336,7 +316,7 @@ export class StrangeparseService {
 	 * @param element element to pull
 	 */
 	singleDestination(journal: any[], element: string, destination: string): any[] {
-		let newjournal = [];
+		let newjournal: any[] = [];
 
 		journal.forEach(event => {
 			let word1: string;
@@ -363,7 +343,7 @@ export class StrangeparseService {
 	 * @param journal journal to remove defense from
 	 */
 	removeDefense(journal: any[]): any[] {
-		let newjournal = [];
+		let newjournal: any[] = [];
 
 		journal.forEach(event => {
 			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
@@ -383,7 +363,7 @@ export class StrangeparseService {
 	 * @param journal journal to parse
 	 */
 	onlyDefense(journal: any[]): any[] {
-		let newjournal = [];
+		let newjournal: any[] = [];
 
 		journal.forEach(event => {
 			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
@@ -403,7 +383,7 @@ export class StrangeparseService {
 	 * @param journal journal to remove drops from
 	 */
 	removeDrops(journal: any[]): any[] {
-		let newjournal = [];
+		let newjournal: any[] = [];
 
 		journal.forEach(event => {
 			let eventname = event.Event.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
