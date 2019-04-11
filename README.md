@@ -12,8 +12,6 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 
 ## Installation
 
-***NOTE:*** Snap based installation is currently non-functional until we resolve a node dependency issue
-
 ### Docker
 
 ***NOTE:*** If you don't want to use HTTPS, you can skip step 4
