@@ -282,6 +282,60 @@ export class StrangeparseService {
 		})
 	}
 
+	/**
+	 * returns an object with total quantities of climb types
+	 * @param team team to get data of
+	 * @param rawdata (optional) pass an array of doc objects to be parsed instead of querying the db
+	 */
+	climbBreakdown(team: number, rawdata?: any[]): Promise<{}> {
+		return new Promise(async resolve => {
+			let teamdata: any[];
+			let concatjournal: any[];
+			let climbjournal: any[];
+
+			let breakdown = {
+				none: 0,
+				incomplete: 0,
+				l1: 0,
+				l2: 0,
+				l3: 0
+			};
+
+			if (rawdata) {
+				teamdata = rawdata;
+			} else {
+				teamdata = await this.getTeam(team);
+			}
+
+			breakdown.none = teamdata.length;
+
+			concatjournal = teamdata
+				.map(doc => doc.Journal)
+				.reduce((x,y) => x.concat(y), []);
+
+			climbjournal = this.onlyClimb(concatjournal);
+
+			climbjournal.forEach(value => {
+				let final = value.Event.substr(0, value.Event.length - 5)
+				if (final === 'DNF') {
+					breakdown.none--;
+					breakdown.incomplete++;
+				} else if (final === 'L1') {
+					breakdown.none--;
+					breakdown.l1++;
+				} else if (final === 'L2') {
+					breakdown.none--;
+					breakdown.l2++;
+				} else if (final === 'L3') {
+					breakdown.none--;
+					breakdown.l3++;
+				}
+			});
+
+			resolve(breakdown);
+		});
+	}
+
 // NOTES -------------------------------
 
 /**
@@ -448,6 +502,17 @@ notes(team: number, rawdata?: any[]): Promise<string[]> {
 	 */
 	removeClimb(src: any[]): any[] {
 		while (src.length > 0 && src[src.length - 1].Event.substr(src[src.length - 1].Event.length - 5) === 'Climb') {
+			src.pop();
+		}
+		return src;
+	}
+
+	/**
+	 * Returns only climbs from a journal
+	 * @param src source journal
+	 */
+	onlyClimb(src: any[]): any[] {
+		while (src.length > 0 && src[src.length - 1].Event.substr(src[src.length - 1].Event.length - 5) !== 'Climb') {
 			src.pop();
 		}
 		return src;

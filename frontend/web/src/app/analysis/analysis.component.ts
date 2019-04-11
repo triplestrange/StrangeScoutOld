@@ -58,6 +58,7 @@ export class AnalysisComponent {
 			// for each item in the data array (each team)
 			await this.data.forEach(async (entry, index) => {
 
+				this.data[index].climb = {};
 				this.data[index].averages = {};
 				this.data[index].averages.hatch = {};
 				this.data[index].averages.cargo = {};
@@ -138,6 +139,26 @@ export class AnalysisComponent {
 				});
 				this.sp.averageDestinationCycles(entry.team, 'cargo', 'cargo', entry.rawdata).then(result =>{
 					this.data[index].averages.cargo.cargo = Math.ceil(result*100)/100;
+				});
+
+// CLIMB -------------------------------
+
+				this.sp.climbBreakdown(entry.team, entry.rawdata).then(result => {
+					this.data[index].climb = result;
+
+					c3.generate({
+						bindto: '#climb' + this.data[index].team,
+						data: {
+							type: 'pie',
+							columns: [
+								["Level 1", this.data[index].climb.l1],
+								["Level 2", this.data[index].climb.l2],
+								["Level 3", this.data[index].climb.l3],
+								["Incomplete", this.data[index].climb.incomplete],
+								["None", this.data[index].climb.none]
+							]
+						}
+					});
 				});
 
 // -------------------------------------

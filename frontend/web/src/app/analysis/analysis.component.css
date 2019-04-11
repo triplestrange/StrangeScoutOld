@@ -24,6 +24,14 @@ div.chart-container {
 	padding: 25px;
 }
 
+div.carded-chart-container {
+	padding: 17px;
+}
+
+div.climb-chart {
+	margin-top: 10px;
+}
+
 div.csv-button {
 	padding-top: 20px;
 }

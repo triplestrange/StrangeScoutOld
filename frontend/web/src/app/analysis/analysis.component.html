@@ -68,6 +68,11 @@
 					</mat-list-item>
 				</mat-list>
 
+				<div class="carded-chart-container">
+					<div style="font-size: 16px;">Climb Breakdown</div>
+					<div class="climb-chart" [id]="'climb' + entry.team"></div>
+				</div>
+
 				<mat-accordion multi="true">
 					<!-- Hatch expansion panel -->
 					<mat-expansion-panel>
