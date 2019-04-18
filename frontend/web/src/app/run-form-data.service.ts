@@ -68,9 +68,9 @@ export class RunFormDataService {
 			SubEvents: [
 				{Name: 'Level 1', Value: 'L1Climb'},
 				{Name: 'Level 2', Value: 'L2Climb'},
-				{Name: 'Level 3', Value: 'L3Climb'},
-				{Name: 'Incomplete', Value: 'DNFClimb'}
-			]
+				{Name: 'Level 3', Value: 'L3Climb'}
+			],
+			Text: 'Highest level achieved'
 		}
 	];
 }

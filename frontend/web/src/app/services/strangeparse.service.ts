@@ -295,7 +295,6 @@ export class StrangeparseService {
 
 			let breakdown = {
 				none: 0,
-				incomplete: 0,
 				l1: 0,
 				l2: 0,
 				l3: 0
@@ -317,10 +316,7 @@ export class StrangeparseService {
 
 			climbjournal.forEach(value => {
 				let final = value.Event.substr(0, value.Event.length - 5)
-				if (final === 'DNF') {
-					breakdown.none--;
-					breakdown.incomplete++;
-				} else if (final === 'L1') {
+				if (final === 'L1') {
 					breakdown.none--;
 					breakdown.l1++;
 				} else if (final === 'L2') {

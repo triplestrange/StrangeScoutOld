@@ -29,4 +29,5 @@ export class GameElement {
 	Holdable: boolean;
 	IgnoreHolding: boolean;
 	SubEvents: OptionEventChoice[];
+	Text?: string;
 }

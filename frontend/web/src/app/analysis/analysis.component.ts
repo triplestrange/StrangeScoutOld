@@ -154,7 +154,6 @@ export class AnalysisComponent {
 								["Level 1", this.data[index].climb.l1],
 								["Level 2", this.data[index].climb.l2],
 								["Level 3", this.data[index].climb.l3],
-								["Incomplete", this.data[index].climb.incomplete],
 								["None", this.data[index].climb.none]
 							]
 						}

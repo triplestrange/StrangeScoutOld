@@ -11,3 +11,7 @@ button.event-button {
 	margin-bottom: 10px;
 	width: 180px;
 }
+
+div.hint-text {
+	margin-bottom: 15px;
+}

@@ -1,4 +1,5 @@
 <div mat-dialog-content class="event-dialog">
+	<div *ngIf="element.Text" class="hint-text">{{ element.Text }}</div>
 	<div *ngFor="let event of element.SubEvents">
 		<button mat-raised-button class="event-button" type="button" [disabled]="!enabled" (click)="this.dialogRef.close(event.Value)">{{event.Name}}</button>
 	</div>
