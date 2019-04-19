@@ -16,11 +16,13 @@ let globalhttps = true;
 let httpscors = process.env.HTTPSCORS;
 
 module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
+	// set some icky global variables (data is needed in other functions \/)
 	globaldomain = domain;
 	if (httponly) {
 		globalhttps = false;
 	}
 
+	// if we're not running as root, throw an error about restricted ports
 	if (process.getuid() !== 0) {
 		if (!httponly) {
 			console.error(`Ports 80 and 443 are restricted to root - \x1b[31myou are not root!\x1b[0m\nTry running with sudo?`);
@@ -31,10 +33,11 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 		}
 	}
 	
-	// create db path if it doesn't exist
+	// create db data path if it doesn't exist
 	if (!fs.existsSync(datadir)) {
 		fs.mkdirSync(datadir);
 	}
+	// change to directory
 	process.chdir(datadir);
 
 	// set DB options
@@ -44,7 +47,7 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 
 	let serveropts = {};
 	if (!httponly) {
-
+		// read TLS key from file
 		let key = '';
 		if (fs.existsSync(keypath)) {
 			key = fs.readFileSync(keypath);
@@ -52,7 +55,8 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 			console.error(`\x1b[31mERROR:\x1b[0m No key file at \`${keypath}\`!`);
 			process.exit(1);
 		}
-
+		
+		// read TLS certificate from file
 		let cert = '';
 		if (fs.existsSync(certpath)) {
 			cert = fs.readFileSync(certpath);
@@ -61,13 +65,13 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 			process.exit(1);
 		}
 
+		// set key options
 		serveropts = {
 			// Private key
 			key: key,
 			// Fullchain file or cert file (prefer the former)
 			cert: cert
 		};
-
 	}
 
 	// define app
