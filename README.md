@@ -25,8 +25,8 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 	- Copy certificate file to `<data_dir>/server.crt`
 	- Copy key file to `<data_dir>/server.key`
 5. **Run StrangeScout**
-	- To use HTTPS, run `docker run -it -p 80:80 -p 443:443 -v <data_dir>:/opt/strangescout -e DOMAIN=<your_domain.tld> team1533/strangescout`
-	- To run as HTTP only, run `docker run -it -p 80:80 -v <data_dir>:/opt/strangescout -e HTTPONLY=true -e DOMAIN=<your_domain.tld> team1533/strangescout`
+	- To use HTTPS, run `docker run -it -p 80:80 -p 443:443 -v <data_dir>:/opt/strangescout -e DOMAIN=<your_domain.tld> -e INTERNALIP=<internal_ip> -e USERNAME=<admin_username> -e PASSWORD=<admin_password> team1533/strangescout`
+	- To run as HTTP only, run `docker run -it -p 80:80 -v <data_dir>:/opt/strangescout -e HTTPONLY=true -e DOMAIN=<your_domain.tld> -e INTERNALIP=<internal_ip> -e USERNAME=<admin_username> -e PASSWORD=<admin_password> team1533/strangescout`
 	- To force the database CORS headers to use HTTPS on their origin (useful if running in HTTPONLY mode behind a reverse proxy that handles HTTPS) add `-e HTTPSCORS=true` to the docker command
 
 ### Manual
@@ -42,21 +42,19 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 	- Copy certificate file to `./out/server.crt`
 	- Copy key file to `./out/server.key`
 4. **Run StrangeScout**
-	- Run `node ./out/command.js -d <your_domain.tld>`
+	- Run `node ./out/command.js -d <your_domain.tld> -i <internal_ip> -a <admin_username> -s <admin_password>`
 	- If you want to use StrangeScout in HTTP only mode, append `-o`
 	- If running in HTTP only mode, you can specify what port to run on by appending `-p <port>`
 	*Additional options can be seen by running `node ./out/command.js --help`*
 
 ### Setup
 
-1. **Setup an admin account**
+1. **Create the scouting database**
 	- Go to `db.<your_domain.tld>/_utils/`
-	- Go to `Admin Party!` in the sidebar
-	- Create a default admin account
-2. **Create the scouting database**
-	- Still logged in to the database, create a new database with the name `ssdb`
+	- Login with username `<admin_username>` and password `<admin_password>`
+	- Create a new database with the name `ssdb`
 	- Go to the database permissions and add a member role `scouter`
-3. **Add users**
+2. **Add users**
 	- Go to `<your_domain.tld>/` and login with your admin account
 	- Click on `Admin Panel`, then `Create User`
 	- Create any desired scouter and admin accounts

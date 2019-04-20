@@ -3,6 +3,7 @@ const vhost = require('vhost');
 const PouchDB = require('pouchdb');
 const path = require('path');
 const https = require('https');
+const http = require('http');
 const compression = require('compression');
 const fs = require('fs');
 
@@ -10,18 +11,37 @@ const fs = require('fs');
 const winston = require('winston');
 const expressWinston = require('express-winston');
 
+const tba = require('./tba.js');
+
 let globaldomain = '';
+let globalport = 0;
 let globalhttps = true;
+let globalinternalip = '';
 
 let httpscors = process.env.HTTPSCORS;
 
-module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
+/**
+ * sets up and runs the StrangeScout server
+ * @param {string} domain - domain server is hosted under
+ * @param {string} datadir - directory for the server data (databases, etc)
+ * @param {boolean} httponly - whether or not to serve only HTTP and no HTTPS
+ * @param {number} port - port to serve on if using only HTTP
+ * @param {string} keypath - path to TLS key file
+ * @param {string} certpath - path to TLS certificate file
+ * @param {string} internalip - internal IP address the server is being run on (used for db setup requests)
+ * @param {string} admin - admin account
+ * @param {string} pass - admin password
+ * @param {string} event - event code (optional for TBA integration)
+ * @param {string} tbakey - TBA API key (optional for TBA integration)
+ */
+module.exports = function (domain, datadir, httponly, port, keypath, certpath, internalip, admin, pass, event, tbakey) {
 	// set some icky global variables (data is needed in other functions \/)
 	globaldomain = domain;
+	globalinternalip = internalip;
 	if (httponly) {
 		globalhttps = false;
 	}
-
+	
 	// if we're not running as root, throw an error about restricted ports
 	if (process.getuid() !== 0) {
 		if (!httponly) {
@@ -82,11 +102,12 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 			new winston.transports.Console()
 		],
 		format: winston.format.combine(
-			winston.format.json()
-		),
-		meta: false,
-		msg: "HTTP {{req.method}} {{req.url}} {{req.method}} {{res.responseTime}}ms",
-		expressFormat: false
+			winston.format.colorize(),
+			winston.format.json(),
+			winston.format.timestamp(),
+			winston.format.align(),
+			winston.format.printf(info => `${info.timestamp} [${info.level}]: ${info.message} (${info.meta.res.statusCode})`)
+		)
 	}));
 
 	// use compression
@@ -107,28 +128,123 @@ module.exports = function(domain, datadir, httponly, port, keypath, certpath) {
 	console.log(`Hosting StrangeScout on ${domain}`);
 
 	if (!httponly) {
+		globalport = 443;
 		// server
 		https
 		.createServer(serveropts, app)
 		.listen(443, () => {
 			console.log(`listening on port ${443}`);
+			setupDB(admin, pass);
 		}).on('error', (err) => {
 			console.log(err);
 		});
 
 		express().get('*', function(req, res) {
 			console.log('redirecting HTTP to HTTPS');
-			res.redirect('https://' + req.headers.host + req.url);
+			res.redirect(`https://${req.headers.host}${req.url}`);
 		})
 		.listen(80);
 	} else {
+		globalport = port;
 		app.listen(port, () => {
 			console.log(`listening on port ${port}`);
+			setupDB(admin, pass);
 		}).on('error', (err) => {
 			console.log(err);
 		});
 	}
 
+}
+
+/**
+ * initializes the databases
+ * @param {string} admin - admin username
+ * @param {string} pass - admin password
+ */
+async function setupDB(admin, pass) {
+	let adminParty = await isAdminParty();
+
+	if (adminParty) {
+		console.warn('Database is in admin party mode!\nCreating default admin...');
+		createDefault(admin, pass);
+	}
+}
+
+/**
+ * checks if the database is in admin party mode
+ * @returns {Promise<boolean>} promise resolving boolean for admin party
+ */
+function isAdminParty() {
+	return new Promise(resolve => {
+		let method = '';
+		let opts = {
+			host: globalinternalip,
+			path: `/_session`,
+			method: 'GET',
+			setHost: false,
+			headers: {'Host': `db.${globaldomain}`}
+		};
+
+		if (globalhttps || httpscors) {
+			method = 'https';
+		} else {
+			method = 'http';
+			opts.port = globalport;
+		}
+
+		let req = eval(method).request(opts, (res) => {
+			// Continuously update stream with data
+			let body = '';
+			res.on('data', data => {
+				body += data;
+			});
+
+			// on request end
+			res.on('end', () => {
+				const parsed = JSON.parse(body);
+				if (parsed.userCtx.roles.includes('_admin')) {
+					resolve(true);
+				} else {
+					resolve(false);
+				}
+			});
+		});
+		req.end();
+	});
+}
+
+/**
+ * creates a default admin account
+ * @param {string} admin - admin username
+ * @param {string} pass - admin password
+ * @returns {Promise} returns a promise that always resolves true
+ */
+function createDefault(admin, pass) {
+	return new Promise(resolve => {
+		let method = '';
+		let opts = {
+				host: globalinternalip,
+				path: `/_node/node1@127.0.0.1/_config/admins/${admin}`,
+				method: 'PUT',
+				setHost: false,
+				headers: {'Host': `db.${globaldomain}`}
+		};
+
+		if (globalhttps || httpscors) {
+				method = 'https';
+		} else {
+				method = 'http';
+				opts.port = globalport;
+		}
+
+		let req = eval(method).request(opts, (res) => {
+				res.on('end', () => {
+						resolve(true);
+				});
+		});
+		req.write(`"${pass}"`);
+		req.end();
+	});
 }
 
 // HEADERS -----------------------------
