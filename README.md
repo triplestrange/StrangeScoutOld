@@ -49,12 +49,7 @@ More detailed documentation can be found in the **[wiki](https://github.com/trip
 
 ### Setup
 
-1. **Create the scouting database**
-	- Go to `db.<your_domain.tld>/_utils/`
-	- Login with username `<admin_username>` and password `<admin_password>`
-	- Create a new database with the name `ssdb`
-	- Go to the database permissions and add a member role `scouter`
-2. **Add users**
+- **Add users**
 	- Go to `<your_domain.tld>/` and login with your admin account
 	- Click on `Admin Panel`, then `Create User`
 	- Create any desired scouter and admin accounts

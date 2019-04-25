@@ -134,7 +134,7 @@ module.exports = function (domain, datadir, httponly, port, keypath, certpath, i
 		.createServer(serveropts, app)
 		.listen(443, () => {
 			console.log(`listening on port ${443}`);
-			setupDB(admin, pass);
+			setup(admin, pass);
 		}).on('error', (err) => {
 			console.log(err);
 		});
@@ -148,7 +148,7 @@ module.exports = function (domain, datadir, httponly, port, keypath, certpath, i
 		globalport = port;
 		app.listen(port, () => {
 			console.log(`listening on port ${port}`);
-			setupDB(admin, pass);
+			setup(admin, pass);
 		}).on('error', (err) => {
 			console.log(err);
 		});
@@ -161,14 +161,25 @@ module.exports = function (domain, datadir, httponly, port, keypath, certpath, i
  * @param {string} admin - admin username
  * @param {string} pass - admin password
  */
-async function setupDB(admin, pass) {
+async function setup(admin, pass) {
 	let adminParty = await isAdminParty();
 
 	if (adminParty) {
 		console.warn('Database is in admin party mode!\nCreating default admin...');
-		createDefault(admin, pass);
+		await createDefault(admin, pass);
 	}
+
+		createDB(admin, pass, 'ssdb').then(() => {
+			let perms = {
+				members: {
+					roles:['scouter']
+				}
+			};
+			dbPerms(admin, pass, 'ssdb', perms);
+		});
 }
+
+// ADMINS ------------------------------
 
 /**
  * checks if the database is in admin party mode
@@ -238,11 +249,91 @@ function createDefault(admin, pass) {
 		}
 
 		let req = eval(method).request(opts, (res) => {
-				res.on('end', () => {
-						resolve(true);
-				});
+			res.setEncoding('utf8');
+			res.on('data', () => {});
+
+			res.on('end', () => {
+				resolve(true);
+			});
 		});
 		req.write(`"${pass}"`);
+		req.end();
+	});
+}
+
+// DATABASES ---------------------------
+
+/**
+ * Creates a database of name `db` using the specified admin username and password
+ * @param {string} admin - admin username to use
+ * @param {string} pass - admin password to use
+ * @param {string} db - database name
+ */
+function createDB(admin, pass, db) {
+	return new Promise(resolve => {
+		let method = '';
+		let opts = {
+			host: globalinternalip,
+			path: `/${db}`,
+			method: 'PUT',
+			setHost: false,
+			headers: {'Host': `db.${globaldomain}`, 'Authorization': 'Basic ' + Buffer.from(admin + ':' + pass).toString('base64'), 'Content-Type': 'application/json'}
+		};
+
+		if (globalhttps || httpscors) {
+			method = 'https';
+		} else {
+			method = 'http';
+			opts.port = globalport;
+		}
+
+		let req = eval(method).request(opts, (res) => {
+			res.setEncoding('utf8');
+			res.on('data', () => {});
+
+			res.on('end', () => {
+				resolve(true);
+			});
+		});
+		req.write(JSON.stringify({id:db,name:db}));
+		req.end();
+	});
+}
+
+/**
+ * sets database permissions
+ * @param {string} admin - admin username
+ * @param {string} pass - admin password
+ * @param {string} db - database name
+ * @param {string} perms - database `_security` object
+ */
+function dbPerms(admin, pass, db, perms) {
+	return new Promise(resolve => {
+		let method = '';
+		let opts = {
+			host: globalinternalip,
+			path: `/${db}/_security`,
+			method: 'PUT',
+			setHost: false,
+			headers: {'Host': `db.${globaldomain}`, 'Authorization': 'Basic ' + Buffer.from(admin + ':' + pass).toString('base64'), 'Content-Type': 'application/json'}
+		};
+
+		if (globalhttps || httpscors) {
+			method = 'https';
+		} else {
+			method = 'http';
+			opts.port = globalport;
+		}
+
+		let req = eval(method).request(opts, (res) => {
+			res.setEncoding('utf8');
+			res.on('data', () => {});
+
+			res.on('end', () => {
+				resolve(true);
+			});
+		});
+		req.write(JSON.stringify(perms));
 		req.end();
 	});
 }
