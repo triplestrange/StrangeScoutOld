@@ -180,7 +180,7 @@ async function setup(internalip, domain, port, httponly, httpscors, admin, pass)
 
 // CORS Headers
 function cors(req, res, next) {
-	res.set("Access-Control-Allow-Origin", `${req.protocol}://${req.hostname}`);
+	res.set("Access-Control-Allow-Origin", `${req.get('origin')}`);
 	res.set("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 	res.set("Access-Control-Allow-Credentials", "true");
 	res.set("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
