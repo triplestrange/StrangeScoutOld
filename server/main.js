@@ -12,11 +12,7 @@ const winston = require('winston');
 const expressWinston = require('express-winston');
 
 const tba = require('./tba.js');
-
-let globaldomain = '';
-let globalport = 0;
-let globalhttps = true;
-let globalinternalip = '';
+const dbcontrol = require('./database.js');
 
 let httpscors = process.env.HTTPSCORS;
 
@@ -35,12 +31,6 @@ let httpscors = process.env.HTTPSCORS;
  * @param {string} tbakey - TBA API key (optional for TBA integration)
  */
 module.exports = function (domain, datadir, httponly, port, keypath, certpath, internalip, admin, pass, event, tbakey) {
-	// set some icky global variables (data is needed in other functions \/)
-	globaldomain = domain;
-	globalinternalip = internalip;
-	if (httponly) {
-		globalhttps = false;
-	}
 	
 	// if we're not running as root, throw an error about restricted ports
 	if (process.getuid() !== 0) {
@@ -128,27 +118,27 @@ module.exports = function (domain, datadir, httponly, port, keypath, certpath, i
 	console.log(`Hosting StrangeScout on ${domain}`);
 
 	if (!httponly) {
-		globalport = 443;
 		// server
 		https
 		.createServer(serveropts, app)
 		.listen(443, () => {
 			console.log(`listening on port ${443}`);
-			setup(admin, pass);
+			setup(internalip, domain, port, httponly, httpscors, admin, pass);
 		}).on('error', (err) => {
 			console.log(err);
 		});
 
+		// http forwarding to https
 		express().get('*', function(req, res) {
 			console.log('redirecting HTTP to HTTPS');
 			res.redirect(`https://${req.headers.host}${req.url}`);
 		})
 		.listen(80);
 	} else {
-		globalport = port;
+		// server
 		app.listen(port, () => {
 			console.log(`listening on port ${port}`);
-			setup(admin, pass);
+			setup(internalip, domain, port, httponly, httpscors, admin, pass);
 		}).on('error', (err) => {
 			console.log(err);
 		});
@@ -156,197 +146,41 @@ module.exports = function (domain, datadir, httponly, port, keypath, certpath, i
 
 }
 
+// -------------------------------------
+
 /**
  * initializes the databases
+ * @param {string} internalip - internal ip address of server
+ * @param {string} domain - domain server is hosted under
+ * @param {number} port - port the server is hosted under (used on http only mode)
+ * @param {boolean} httponly - if the server is being served with only http
+ * @param {boolean} httpscors - if externally the server is accesible via https (such as using a reverse proxy)
  * @param {string} admin - admin username
  * @param {string} pass - admin password
  */
-async function setup(admin, pass) {
-	let adminParty = await isAdminParty();
+async function setup(internalip, domain, port, httponly, httpscors, admin, pass) {
+	let adminParty = await dbcontrol.isAdminParty(internalip, domain, port, httponly, httpscors);
 
 	if (adminParty) {
 		console.warn('Database is in admin party mode!\nCreating default admin...');
-		await createDefault(admin, pass);
+		await dbcontrol.createDefault(internalip, domain, port, httponly, httpscors, admin, pass);
 	}
 
-		createDB(admin, pass, 'ssdb').then(() => {
+		dbcontrol.createDB(internalip, domain, port, httponly, httpscors, admin, pass, 'ssdb').then(() => {
 			let perms = {
 				members: {
 					roles:['scouter']
 				}
 			};
-			dbPerms(admin, pass, 'ssdb', perms);
+			dbcontrol.dbPerms(internalip, domain, port, httponly, httpscors, admin, pass, 'ssdb', perms);
 		});
 }
 
-// ADMINS ------------------------------
-
-/**
- * checks if the database is in admin party mode
- * @returns {Promise<boolean>} promise resolving boolean for admin party
- */
-function isAdminParty() {
-	return new Promise(resolve => {
-		let method = '';
-		let opts = {
-			host: globalinternalip,
-			path: `/_session`,
-			method: 'GET',
-			setHost: false,
-			headers: {'Host': `db.${globaldomain}`}
-		};
-
-		if (globalhttps || httpscors) {
-			method = 'https';
-		} else {
-			method = 'http';
-			opts.port = globalport;
-		}
-
-		let req = eval(method).request(opts, (res) => {
-			// Continuously update stream with data
-			let body = '';
-			res.on('data', data => {
-				body += data;
-			});
-
-			// on request end
-			res.on('end', () => {
-				const parsed = JSON.parse(body);
-				if (parsed.userCtx.roles.includes('_admin')) {
-					resolve(true);
-				} else {
-					resolve(false);
-				}
-			});
-		});
-		req.end();
-	});
-}
-
-/**
- * creates a default admin account
- * @param {string} admin - admin username
- * @param {string} pass - admin password
- * @returns {Promise} returns a promise that always resolves true
- */
-function createDefault(admin, pass) {
-	return new Promise(resolve => {
-		let method = '';
-		let opts = {
-				host: globalinternalip,
-				path: `/_node/node1@127.0.0.1/_config/admins/${admin}`,
-				method: 'PUT',
-				setHost: false,
-				headers: {'Host': `db.${globaldomain}`}
-		};
-
-		if (globalhttps || httpscors) {
-				method = 'https';
-		} else {
-				method = 'http';
-				opts.port = globalport;
-		}
-
-		let req = eval(method).request(opts, (res) => {
-			res.setEncoding('utf8');
-			res.on('data', () => {});
-
-			res.on('end', () => {
-				resolve(true);
-			});
-		});
-		req.write(`"${pass}"`);
-		req.end();
-	});
-}
-
-// DATABASES ---------------------------
-
-/**
- * Creates a database of name `db` using the specified admin username and password
- * @param {string} admin - admin username to use
- * @param {string} pass - admin password to use
- * @param {string} db - database name
- */
-function createDB(admin, pass, db) {
-	return new Promise(resolve => {
-		let method = '';
-		let opts = {
-			host: globalinternalip,
-			path: `/${db}`,
-			method: 'PUT',
-			setHost: false,
-			headers: {'Host': `db.${globaldomain}`, 'Authorization': 'Basic ' + Buffer.from(admin + ':' + pass).toString('base64'), 'Content-Type': 'application/json'}
-		};
-
-		if (globalhttps || httpscors) {
-			method = 'https';
-		} else {
-			method = 'http';
-			opts.port = globalport;
-		}
-
-		let req = eval(method).request(opts, (res) => {
-			res.setEncoding('utf8');
-			res.on('data', () => {});
-
-			res.on('end', () => {
-				resolve(true);
-			});
-		});
-		req.write(JSON.stringify({id:db,name:db}));
-		req.end();
-	});
-}
-
-/**
- * sets database permissions
- * @param {string} admin - admin username
- * @param {string} pass - admin password
- * @param {string} db - database name
- * @param {string} perms - database `_security` object
- */
-function dbPerms(admin, pass, db, perms) {
-	return new Promise(resolve => {
-		let method = '';
-		let opts = {
-			host: globalinternalip,
-			path: `/${db}/_security`,
-			method: 'PUT',
-			setHost: false,
-			headers: {'Host': `db.${globaldomain}`, 'Authorization': 'Basic ' + Buffer.from(admin + ':' + pass).toString('base64'), 'Content-Type': 'application/json'}
-		};
-
-		if (globalhttps || httpscors) {
-			method = 'https';
-		} else {
-			method = 'http';
-			opts.port = globalport;
-		}
-
-		let req = eval(method).request(opts, (res) => {
-			res.setEncoding('utf8');
-			res.on('data', () => {});
-
-			res.on('end', () => {
-				resolve(true);
-			});
-		});
-		req.write(JSON.stringify(perms));
-		req.end();
-	});
-}
-
-// HEADERS -----------------------------
+// HEADERS / MIDDLEWARE ----------------
 
 // CORS Headers
 function cors(req, res, next) {
-	if (globalhttps || httpscors === 'true') {
-		res.set("Access-Control-Allow-Origin", `https://${globaldomain}`);
-	} else {
-		res.set("Access-Control-Allow-Origin", `http://${globaldomain}`);
-	}
+	res.set("Access-Control-Allow-Origin", `${req.protocol}://${req.hostname}`);
 	res.set("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 	res.set("Access-Control-Allow-Credentials", "true");
 	res.set("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
