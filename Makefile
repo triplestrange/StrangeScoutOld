@@ -4,7 +4,6 @@ VERSION=$(shell ./.version.sh)
 
 BUILDPATH=$(shell pwd)/build
 OUT=$(shell pwd)/out
-#SNAP=$(shell pwd)/strangescout.snap
 
 NAME = team1533/strangescout
 IMG = $(NAME):$(VERSION)
@@ -40,6 +39,10 @@ out:
 	@cd $(BUILDPATH)/output; \
 	npm i --production;
 
+	@printf "\n Patching server PouchDB\n";
+	@cd $(BUILDPATH)/output; \
+	patch node_modules/express-pouchdb/lib/routes/session.js session.patch;
+
 	@printf "\n Relocating output\n";
 	mv $(BUILDPATH)/output $(OUT);
 
@@ -51,15 +54,11 @@ out:
 
 	@printf "\n Done!";
 
-.PHONY: clean docker # snap
+.PHONY: clean docker
 clean:
 	@echo " Cleaning...";
 	rm -rf $(BUILDPATH);
 	rm -rf $(OUT);
-#	rm -rf $(SNAP);
-
-#snap: out
-#	snapcraft snap -o $(SNAP);
 
 docker: out
 	docker image build -f docker/Dockerfile -t $(IMG) ./
