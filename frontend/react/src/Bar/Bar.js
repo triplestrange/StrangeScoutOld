@@ -1,10 +1,13 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-
 import PropTypes from 'prop-types';
+
+import { Link } from "react-router-dom";
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+
+import Button from '@material-ui/core/Button';
 
 import Typography from '@material-ui/core/Typography';
 
@@ -21,7 +24,8 @@ const styles = {
 		fontFamily: "'Zilla Slab'",
 		fontWeight: "semibold",
 		fontSize: "30px",
-		marginTop: "-8px"
+		marginTop: "-8px",
+		textTransform: "none"
 	}
 };
 
@@ -30,9 +34,11 @@ function Bar(props) {
 	return (
 		<AppBar position="static">
 			<Toolbar>
-				<Typography variant="h6" color="inherit" className={classes.barText}>
-					StrangeScout
-				</Typography>
+				<Button variant="flat" color="inherit" component={Link} to="/">
+					<Typography variant="h6" color="inherit" className={classes.barText}>
+						StrangeScout
+					</Typography>
+				</Button>
 				<MediaQuery query='(min-device-width: 500px)'>
 					<div className={classes.grow} />
 					<Typography variant="h6" color="inherit" className={classes.barText}>

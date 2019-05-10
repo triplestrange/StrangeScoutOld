@@ -20,8 +20,8 @@ function App() {
 	return (
 		<CookiesProvider>
 			<div className="App">
-				<Bar />
 				<Router>
+					<Bar />
 					<Route render={({ location }) => (
 						<PoseGroup>
 							<RoutesContainer key={location.pathname}>

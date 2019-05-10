@@ -47,7 +47,7 @@ function HomeCard(props) {
 				</Typography>
 				<Button variant="contained" color="primary" className={classes.button} component={Link} to="/scout">Scout a Match</Button>
 				<Button variant="contained" color="primary" className={classes.button}>View Scouting Data</Button>
-				<Button variant="contained" color="secondary" className={classes.button}>Scout a Match</Button>
+				<Button variant="contained" color="secondary" className={classes.button}>Sync Data</Button>
 			</CardContent>
 		</Card>
 	);

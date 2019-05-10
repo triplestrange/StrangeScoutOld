@@ -5,15 +5,38 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { Link } from "react-router-dom";
 
-const styles = {};
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
+
+const styles = {
+	card: {
+		marginTop: 50,
+
+		minWidth: 275,
+		maxWidth: 350,
+		width: "85%",
+
+		textAlign: "left"
+	},
+	title: {
+		fontSize: 25
+	}
+};
 
 function Scout(props) {
 	const { classes } = props;
 
 	return (
-		<div>
-			<Link to="/">Test</Link>
-		</div>
+		<Card className={classes.card}>
+			<CardContent>
+				<Typography className={classes.title} color="textPrimary" gutterBottom>
+					Match Setup
+				</Typography>
+			</CardContent>
+		</Card>
 	);
 }
 
