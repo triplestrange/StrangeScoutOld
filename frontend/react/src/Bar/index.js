@@ -34,7 +34,7 @@ function Bar(props) {
 	return (
 		<AppBar position="static">
 			<Toolbar>
-				<Button variant="flat" color="inherit" component={Link} to="/">
+				<Button variant="text" color="inherit" component={Link} to="/">
 					<Typography variant="h6" color="inherit" className={classes.barText}>
 						StrangeScout
 					</Typography>

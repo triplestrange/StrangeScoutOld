@@ -7,9 +7,9 @@ import posed, { PoseGroup } from 'react-pose';
 
 import './App.css';
 
-import Bar from './Bar/Bar';
-import HomeCard from './HomeCard/HomeCard';
-import Scout from './Scout/Scout';
+import Bar from './Bar';
+import HomeCard from './Splash';
+import Scout from './Scout';
 
 const RoutesContainer = posed.div({
 	enter: { opacity: 1 },

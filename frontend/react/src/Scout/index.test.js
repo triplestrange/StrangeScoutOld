@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Bar from './bar';
+import Scout from '.';
 
 it('renders without crashing', () => {
 	const div = document.createElement('div');
-	ReactDOM.render(<Bar />, div);
+	ReactDOM.render(<Scout />, div);
 	ReactDOM.unmountComponentAtNode(div);
 });
