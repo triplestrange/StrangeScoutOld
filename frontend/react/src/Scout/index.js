@@ -10,6 +10,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import SetupForm from './Setup/form.js';
+
 
 const styles = {
 	card: {
@@ -34,6 +36,7 @@ function Scout(props) {
 			<CardContent>
 				<Typography className={classes.title} color="textPrimary" gutterBottom>
 					Match Setup
+					<SetupForm />
 				</Typography>
 			</CardContent>
 		</Card>

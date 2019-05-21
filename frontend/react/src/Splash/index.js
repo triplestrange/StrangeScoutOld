@@ -20,7 +20,6 @@ const styles = {
 
 		minWidth: 275,
 		maxWidth: 350,
-		width: "85%",
 
 		textAlign: "center"
 	},

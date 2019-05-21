@@ -12,8 +12,8 @@ import HomeCard from './Splash';
 import Scout from './Scout';
 
 const RoutesContainer = posed.div({
-	enter: { opacity: 1 },
-	exit: { opacity: 0 }
+	enter: { x: 0, opacity: 1 },
+	exit: { x: 75, opacity: 0 }
 });
 
 function App() {
