@@ -1,37 +1,37 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { Formik, Field } from 'formik';
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+import SetupFormContent from './formContent.js'
+
+
+const validationSchema = Yup.object({
+	team: Yup
+	.number("Enter the team number")
+	.required("Team Number is required")
+	.positive("Team Number must be positive")
+	.integer("Team Number must be an integer"),
+
+	match: Yup
+	.number("Enter the match number")
+	.required("Match Number is required")
+	.positive("Match Number must be positive")
+	.integer("Match Number must be an integer")
+});
+
+const submit = ({ team, match }) => {
+	console.log(team + "::" + match)
+}
 
 function SetupForm(props) {
+	const values = { team: "", match: "" };
 	return (
-		<form onSubmit={() => {}}>
-			<TextField
-			id="team"
-			name="team"
-			label="Team Number"
-			type="number"
-			fullWidth
-			/>
-
-			<TextField
-			id="match"
-			name="match"
-			label="Match Number"
-			type="number"
-			fullWidth
-			/>
-
-			<Button
-			type="submit"
-			fullWidth
-			variant="raised"
-			color="primary"
-			style={{marginTop: 20}}
-			>
-				Submit
-			</Button>
-		</form>
+		<Formik
+			render={props => <SetupFormContent {...props} />}
+			initialValues={values}
+			validationSchema={validationSchema}
+			onSubmit={submit}
+		/>
 	);
 };
 
