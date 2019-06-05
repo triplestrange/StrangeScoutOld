@@ -28,25 +28,29 @@ const styles = {
 function Scout(props) {
 	const { classes } = props;
 
-	const [view, setView] = useState('setup');
+	// default state (view set to setup form)
+	const [state, setState] = useState({view: 'setup'});
 
+	// define the setup form submit function
 	const submit = ({ team, match }) => {
-		setView('scout');
+		// change view to scout and set team and match in state
+		setState({view: 'scout', team: team, match: match});
 	}
 
-	if (view === 'setup') {
+	// define views
+	if (state.view === 'setup') {
 		return (
 			<Card className={classes.card}>
 				<CardContent>
 					<Typography className={classes.title} color="textPrimary" gutterBottom>
 						Match Setup
-						<SetupForm submitFunction={submit}/>
 					</Typography>
+					<SetupForm submitFunction={submit}/>
 				</CardContent>
 			</Card>
 		);
-	} else if (view === 'scout') {
-		return null;
+	} else if (state.view === 'scout') {
+		return (<p>{state.team}</p>);
 	} else {
 		return null;
 	}

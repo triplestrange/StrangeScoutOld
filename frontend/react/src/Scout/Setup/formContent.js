@@ -70,7 +70,7 @@ function SetupFormContent(props) {
 			<Button
 			type="submit"
 			fullWidth
-			variant="raised"
+			variant="contained"
 			color="primary"
 			style={{marginTop: 15}}
 			disabled={!isValid}

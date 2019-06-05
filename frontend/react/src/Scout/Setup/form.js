@@ -24,11 +24,13 @@ const defaultSubmit = ({ team, match }) => {
 
 function SetupForm(props) {
 
+	// pull submit function from props
 	const { submitFunction } = props;
-
+	// if submit function exists in props, use it, else use the default submit function
 	let submit = submitFunction ? submitFunction : defaultSubmit;
-
+	// default form values
 	const values = { team: "", match: "" };
+
 	return (
 		<Formik
 			render={props => <SetupFormContent {...props} />}
