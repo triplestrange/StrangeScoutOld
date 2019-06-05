@@ -9,6 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 import SetupForm from './Setup/form.js';
+import StartDialog from './startDialog.js';
 
 const styles = {
 	card: {
@@ -29,16 +30,26 @@ function Scout(props) {
 	const { classes } = props;
 
 	// default state (view set to setup form)
-	const [state, setState] = useState({view: 'setup'});
+	const [state, setState] = useState({team: 0, match: 0});
+	const [view, setView] = useState('setup');
+	const [dialogState, setDialogState] = useState(false);
 
 	// define the setup form submit function
 	const submit = ({ team, match }) => {
-		// change view to scout and set team and match in state
-		setState({view: 'scout', team: team, match: match});
+		// set team and match state and open confirm dialog
+		setState({team: team, match: match});
+		setDialogState(true);
+	}
+
+	const onClose = (output) => {
+		setDialogState(false);
+		if (output) {
+			setView('scout');
+		}
 	}
 
 	// define views
-	if (state.view === 'setup') {
+	if (view === 'setup') {
 		return (
 			<div className="wrapper">
 				<Card className={classes.card}>
@@ -49,9 +60,10 @@ function Scout(props) {
 						<SetupForm submitFunction={submit} />
 					</CardContent>
 				</Card>
+				<StartDialog open={dialogState} onClose={onClose}/>
 			</div>
 		);
-	} else if (state.view === 'scout') {
+	} else if (view === 'scout') {
 		return (<p>{state.team}</p>);
 	} else {
 		return null;
