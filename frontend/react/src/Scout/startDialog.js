@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 
 function StartDialog(props) {
 
-	const { onClose, value: valueProp, open, ...other } = props;
+	const { onClose, open, ...other } = props;
 
 	function handleCancel() {
 		onClose(false);
@@ -20,8 +20,6 @@ function StartDialog(props) {
 		<Dialog
 		disableBackdropClick
 		disableEscapeKeyDown
-		maxWidth="xs"
-		aria-labelledby="confirmation-dialog"
 		open={open}
 		{...other}
 		>
