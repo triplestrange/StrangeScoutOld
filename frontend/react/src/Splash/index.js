@@ -2,12 +2,11 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import '../centerWrapper.css';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-
 import Button from '@material-ui/core/Button';
-
 import Typography from '@material-ui/core/Typography';
 
 import { useCookies } from 'react-cookie';
@@ -39,7 +38,7 @@ function HomeCard(props) {
 	const [ cookies ] = useCookies();
 
 	return (
-		<React.Fragment>
+		<div className="wrapper">
 			{/** Spash screen card */}
 			<Card className={classes.card}>
 				<CardContent>
@@ -54,7 +53,7 @@ function HomeCard(props) {
 					<Button variant="contained" color="secondary" className={classes.button}>Sync Data</Button>
 				</CardContent>
 			</Card>
-		</React.Fragment>
+		</div>
 	);
 }
 

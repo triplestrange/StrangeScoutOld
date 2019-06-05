@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import '../centerWrapper.css';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 import SetupForm from './Setup/form.js';
-
 
 const styles = {
 	card: {
@@ -40,14 +40,16 @@ function Scout(props) {
 	// define views
 	if (state.view === 'setup') {
 		return (
-			<Card className={classes.card}>
-				<CardContent>
-					<Typography className={classes.title} color="textPrimary" gutterBottom>
-						Match Setup
-					</Typography>
-					<SetupForm submitFunction={submit}/>
-				</CardContent>
-			</Card>
+			<div className="wrapper">
+				<Card className={classes.card}>
+					<CardContent>
+						<Typography className={classes.title} color="textPrimary" gutterBottom>
+							Match Setup
+						</Typography>
+						<SetupForm submitFunction={submit} />
+					</CardContent>
+				</Card>
+			</div>
 		);
 	} else if (state.view === 'scout') {
 		return (<p>{state.team}</p>);
