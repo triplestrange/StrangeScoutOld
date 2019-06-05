@@ -36,19 +36,25 @@ const styles = {
 
 function HomeCard(props) {
 	const { classes } = props;
-	const [cookies] = useCookies();
+	const [ cookies ] = useCookies();
 
 	return (
-		<Card className={classes.card}>
-			<CardContent>
-				<Typography className={classes.title} color="textPrimary" gutterBottom>
-					Welcome back {cookies.scouter}!
-				</Typography>
-				<Button variant="contained" color="primary" className={classes.button} component={Link} to="/scout">Scout a Match</Button>
-				<Button variant="contained" color="primary" className={classes.button}>View Scouting Data</Button>
-				<Button variant="contained" color="secondary" className={classes.button}>Sync Data</Button>
-			</CardContent>
-		</Card>
+		<React.Fragment>
+			{/** Spash screen card */}
+			<Card className={classes.card}>
+				<CardContent>
+					<Typography className={classes.title} color="textPrimary" gutterBottom>
+						{/** Pull the scouters name from the `scouter` cookie */}
+						Welcome back {cookies.scouter}!
+					</Typography>
+					{/** Navigation buttons with a parent link component to go between pages */}
+					<Button variant="contained" color="primary" className={classes.button} component={Link} to="/scout">Scout a Match</Button>
+					<Button variant="contained" color="primary" className={classes.button}>View Scouting Data</Button>
+					{/** TODO - Button that executes a sync function */}
+					<Button variant="contained" color="secondary" className={classes.button}>Sync Data</Button>
+				</CardContent>
+			</Card>
+		</React.Fragment>
 	);
 }
 

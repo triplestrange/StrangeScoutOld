@@ -4,7 +4,6 @@ import * as Yup from "yup";
 
 import SetupFormContent from './formContent.js'
 
-
 const validationSchema = Yup.object({
 	team: Yup
 	.number("Enter the team number")
@@ -19,11 +18,16 @@ const validationSchema = Yup.object({
 	.integer("Match Number must be an integer")
 });
 
-const submit = ({ team, match }) => {
+const defaultSubmit = ({ team, match }) => {
 	console.log(team + "::" + match)
 }
 
 function SetupForm(props) {
+
+	const { submitFunction } = props;
+
+	let submit = submitFunction ? submitFunction : defaultSubmit;
+
 	const values = { team: "", match: "" };
 	return (
 		<Formik

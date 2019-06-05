@@ -1,9 +1,21 @@
 import React from "react";
+
+import { withStyles } from '@material-ui/core/styles';
+
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
+const styles = {
+	field: {
+		marginBottom: 15
+	}
+}
+
 function SetupFormContent(props) {
 
+	const { classes } = props;
+
+	// set props of the setup form
 	const {
 		values: { team, match },
 		errors,
@@ -14,6 +26,7 @@ function SetupFormContent(props) {
 		setFieldTouched
 	} = props;
 
+	// change event function
 	const change = (name, e) => {
 		e.persist();
 		handleChange(e);
@@ -27,6 +40,7 @@ function SetupFormContent(props) {
 			name="team"
 			label="Team Number"
 			type="number"
+			className={classes.field}
 			fullWidth
 
 			min={1}
@@ -42,6 +56,7 @@ function SetupFormContent(props) {
 			name="match"
 			label="Match Number"
 			type="number"
+			className={classes.field}
 			fullWidth
 
 			min={1}
@@ -57,7 +72,7 @@ function SetupFormContent(props) {
 			fullWidth
 			variant="raised"
 			color="primary"
-			style={{marginTop: 20}}
+			style={{marginTop: 15}}
 			disabled={!isValid}
 			>
 				Submit
@@ -66,4 +81,4 @@ function SetupFormContent(props) {
 	);
 };
 
-export default (SetupFormContent);
+export default withStyles(styles)(SetupFormContent);

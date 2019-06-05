@@ -18,23 +18,33 @@ const RoutesContainer = posed.div({
 
 function App() {
 	return (
-		<CookiesProvider>
-			<div className="App">
-				<Router>
-					<Bar />
-					<Route render={({ location }) => (
-						<PoseGroup>
-							<RoutesContainer key={location.pathname}>
-								<Switch location={location}>
-									<Route path="/" exact component={HomeCard} key="home" />
-									<Route path="/scout" exact component={Scout} key="scout" />
-								</Switch>
-							</RoutesContainer>
-						</PoseGroup>
-					)}/>
-				</Router>
-			</div>
-		</CookiesProvider>
+		<React.Fragment>
+			{/** Component allowing access to cookie functions */}
+			<CookiesProvider>
+				<div className="App">
+					{/** React Router */}
+					<Router>
+						{/** Toolbar */}
+						<Bar />
+						{/** Router rendering route */}
+						<Route render={({ location }) => (
+							<React.Fragment>
+								{/** Pose Group for animations */}
+								<PoseGroup>
+									<RoutesContainer key={location.pathname}>
+										<Switch location={location}>
+											{/** defined routes */}
+											<Route path="/" exact component={HomeCard} key="home" />
+											<Route path="/scout" exact component={Scout} key="scout" />
+										</Switch>
+									</RoutesContainer>
+								</PoseGroup>
+							</React.Fragment>
+						)}/>
+					</Router>
+				</div>
+			</CookiesProvider>
+		</React.Fragment>
 	);
 }
 
