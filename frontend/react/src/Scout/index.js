@@ -68,7 +68,6 @@ function Scout(props) {
 			// counter state is used so React will re-render components
 			count = count - 1;
 			setCountState(count);
-			console.log(`${count}`)
 		} else {
 			// stop the interval timer when time runs out
 			clearInterval(timer);
@@ -91,7 +90,7 @@ function Scout(props) {
 			</div>
 		);
 	} else if (view === 'scout') {
-		return (<StatusCard seconds={countState} team={state.team} match={state.match}/>);
+		return (<StatusCard seconds={countState} team={state.team}/>);
 	} else {
 		return null;
 	}
