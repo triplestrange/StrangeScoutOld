@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import '../centerWrapper.css';
 
@@ -10,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 
 import SetupForm from './Setup/form.js';
 import StartDialog from './startDialog.js';
+
+import StatusCard from './Scouting/statusCard.js';
 
 const styles = {
 	card: {
@@ -27,12 +28,18 @@ const styles = {
 };
 
 function Scout(props) {
+	// starting values used for timer
+	let timer = 0;
+	let count = 150;
+
+	// use classes
 	const { classes } = props;
 
-	// default state (view set to setup form)
+	// setup various states
 	const [state, setState] = useState({team: 0, match: 0});
 	const [view, setView] = useState('setup');
 	const [dialogState, setDialogState] = useState(false);
+	const [countState, setCountState] = useState(count);
 
 	// define the setup form submit function
 	const submit = ({ team, match }) => {
@@ -42,9 +49,29 @@ function Scout(props) {
 	}
 
 	const onClose = (output) => {
+		// close dialog
 		setDialogState(false);
+		// if dialog was confirmed:
 		if (output) {
+			// change view
 			setView('scout');
+			// start countdown timer
+			timer = setInterval(countDown, 1000);
+		}
+	}
+	
+	// timer function
+	const countDown = () => {
+		// if interval is set and time is above 0
+		if (timer !== 0 && count > 0) {
+			// decrement count variable and set counter state
+			// counter state is used so React will re-render components
+			count = count - 1;
+			setCountState(count);
+			console.log(`${count}`)
+		} else {
+			// stop the interval timer when time runs out
+			clearInterval(timer);
 		}
 	}
 
@@ -64,14 +91,10 @@ function Scout(props) {
 			</div>
 		);
 	} else if (view === 'scout') {
-		return (<p>{state.team}</p>);
+		return (<StatusCard seconds={countState} team={state.team} match={state.match}/>);
 	} else {
 		return null;
 	}
 }
-
-Scout.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(Scout);
