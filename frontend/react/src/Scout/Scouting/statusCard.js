@@ -23,6 +23,7 @@ const styles = {
 };
 
 function StatusCard(props) {
+	// defining props
 	let { seconds, team, lastEvent, classes } = props;
 
 	// format seconds into `mm:ss`

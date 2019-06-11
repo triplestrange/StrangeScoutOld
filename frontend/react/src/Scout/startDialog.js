@@ -26,12 +26,7 @@ function StartDialog(props) {
 	return (
 		<React.Fragment>
 			{/** Dialog - disable exiting - use passed prop to open and close */}
-			<Dialog
-			disableBackdropClick
-			disableEscapeKeyDown
-			open={open}
-			{...other}
-			>
+			<Dialog disableBackdropClick disableEscapeKeyDown open={open} {...other}>
 				<DialogContent>
 					Click when the match starts!
 				</DialogContent>

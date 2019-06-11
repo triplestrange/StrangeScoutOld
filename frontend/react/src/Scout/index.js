@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import '../centerWrapper.css';
@@ -27,72 +27,100 @@ const styles = {
 	}
 };
 
-function Scout(props) {
+class Scout extends React.Component {
 	// starting values used for timer
-	let timer = 0;
-	let count = 150;
+	timer = 0;
+	count = 150;
 
-	// use classes
-	const { classes } = props;
+	constructor(props) {
+		super(props);
 
-	// setup various states
-	const [state, setState] = useState({team: 0, match: 0});
-	const [view, setView] = useState('setup');
-	const [dialogState, setDialogState] = useState(false);
-	const [countState, setCountState] = useState(count);
-
-	// define the setup form submit function
-	const submit = ({ team, match }) => {
-		// set team and match state and open confirm dialog
-		setState({team: team, match: match});
-		setDialogState(true);
+		// initial state
+		this.state = {
+			view: 'setup',
+			dialog: false,
+			count: this.count,
+			vars: {
+				team: 0,
+				match: 0
+			}
+		};
 	}
 
-	const onClose = (output) => {
-		// close dialog
-		setDialogState(false);
-		// if dialog was confirmed:
-		if (output) {
-			// change view
-			setView('scout');
-			// start countdown timer
-			timer = setInterval(countDown, 1000);
+	// stop timer when the component unmounts
+	componentWillUnmount() {
+		clearInterval(this.timer)
+	}
+
+	render() {
+		// pull props and use classes
+		const { props } = this;
+		const { classes } = props;
+
+		// define the setup form submit function
+		const submit = ({ team, match }) => {
+			// set team and match state and open confirm dialog
+			this.setState({
+				dialog: true,
+				vars: {
+					team: team,
+					match: match
+				}
+			});
 		}
-	}
-	
-	// timer function
-	const countDown = () => {
-		// if interval is set and time is above 0
-		if (timer !== 0 && count > 0) {
-			// decrement count variable and set counter state
-			// counter state is used so React will re-render components
-			count = count - 1;
-			setCountState(count);
+
+		const onClose = (output) => {
+			// close dialog
+			this.setState({dialog: false});
+			// if dialog was confirmed:
+			if (output) {
+				// change view
+				this.setState({view: 'scout'});
+				// start countdown timer
+				this.timer = setInterval(countDown, 1000);
+			}
+		}
+
+		// timer function
+		const countDown = () => {
+			// if interval is set and time is above 0
+			if (this.timer !== 0 && this.count > 0) {
+				// decrement count variable and set counter state
+				// counter state is used so React will re-render components
+				this.count = this.count - 1;
+				this.setState({count: this.count});
+			} else {
+				// stop the interval timer when time runs out
+				clearInterval(this.timer);
+			}
+		}
+
+		// define views
+		if (this.state.view === 'setup') {
+			return (
+				<div className="wrapper">
+					<Card className={classes.card}>
+						<CardContent>
+							<Typography className={classes.title} color="textPrimary" gutterBottom>
+								Match Setup
+							</Typography>
+							<SetupForm submitFunction={submit} />
+						</CardContent>
+					</Card>
+					<StartDialog open={this.state.dialog} onClose={onClose}/>
+				</div>
+			);
+		} else if (this.state.view === 'scout') {
+			return (
+				<StatusCard seconds={this.state.count} team={this.state.vars.team}/>
+			);
 		} else {
-			// stop the interval timer when time runs out
-			clearInterval(timer);
+			return (
+				<div>
+					ERROR: View `{this.view}` is not defined!
+				</div>
+			);
 		}
-	}
-
-	// define views
-	if (view === 'setup') {
-		return (
-			<div className="wrapper">
-				<Card className={classes.card}>
-					<CardContent>
-						<Typography className={classes.title} color="textPrimary" gutterBottom>
-							Match Setup
-						</Typography>
-						<SetupForm submitFunction={submit} />
-					</CardContent>
-				</Card>
-				<StartDialog open={dialogState} onClose={onClose}/>
-			</div>
-		);
-	} else if (view === 'scout') {
-		return (<StatusCard seconds={countState} team={state.team}/>);
-	} else {
-		return null;
 	}
 }
 

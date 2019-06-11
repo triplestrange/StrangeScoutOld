@@ -1,14 +1,11 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 
 import { Link } from "react-router-dom";
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
 import Button from '@material-ui/core/Button';
-
 import Typography from '@material-ui/core/Typography';
 
 import MediaQuery from 'react-responsive';
@@ -31,6 +28,7 @@ const styles = {
 
 function Bar(props) {
 	const { classes } = props;
+	
 	return (
 		<AppBar position="static">
 			<Toolbar>
@@ -39,6 +37,7 @@ function Bar(props) {
 						StrangeScout
 					</Typography>
 				</Button>
+				{/** Use a media query to hide text on a mobile device */}
 				<MediaQuery query='(min-device-width: 500px)'>
 					<div className={classes.grow} />
 					<Typography variant="h6" color="inherit" className={classes.barText}>
@@ -49,9 +48,5 @@ function Bar(props) {
 		</AppBar>
 	);
 }
-
-Bar.propTypes = {
-	classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(Bar);
