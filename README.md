@@ -1,3 +1,9 @@
+## NOTICE!
+
+As of July 2019, all work on the StrangeScout scouting system is now part of 1533s Red Alliance projects group, and can now be found at [https://github.com/the-red-alliance](https://github.com/the-red-alliance)
+
+---
+
 # StrangeScout
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
