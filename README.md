@@ -1,6 +1,6 @@
 ## NOTICE!
 
-As of July 2019, all work on the StrangeScout scouting system is now part of 1533s Red Alliance projects group, and can now be found at [https://github.com/the-red-alliance](https://github.com/the-red-alliance)
+As of July 2019, all work on the StrangeScout scouting system is now part of 1533's Red Alliance projects group, and can now be found at [https://github.com/the-red-alliance](https://github.com/the-red-alliance)
 
 ---
 
